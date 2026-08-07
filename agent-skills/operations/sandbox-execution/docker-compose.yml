@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  agent-sandbox:
+    image: debian:bookworm-slim
+    container_name: agent_sandbox_runtime
+    volumes:
+      - .:/workspace:ro
+      - agent_state:/run/agentbox
+    networks:
+      - sandbox-net
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - AGENT_ENV=sandboxed
+    command: ["sleep", "infinity"]
+
+  proxy:
+    image: mitmproxy/mitmproxy:latest
+    container_name: agent_sandbox_proxy
+    ports:
+      - "8080:8080"
+    networks:
+      - sandbox-net
+    command: ["mitmdump", "--set", "block_global=false"]
+
+volumes:
+  agent_state:
+
+networks:
+  sandbox-net:
+    driver: bridge

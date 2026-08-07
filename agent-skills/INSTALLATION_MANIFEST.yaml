@@ -1,0 +1,632 @@
+# Installation Manifest
+# Ecosystem: Authorized Bug-Hunting Agent Architecture
+# Generated from SECURITY_AGENT_RESEARCH_REPORT.md
+
+manifest_version: "2.0.0"
+updated_at: "2026-08-07"
+
+implementations:
+  - name: "scope-enforcement"
+    source: "OpenGuardrails Protocol"
+    repository: "https://github.com/openguardrails/openguardrails"
+    installed: true
+    version: "v1.2.0"
+    commit: "HEAD"
+    capabilities:
+      - "Enforces allowed/forbidden targets, scopes, and domains"
+      - "Deny-by-default execution policy"
+    installation_method: "Custom policy file & wrapper script"
+    installation_location: "agent-skills/governance/scope-enforcement/"
+    dependencies:
+      - "PyYAML >= 6.0"
+    permissions: "Local read-only policy inspection"
+    network_access: false
+    command_execution: false
+    human_approval_required: true
+    status: "INSTALLED"
+    notes: "Strict whitelist matching; unlisted targets are automatically blocked."
+
+  - name: "authorization-policy"
+    source: "Microsoft Agent Governance Toolkit"
+    repository: "https://github.com/microsoft/agent-governance-toolkit"
+    installed: true
+    version: "v1.0.4"
+    commit: "HEAD"
+    capabilities:
+      - "Role-based token access and authorization checks"
+    installation_method: "Python class wrapper"
+    installation_location: "agent-skills/governance/authorization-policy/"
+    dependencies: []
+    permissions: "Internal authorization check"
+    network_access: false
+    command_execution: false
+    human_approval_required: true
+    status: "INSTALLED"
+    notes: "Prevents privilege escalation across agent handoffs."
+
+  - name: "safety-policy"
+    source: "Agent Guardrails Template"
+    repository: "https://github.com/TheArchitectit/agent-guardrails-template"
+    installed: true
+    version: "v1.0.0"
+    commit: "HEAD"
+    capabilities:
+      - "Hard block on destructive shell commands (rm -rf, drop table, terraform destroy)"
+      - "Four Laws enforcement"
+    installation_method: "Go validation binary / script"
+    installation_location: "agent-skills/governance/safety-policy/"
+    dependencies:
+      - "Go 1.22+"
+    permissions: "Tool-level argument inspection"
+    network_access: false
+    command_execution: false
+    human_approval_required: true
+    status: "INSTALLED"
+    notes: "Hard blocks dangerous commands before reaching shell."
+
+  - name: "human-approval"
+    source: "Agent Guardrails Template"
+    repository: "https://github.com/TheArchitectit/agent-guardrails-template"
+    installed: true
+    version: "v1.0.0"
+    commit: "HEAD"
+    capabilities:
+      - "Classifies actions into Low, Medium, High risk tiers"
+      - "Requires explicit operator sign-off for high-impact actions"
+    installation_method: "Python approval gate wrapper"
+    installation_location: "agent-skills/governance/human-approval/"
+    dependencies: []
+    permissions: "Interactive console check"
+    network_access: false
+    command_execution: false
+    human_approval_required: true
+    status: "INSTALLED"
+    notes: "Agent cannot self-approve high-risk operations."
+
+  - name: "escalation"
+    source: "SecOpsAgentKit"
+    repository: "https://github.com/AgentSecOps/SecOpsAgentKit"
+    installed: true
+    version: "v2.1.0"
+    commit: "HEAD"
+    capabilities:
+      - "Incident escalation workflows and alert routing"
+    installation_method: "Python notification wrapper"
+    installation_location: "agent-skills/governance/escalation/"
+    dependencies: []
+    permissions: "Local logging and notification"
+    network_access: false
+    command_execution: false
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Triggers halt conditions upon critical security anomalies."
+
+  - name: "evidence-analysis"
+    source: "Cloudflare Security Audit Skill"
+    repository: "https://github.com/cloudflare/security-audit-skill"
+    installed: true
+    version: "v1.4.0"
+    commit: "HEAD"
+    capabilities:
+      - "Phase 1 & 2 evidence gathering and architecture mapping"
+    installation_method: "Structured prompt runbook (SKILL.md)"
+    installation_location: "agent-skills/reasoning/evidence-analysis/"
+    dependencies: []
+    permissions: "Repository read access"
+    network_access: false
+    command_execution: false
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Treats codebase and outputs as untrusted data."
+
+  - name: "hypothesis-testing"
+    source: "Cloudflare Security Audit Skill"
+    repository: "https://github.com/cloudflare/security-audit-skill"
+    installed: true
+    version: "v1.4.0"
+    commit: "HEAD"
+    capabilities:
+      - "Systematic hypothesis generation across injection, auth, and logic bugs"
+    installation_method: "Structured prompt runbook"
+    installation_location: "agent-skills/reasoning/hypothesis-testing/"
+    dependencies: []
+    permissions: "Local analysis"
+    network_access: false
+    command_execution: false
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Confined to authorized scope targets."
+
+  - name: "false-positive-analysis"
+    source: "Cloudflare Security Audit Skill"
+    repository: "https://github.com/cloudflare/security-audit-skill"
+    installed: true
+    version: "v1.4.0"
+    commit: "HEAD"
+    capabilities:
+      - "Independent validation to kill false positives"
+    installation_method: "Adversarial disprove phase (Phase 3)"
+    installation_location: "agent-skills/reasoning/false-positive-analysis/"
+    dependencies: []
+    permissions: "Local analysis"
+    network_access: false
+    command_execution: false
+    human_approval_required: true
+    status: "INSTALLED"
+    notes: "Requires proof of non-intentionality and exploitability."
+
+  - name: "confidence-assessment"
+    source: "NVIDIA SkillSpector"
+    repository: "https://github.com/NVIDIA/SkillSpector"
+    installed: true
+    version: "v2.0.0"
+    commit: "HEAD"
+    capabilities:
+      - "0-100 risk scoring and confidence rating"
+    installation_method: "Python static scoring script"
+    installation_location: "agent-skills/reasoning/confidence-assessment/"
+    dependencies: []
+    permissions: "Local file reading"
+    network_access: false
+    command_execution: false
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Computes finding confidence metrics."
+
+  - name: "severity-assessment"
+    source: "Anthropic Cybersecurity Skills"
+    repository: "https://github.com/mukul975/Anthropic-Cybersecurity-Skills"
+    installed: true
+    version: "v2026.07"
+    commit: "HEAD"
+    capabilities:
+      - "CVSS 3.1 / 4.0 severity scoring mapped to MITRE ATT&CK & NIST"
+    installation_method: "agentskills.io structured skills package"
+    installation_location: "agent-skills/reasoning/severity-assessment/"
+    dependencies: []
+    permissions: "Local data processing"
+    network_access: false
+    command_execution: false
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Standardized rating methodology."
+
+  - name: "repository-analysis"
+    source: "Cloudflare Security Audit Skill"
+    repository: "https://github.com/cloudflare/security-audit-skill"
+    installed: true
+    version: "v1.4.0"
+    commit: "HEAD"
+    capabilities:
+      - "Maps application architecture, trust boundaries, and input surfaces"
+    installation_method: "Recon phase runner"
+    installation_location: "agent-skills/code/repository-analysis/"
+    dependencies: []
+    permissions: "Repository read access"
+    network_access: false
+    command_execution: false
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Generates internal architecture model."
+
+  - name: "language-detection"
+    source: "SecOpsAgentKit"
+    repository: "https://github.com/AgentSecOps/SecOpsAgentKit"
+    installed: true
+    version: "v2.1.0"
+    commit: "HEAD"
+    capabilities:
+      - "Identifies programming languages, build systems, and frameworks"
+    installation_method: "Python scanner wrapper"
+    installation_location: "agent-skills/code/language-detection/"
+    dependencies: []
+    permissions: "File tree scanning"
+    network_access: false
+    command_execution: false
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Static directory inspection."
+
+  - name: "multi-language-analysis"
+    source: "SecOpsAgentKit"
+    repository: "https://github.com/AgentSecOps/SecOpsAgentKit"
+    installed: true
+    version: "v2.1.0"
+    commit: "HEAD"
+    capabilities:
+      - "Static application security testing across multi-language codebases"
+    installation_method: "Semgrep and Bandit scanner wrapper"
+    installation_location: "agent-skills/code/multi-language-analysis/"
+    dependencies:
+      - "semgrep"
+      - "bandit"
+    permissions: "Read access to workspace files"
+    network_access: false
+    command_execution: true
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Executes localized static analysis rules."
+
+  - name: "dependency-analysis"
+    source: "Security Skills"
+    repository: "https://github.com/jpoindexter/security-skills"
+    installed: true
+    version: "v1.0.0"
+    commit: "HEAD"
+    capabilities:
+      - "Audits npm, cargo, pip, and os-level packages against CVE databases with reachability triage"
+    installation_method: "OSV-Scanner / npm audit wrapper"
+    installation_location: "agent-skills/code/dependency-analysis/"
+    dependencies:
+      - "osv-scanner"
+    permissions: "Read lockfiles and manifests"
+    network_access: true
+    command_execution: true
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Queries OSV vulnerability database."
+
+  - name: "secure-code-review"
+    source: "Anthropic Cybersecurity Skills"
+    repository: "https://github.com/mukul975/Anthropic-Cybersecurity-Skills"
+    installed: true
+    version: "v2026.07"
+    commit: "HEAD"
+    capabilities:
+      - "Secure coding guidance and manual review heuristics"
+    installation_method: "agentskills.io structured skills"
+    installation_location: "agent-skills/code/secure-code-review/"
+    dependencies: []
+    permissions: "Local reading"
+    network_access: false
+    command_execution: false
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Provides expert guidelines for secure code."
+
+  - name: "web-security"
+    source: "Anthropic Cybersecurity Skills"
+    repository: "https://github.com/mukul975/Anthropic-Cybersecurity-Skills"
+    installed: true
+    version: "v2026.07"
+    commit: "HEAD"
+    capabilities:
+      - "OWASP Top 10 web application security review and vulnerability patterns"
+    installation_method: "agentskills.io structured skills"
+    installation_location: "agent-skills/security/web-security/"
+    dependencies: []
+    permissions: "Local rule interpretation"
+    network_access: false
+    command_execution: false
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Theoretical and practical web defense heuristics."
+
+  - name: "api-security"
+    source: "Anthropic Cybersecurity Skills"
+    repository: "https://github.com/mukul975/Anthropic-Cybersecurity-Skills"
+    installed: true
+    version: "v2026.07"
+    commit: "HEAD"
+    capabilities:
+      - "REST, GraphQL, and OWASP API Top 10 security analysis"
+    installation_method: "agentskills.io structured skills"
+    installation_location: "agent-skills/security/api-security/"
+    dependencies: []
+    permissions: "Local rule interpretation"
+    network_access: false
+    command_execution: false
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Covers BOLA, broken auth, and rate-limiting flaws."
+
+  - name: "authentication"
+    source: "Anthropic Cybersecurity Skills"
+    repository: "https://github.com/mukul975/Anthropic-Cybersecurity-Skills"
+    installed: true
+    version: "v2026.07"
+    commit: "HEAD"
+    capabilities:
+      - "Session management, OAuth/OIDC, JWT, and password hashing review"
+    installation_method: "agentskills.io structured skills"
+    installation_location: "agent-skills/security/authentication/"
+    dependencies: []
+    permissions: "Local rule interpretation"
+    network_access: false
+    command_execution: false
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Identifies auth weaknesses."
+
+  - name: "authorization"
+    source: "Anthropic Cybersecurity Skills"
+    repository: "https://github.com/mukul975/Anthropic-Cybersecurity-Skills"
+    installed: true
+    version: "v2026.07"
+    commit: "HEAD"
+    capabilities:
+      - "IDOR, privilege escalation, and access control matrix auditing"
+    installation_method: "agentskills.io structured skills"
+    installation_location: "agent-skills/security/authorization/"
+    dependencies: []
+    permissions: "Local rule interpretation"
+    network_access: false
+    command_execution: false
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Covers vertical and horizontal access control."
+
+  - name: "cryptography-review"
+    source: "Anthropic Cybersecurity Skills"
+    repository: "https://github.com/mukul975/Anthropic-Cybersecurity-Skills"
+    installed: true
+    version: "v2026.07"
+    commit: "HEAD"
+    capabilities:
+      - "TLS configuration, hashing algorithms, encryption modes, and key management review"
+    installation_method: "agentskills.io structured skills"
+    installation_location: "agent-skills/security/cryptography-review/"
+    dependencies: []
+    permissions: "Local rule interpretation"
+    network_access: false
+    command_execution: false
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Ensures secure cryptographic primitives."
+
+  - name: "secrets-analysis"
+    source: "Security Skills"
+    repository: "https://github.com/jpoindexter/security-skills"
+    installed: true
+    version: "v1.0.0"
+    commit: "HEAD"
+    capabilities:
+      - "Hardcoded secret detection across git history and workspace"
+    installation_method: "Gitleaks wrapper script"
+    installation_location: "agent-skills/security/secrets-analysis/"
+    dependencies:
+      - "gitleaks"
+    permissions: "Read git repo history"
+    network_access: false
+    command_execution: true
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Local pattern matching for API keys and secrets."
+
+  - name: "configuration-security"
+    source: "SecOpsAgentKit"
+    repository: "https://github.com/AgentSecOps/SecOpsAgentKit"
+    installed: true
+    version: "v2.1.0"
+    commit: "HEAD"
+    capabilities:
+      - "Infrastructure as Code (Terraform, K8s, Dockerfile) security linting"
+    installation_method: "Checkov wrapper script"
+    installation_location: "agent-skills/security/configuration-security/"
+    dependencies:
+      - "checkov"
+    permissions: "Read IaC configuration files"
+    network_access: false
+    command_execution: true
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Scans configuration files for misconfigurations."
+
+  - name: "safe-reconnaissance"
+    source: "Cloudflare Security Audit Skill"
+    repository: "https://github.com/cloudflare/security-audit-skill"
+    installed: true
+    version: "v1.4.0"
+    commit: "HEAD"
+    capabilities:
+      - "Non-destructive mapping of application structure and entry points"
+    installation_method: "Python recon runner"
+    installation_location: "agent-skills/operations/safe-reconnaissance/"
+    dependencies: []
+    permissions: "Read workspace"
+    network_access: false
+    command_execution: false
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Passive analysis only."
+
+  - name: "controlled-testing"
+    source: "Anthropic Cybersecurity Skills"
+    repository: "https://github.com/mukul975/Anthropic-Cybersecurity-Skills"
+    installed: true
+    version: "v2026.07"
+    commit: "HEAD"
+    capabilities:
+      - "Controlled penetration testing runbooks and safe PoC generation"
+    installation_method: "agentskills.io structured skills"
+    installation_location: "agent-skills/operations/controlled-testing/"
+    dependencies: []
+    permissions: "Restricted sandbox execution"
+    network_access: false
+    command_execution: false
+    human_approval_required: true
+    status: "INSTALLED"
+    notes: "High-risk tier; requires explicit operator approval."
+
+  - name: "sandbox-execution"
+    source: "Agent Sandbox"
+    repository: "https://github.com/mattolson/agent-sandbox"
+    installed: true
+    version: "v1.0.0"
+    commit: "HEAD"
+    capabilities:
+      - "Containerized execution with iptables firewall blocking direct outbound traffic and mitmproxy sidecar egress proxy"
+    installation_method: "Docker Compose environment"
+    installation_location: "agent-skills/operations/sandbox-execution/"
+    dependencies:
+      - "Docker"
+      - "Docker Compose"
+    permissions: "Container isolation with read-only mounts"
+    network_access: true
+    command_execution: true
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Isolates agent execution from host infrastructure."
+
+  - name: "rate-limiting"
+    source: "Agent Guardrails Template"
+    repository: "https://github.com/TheArchitectit/agent-guardrails-template"
+    installed: true
+    version: "v1.0.0"
+    commit: "HEAD"
+    capabilities:
+      - "Sliding-window rate limiting per security tool call to prevent DoS"
+    installation_method: "Python sliding-window limiter"
+    installation_location: "agent-skills/operations/rate-limiting/"
+    dependencies: []
+    permissions: "Memory cache interaction"
+    network_access: false
+    command_execution: false
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Protects target APIs from excessive request volumes."
+
+  - name: "audit-logging"
+    source: "Agent Guardrails Template"
+    repository: "https://github.com/TheArchitectit/agent-guardrails-template"
+    installed: true
+    version: "v1.0.0"
+    commit: "HEAD"
+    capabilities:
+      - "Records timestamp, action, target, tool, policy decision, approval status, and result"
+    installation_method: "Python audit logger script"
+    installation_location: "agent-skills/operations/audit-logging/"
+    dependencies: []
+    permissions: "Write to secure local log file"
+    network_access: false
+    command_execution: false
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Redacts secrets and tokens automatically."
+
+  - name: "prompt-injection-defense"
+    source: "OpenGuardrails Protocol"
+    repository: "https://github.com/openguardrails/openguardrails"
+    installed: true
+    version: "v1.2.0"
+    commit: "HEAD"
+    capabilities:
+      - "Detects and neutralizes prompt injection attempts in code comments and web pages"
+    installation_method: "Python sanitizer script"
+    installation_location: "agent-skills/resilience/prompt-injection-defense/"
+    dependencies: []
+    permissions: "Text processing"
+    network_access: false
+    command_execution: false
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Treats all external text strictly as data."
+
+  - name: "untrusted-content-handling"
+    source: "Anthropic Cybersecurity Skills"
+    repository: "https://github.com/mukul975/Anthropic-Cybersecurity-Skills"
+    installed: true
+    version: "v2026.07"
+    commit: "HEAD"
+    capabilities:
+      - "Safe parsing of untrusted code, markdown, and API responses"
+    installation_method: "agentskills.io structured guidance"
+    installation_location: "agent-skills/resilience/untrusted-content-handling/"
+    dependencies: []
+    permissions: "Local parsing"
+    network_access: false
+    command_execution: false
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Prevents parser-based vulnerabilities."
+
+  - name: "tool-output-validation"
+    source: "NVIDIA SkillSpector"
+    repository: "https://github.com/NVIDIA/SkillSpector"
+    installed: true
+    version: "v2.0.0"
+    commit: "HEAD"
+    capabilities:
+      - "Scans tool outputs and skill files for malware, exfiltration patterns, and anomalies"
+    installation_method: "Python validator wrapper"
+    installation_location: "agent-skills/resilience/tool-output-validation/"
+    dependencies: []
+    permissions: "Read tool output streams"
+    network_access: false
+    command_execution: false
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Blocks execution if malicious payloads are detected in output."
+
+  - name: "vulnerability-reporting"
+    source: "Cloudflare Security Audit Skill"
+    repository: "https://github.com/cloudflare/security-audit-skill"
+    installed: true
+    version: "v1.4.0"
+    commit: "HEAD"
+    capabilities:
+      - "Generates standardized findings JSON conforming to report-schema.json"
+    installation_method: "Node.js schema validator & Python report generator"
+    installation_location: "agent-skills/reporting/vulnerability-reporting/"
+    dependencies:
+      - "Node.js >= 18"
+    permissions: "Write findings.json"
+    network_access: false
+    command_execution: false
+    human_approval_required: false
+    status: "INSTALLED"
+    notes: "Produces machine-verifiable vulnerability reports."
+
+  - name: "reproduction"
+    source: "Cloudflare Security Audit Skill"
+    repository: "https://github.com/cloudflare/security-audit-skill"
+    installed: true
+    version: "v1.4.0"
+    commit: "HEAD"
+    capabilities:
+      - "Creates minimal reproduction steps and safe local test assertions"
+    installation_method: "Python PoC builder script"
+    installation_location: "agent-skills/reporting/reproduction/"
+    dependencies: []
+    permissions: "Local file generation"
+    network_access: false
+    command_execution: false
+    human_approval_required: true
+    status: "INSTALLED"
+    notes: "PoCs are restricted to local test assertions."
+
+  - name: "remediation"
+    source: "Cloudflare Security Audit Skill"
+    repository: "https://github.com/cloudflare/security-audit-skill"
+    installed: true
+    version: "v1.4.0"
+    commit: "HEAD"
+    capabilities:
+      - "Produces secure code patches and least-disruptive remediation steps"
+    installation_method: "Python remediation generator"
+    installation_location: "agent-skills/reporting/remediation/"
+    dependencies: []
+    permissions: "Local patch drafting"
+    network_access: false
+    command_execution: false
+    human_approval_required: true
+    status: "INSTALLED"
+    notes: "Requires operator review before applying patches."
+
+  - name: "responsible-disclosure"
+    source: "Anthropic Cybersecurity Skills"
+    repository: "https://github.com/mukul975/Anthropic-Cybersecurity-Skills"
+    installed: true
+    version: "v2026.07"
+    commit: "HEAD"
+    capabilities:
+      - "Drafts responsible disclosure notices following coordinated vulnerability disclosure (CVD) standards"
+    installation_method: "agentskills.io structured disclosure template"
+    installation_location: "agent-skills/reporting/responsible-disclosure/"
+    dependencies: []
+    permissions: "Local document drafting"
+    network_access: false
+    command_execution: false
+    human_approval_required: true
+    status: "INSTALLED"
+    notes: "Ensures ethical and legal communication of findings."
