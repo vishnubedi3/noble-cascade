@@ -1,0 +1,152 @@
+# Capability Map
+# Ecosystem: Authorized Bug-Hunting Agent Architecture
+
+governance:
+  scope-enforcement:
+    implementation: "OpenGuardrails Protocol"
+    location: "agent-skills/governance/scope-enforcement/"
+    primary: true
+  authorization-policy:
+    implementation: "Microsoft Agent Governance Toolkit"
+    location: "agent-skills/governance/authorization-policy/"
+    primary: true
+  safety-policy:
+    implementation: "Agent Guardrails Template"
+    location: "agent-skills/governance/safety-policy/"
+    primary: true
+  human-approval:
+    implementation: "Agent Guardrails Template"
+    location: "agent-skills/governance/human-approval/"
+    primary: true
+  escalation:
+    implementation: "SecOpsAgentKit"
+    location: "agent-skills/governance/escalation/"
+    primary: true
+
+reasoning:
+  evidence-analysis:
+    implementation: "Cloudflare Security Audit Skill"
+    location: "agent-skills/reasoning/evidence-analysis/"
+    primary: true
+  hypothesis-testing:
+    implementation: "Cloudflare Security Audit Skill"
+    location: "agent-skills/reasoning/hypothesis-testing/"
+    primary: true
+  false-positive-analysis:
+    implementation: "Cloudflare Security Audit Skill"
+    location: "agent-skills/reasoning/false-positive-analysis/"
+    primary: true
+  confidence-assessment:
+    implementation: "NVIDIA SkillSpector"
+    location: "agent-skills/reasoning/confidence-assessment/"
+    primary: true
+  severity-assessment:
+    implementation: "Anthropic Cybersecurity Skills"
+    location: "agent-skills/reasoning/severity-assessment/"
+    primary: true
+
+code:
+  repository-analysis:
+    implementation: "Cloudflare Security Audit Skill"
+    location: "agent-skills/code/repository-analysis/"
+    primary: true
+  language-detection:
+    implementation: "SecOpsAgentKit"
+    location: "agent-skills/code/language-detection/"
+    primary: true
+  multi-language-analysis:
+    implementation: "SecOpsAgentKit (Semgrep/Bandit)"
+    location: "agent-skills/code/multi-language-analysis/"
+    primary: true
+  dependency-analysis:
+    implementation: "Security Skills (OSV-Scanner)"
+    location: "agent-skills/code/dependency-analysis/"
+    primary: true
+  secure-code-review:
+    implementation: "Anthropic Cybersecurity Skills"
+    location: "agent-skills/code/secure-code-review/"
+    primary: true
+
+security:
+  web-security:
+    implementation: "Anthropic Cybersecurity Skills"
+    location: "agent-skills/security/web-security/"
+    primary: true
+  api-security:
+    implementation: "Anthropic Cybersecurity Skills"
+    location: "agent-skills/security/api-security/"
+    primary: true
+  authentication:
+    implementation: "Anthropic Cybersecurity Skills"
+    location: "agent-skills/security/authentication/"
+    primary: true
+  authorization:
+    implementation: "Anthropic Cybersecurity Skills"
+    location: "agent-skills/security/authorization/"
+    primary: true
+  cryptography-review:
+    implementation: "Anthropic Cybersecurity Skills"
+    location: "agent-skills/security/cryptography-review/"
+    primary: true
+  secrets-analysis:
+    implementation: "Security Skills (Gitleaks)"
+    location: "agent-skills/security/secrets-analysis/"
+    primary: true
+  configuration-security:
+    implementation: "SecOpsAgentKit (Checkov)"
+    location: "agent-skills/security/configuration-security/"
+    primary: true
+
+operations:
+  safe-reconnaissance:
+    implementation: "Cloudflare Security Audit Skill"
+    location: "agent-skills/operations/safe-reconnaissance/"
+    primary: true
+  controlled-testing:
+    implementation: "Anthropic Cybersecurity Skills"
+    location: "agent-skills/operations/controlled-testing/"
+    primary: true
+  sandbox-execution:
+    implementation: "Agent Sandbox"
+    location: "agent-skills/operations/sandbox-execution/"
+    primary: true
+  rate-limiting:
+    implementation: "Agent Guardrails Template"
+    location: "agent-skills/operations/rate-limiting/"
+    primary: true
+  audit-logging:
+    implementation: "Agent Guardrails Template"
+    location: "agent-skills/operations/audit-logging/"
+    primary: true
+
+resilience:
+  prompt-injection-defense:
+    implementation: "OpenGuardrails Protocol"
+    location: "agent-skills/resilience/prompt-injection-defense/"
+    primary: true
+  untrusted-content-handling:
+    implementation: "Anthropic Cybersecurity Skills"
+    location: "agent-skills/resilience/untrusted-content-handling/"
+    primary: true
+  tool-output-validation:
+    implementation: "NVIDIA SkillSpector"
+    location: "agent-skills/resilience/tool-output-validation/"
+    primary: true
+
+reporting:
+  vulnerability-reporting:
+    implementation: "Cloudflare Security Audit Skill"
+    location: "agent-skills/reporting/vulnerability-reporting/"
+    primary: true
+  reproduction:
+    implementation: "Cloudflare Security Audit Skill"
+    location: "agent-skills/reporting/reproduction/"
+    primary: true
+  remediation:
+    implementation: "Cloudflare Security Audit Skill"
+    location: "agent-skills/reporting/remediation/"
+    primary: true
+  responsible-disclosure:
+    implementation: "Anthropic Cybersecurity Skills"
+    location: "agent-skills/reporting/responsible-disclosure/"
+    primary: true

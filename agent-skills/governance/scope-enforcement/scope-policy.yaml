@@ -1,0 +1,43 @@
+# Scope Enforcement Policy (Deny-by-Default)
+# OpenGuardrails-compatible specification
+
+policy_name: "Authorized Security Research Scope"
+version: "1.0.0"
+default_action: "deny"
+
+scope:
+  allowed_domains:
+    - "*.local"
+    - "localhost"
+    - "127.0.0.1"
+    - "target-app.internal"
+  allowed_ip_ranges:
+    - "127.0.0.0/8"
+    - "10.0.0.0/8"
+  allowed_repositories:
+    - "vishnubedi3/*"
+    - "local-workspace/*"
+  allowed_testing_methods:
+    - "static-analysis"
+    - "dependency-audit"
+    - "secret-scanning"
+    - "non-destructive-fuzzing"
+    - "local-unit-test-verification"
+  forbidden_targets:
+    - "*.gov"
+    - "*.mil"
+    - "production-db.*"
+    - "external-unauthorized-systems"
+  forbidden_actions:
+    - "remote-code-execution-against-production"
+    - "data-exfiltration"
+    - "privilege-escalation-on-unauthorized-hosts"
+    - "denial-of-service"
+    - "destructive-database-drop"
+  rate_limits:
+    requests_per_minute: 60
+    max_concurrent_scans: 2
+  approval_required_actions:
+    - "active-fuzzing"
+    - "poc-execution"
+    - "credential-testing"
