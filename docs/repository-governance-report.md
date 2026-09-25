@@ -3,7 +3,9 @@
 > **Addendum (2026-09-25, post-excision):** the authoring token lacked the
 > `workflows` scope, so `.github/workflows/` changes were excised from this
 > branch's history to make it pushable (re-certified at `46bb96c`); the
-> hardened files ship via `handoff-bundle/workflows/` for manual registration.
+> hardened files shipped via `handoff-bundle/workflows/` for manual
+> registration — now registered at `.github/workflows/` and the temporary
+> handoff bundle has been removed.
 > The full-green proof in §11 below was recorded pre-excision with workflows
 > present. Current branch state: CERTIFIED, Release VERIFIED, spec/audit/
 > offline/ruff green; 8 workflow-dependent tests + baseline/workflow-audit red
