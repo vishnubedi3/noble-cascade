@@ -1,25 +1,25 @@
 # Noble Cascade Release Attestation
 
-Version: 0.2.0-be4e56f
-Commit: be4e56f271568cb32c5b4d8c30e4cda7de1dc5e8
-Created: 2026-09-25T16:20:13.498335+00:00
+Version: 0.2.0-b313e18
+Commit: b313e181d4b495be1802c4a9df199dae35334112
+Created: 2026-09-25T16:35:09.923575+00:00
 
 ## Hashes
 
-- RELEASE.json: 7d193b231889ff4cb7c1be8c8b6e4dd5d2ea41c2f852e25e5bc2336bab2b812e
-- SBOM.spdx.json: e8ae73cee1f3b3356a07cd007ab19a01228230464f7118f8a969e6e71ebb63fb
-- SBOM.cyclonedx.json: 4fb071790b81d6dfc283fd046c87d4b099d8c73da2c4e27c914482d84aebe18f
-- PROVENANCE.json: 13c7819ec86740744fdbc23fa25ba27119992050b9c652ea9350f7ab2941197c
-- POLICY_HASHES.json: e53b4643dafb09d4e8e1e9946ecef019da3d200ad63a625bd8fd694f1bef9fea
-- TEST_RESULTS.json: 1c4c089acccc7416cdfcf9bd4250efab65aa0fe6e0bdc7e623fdd4e26337175a
+- RELEASE.json: 902b3b7e53ed66be66e1b918785be943e4967e4a8ab9af29a8ddd3a5de234f82
+- SBOM.spdx.json: ca637cc0937f6836535f121442c89c0658f72f3bf7fd9c292b00a35ce1848476
+- SBOM.cyclonedx.json: 46c457e15729b6669e2dd740f861ea54c82b8f689a8cc7e2868a927bea12320a
+- PROVENANCE.json: a7bd3468573b40ab266af3f755e751236bcb6dc47cb22ea7e3a8e32f9311a6ac
+- POLICY_HASHES.json: 8adbbfed6a1244e1d87dd8eebde381373f020d3517f65c57b6352fb80f8d864a
+- TEST_RESULTS.json: 5751ca4582278cad7488585bd6c79c5269e3c2d7dd58f464896cecbd39c4fd3f
 - SECURITY_SPEC_HASH.json: c7d595490a51b65ec2ca5bd34dd002ec045307e0f998231094bb04964f1ff492
 - WORKER_DIGESTS.json: 213da6da3d3212dbdaee7c972b8c7ac464f36fa2193c97f9e77576b41782a83f
 
 ## Attestation
 
 Algorithm: HMAC-SHA256
-Digest: 2aba9937a9f9369a82dac62ab35b7ad686b6f7a11334b42d6979750f9c71dbf8
-Signature: c49b996e844c9b094e66a6e34e617fe4239e524aa124eea1b21ee3892a74e0ff
+Digest: eda58018361a34eab2cb4d05707bde7f82b652d253c274a6c87bb0a7abe625b0
+Signature: 46b1924d9c81161a36df4a3815996c86b56e278f09712bebdcfb4b4abbaf5d77
 Key ID: 126b652aa1c3ef41
 
 Verification: `noble release --verify` or `noble attest --verify release/ATTESTATION.md`
@@ -32,7 +32,7 @@ For production, replace with Sigstore.
 To reproduce:
 ```bash
 git clone https://github.com/vishnubedi3/noble-cascade && cd noble-cascade
-git checkout be4e56f271568cb32c5b4d8c30e4cda7de1dc5e8
-noble release --create 0.2.0-be4e56f
+git checkout b313e181d4b495be1802c4a9df199dae35334112
+noble release --create 0.2.0-b313e18
 # compare hashes in release/
 ```
