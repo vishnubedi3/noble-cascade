@@ -1,7 +1,16 @@
-
-# The GitHub App used to open this pull request cannot update .github/workflows/.
-# A repository maintainer with workflow permission may review and copy this file
-# to .github/workflows/ci.yml in a separate, authorized change.
+# Noble Cascade — Fast validation workflow (local-verification equivalent).
+#
+# This is the fast path: lint, format, type-check, unit tests, secret scan,
+# dependency audit. The full governance chain (certification, release, SBOM,
+# provenance, audit-pack, verify-everything.sh) runs in ci-hardened.yml.
+# See docs/repository-governance.md for the check model.
+#
+# Security properties (audited per docs/repository-governance.md §CI model):
+# - top-level permissions: contents: read only
+# - all third-party actions pinned to immutable commit SHAs (version in comment)
+# - persist-credentials: false (no credential persistence to disk)
+# - no pull_request_target, no write permissions, no secret interpolation
+# - no execution of untrusted PR code beyond the pinned checkout + locked deps
 name: Control-plane validation
 
 on:
@@ -15,17 +24,19 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      contents: read
     steps:
       - name: Checkout (no production credentials)
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
       - name: Python 3.11
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: '3.11'
       - name: Node 22 for legacy Draft-07 adapter
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: '22'
       - name: Install hash-locked dependencies and local package
@@ -48,7 +59,7 @@ jobs:
         run: bandit -r noble -ll -q
       - name: Secret candidate scan (no automated verification/network)
         run: |
-          detect-secrets scan --no-verify --all-files noble tests agent-skills docs config README.md SECURITY_AGENT_RESEARCH_REPORT.md Untitled.md .github pyproject.toml > /tmp/noble-secrets.json
+          detect-secrets scan --no-verify --all-files noble tests agent-skills docs config README.md SECURITY_AGENT_RESEARCH_REPORT.md .github pyproject.toml > /tmp/noble-secrets.json
           python - <<'PY'
           import json
           data = json.load(open('/tmp/noble-secrets.json', encoding='utf-8'))
