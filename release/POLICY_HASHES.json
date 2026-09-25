@@ -1,0 +1,11 @@
+{
+  "configuration_hash": "72e5f9f8c956cf242a5659807d27642f174c3c2455a184ee8078d129596e763c",
+  "policy_hash": "069153344401179e451cff7f39ea59be6c07f4db20b8e32af89d18d3e2c4d72d",
+  "policy_version": "1.0.0",
+  "provenance_sha256": "b98b25129ed152700ebe8172373bab3949200d121594537c916c4f596bd92892",
+  "release_json_sha256": "e186bc6ce157b47b0ff9f392b5ec14881342fb88205b5bba8a6d7f090246bad2",
+  "sbom_cyclonedx_sha256": "1be5528dea75d1f85f96f1205ab9f9021090d7e7e0ee1635a21b30ee891a6320",
+  "sbom_spdx_sha256": "0b30848d16b8f10639684d5e08f8dcbf5feb2081e6fbe54ba3ce690247e6f910",
+  "security_spec_hash": "b6d0f9056b4ac524040da5a31a193ac13fabfb0c6624846d01f8a27a67f71e39",
+  "worker_image_digest": "cfdeaeb1877498f89fe054f44206eeafa6bd5a500ec9ee3c455fe3034f768f78"
+}

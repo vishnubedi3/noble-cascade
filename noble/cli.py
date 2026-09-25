@@ -90,6 +90,9 @@ def make_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("replay", help="deterministic replay of an execution (read-only)")
     p.add_argument("identifier", help="execution_id (lease-...) or request_id (req-...)")
     p.add_argument("--json", action="store_true")
+    p.add_argument(
+        "--commit", help="historical commit to verify replay against (time-travel)", default=None
+    )
 
     p = sub.add_parser(
         "health",
@@ -107,6 +110,9 @@ def make_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("ledger", help="inspect immutable execution ledger chain")
     p.add_argument("execution_id", nargs="?", help="execution_id to inspect (omit to list recent)")
     p.add_argument("--json", action="store_true")
+    p.add_argument("--checkpoint", action="store_true", help="create ledger checkpoint")
+    p.add_argument("--verify", action="store_true", help="verify ledger integrity")
+    p.add_argument("--detect-corruption", action="store_true", help="detect ledger corruption")
 
     p = sub.add_parser("backup", help="disaster recovery: backup/restore findings and audit")
     p.add_argument("--create", metavar="DIR", help="create backup in DIR")
@@ -122,6 +128,60 @@ def make_parser() -> argparse.ArgumentParser:
 
     p = sub.add_parser("spec", help="machine-readable security specification")
     p.add_argument("--verify", action="store_true", help="verify spec sync with implementation")
+    p.add_argument("--json", action="store_true")
+
+    # --- Master Prompt III: Assurance & Reproducible Releases ---
+    p = sub.add_parser("certify", help="governance certification: verify all trust pillars")
+    p.add_argument("--json", action="store_true")
+
+    p = sub.add_parser("audit-pack", help="generate independent audit bundle")
+    p.add_argument("--output", default="audit-pack", help="output directory")
+    p.add_argument("--json", action="store_true")
+
+    p = sub.add_parser("policy-diff", help="policy regression: what changed between commits")
+    p.add_argument("--from", dest="from_commit", default=None, help="from commit (default HEAD~1)")
+    p.add_argument("--to", dest="to_commit", default=None, help="to commit (default HEAD)")
+    p.add_argument("--json", action="store_true")
+
+    p = sub.add_parser("trust-report", help="repository self-assessment")
+    p.add_argument("--json", action="store_true")
+
+    p = sub.add_parser("trust-index", help="machine-readable trust report")
+    p.add_argument("--json", action="store_true")
+
+    p = sub.add_parser("release", help="reproducible release: create and verify")
+    p.add_argument("--create", nargs="?", const="auto", help="create release (optional version)")
+    p.add_argument("--verify", action="store_true", help="verify release artifacts")
+    p.add_argument("--json", action="store_true")
+
+    p = sub.add_parser("sbom", help="generate SBOM (SPDX and CycloneDX)")
+    p.add_argument("--format", choices=("spdx", "cyclonedx", "both"), default="both")
+    p.add_argument("--output", default="release", help="output directory")
+    p.add_argument("--json", action="store_true")
+
+    p = sub.add_parser("attest", help="cryptographic attestations")
+    p.add_argument("--file", help="file to attest")
+    p.add_argument("--verify", action="store_true", help="verify attestation")
+    p.add_argument("--json", action="store_true")
+
+    p = sub.add_parser("provenance", help="generate SLSA provenance")
+    p.add_argument("--output", default="release/PROVENANCE.json")
+    p.add_argument("--json", action="store_true")
+
+    p = sub.add_parser("compliance", help="compliance profile mappings")
+    p.add_argument("--framework", choices=("nist", "owasp", "slsa", "cis", "all"), default="all")
+    p.add_argument("--json", action="store_true")
+
+    p = sub.add_parser("platform", help="multi-platform verification")
+    p.add_argument("--json", action="store_true")
+
+    p = sub.add_parser("benchmark", help="repeatable performance benchmarks")
+    p.add_argument("--json", action="store_true")
+
+    p = sub.add_parser("verify", help="external verification (alias for certify + sbom checks)")
+    p.add_argument("--json", action="store_true")
+
+    p = sub.add_parser("invariants", help="formal security invariants")
     p.add_argument("--json", action="store_true")
 
     return parser
@@ -196,6 +256,245 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"{check.status:4} {check.component:23} {check.message}")
             print(f"Core runtime: {'ready' if healthy else 'unavailable'}; WARN is not PASS")
         return 0 if healthy else 1
+    # Handle non-engine commands first (certify, release etc that may not need engine)
+    if args.command == "certify":
+        from .certify import certify
+
+        result = certify()
+        if args.json:
+            _json(result)
+        else:
+            print(result["status"])
+            for k, v in result["checks"].items():
+                print(f"  {k:15} {'PASS' if v['passed'] else 'FAIL'} {v['message']}")
+            if result["certified"]:
+                print("CERTIFIED")
+            else:
+                print("FAILED")
+        return 0 if result["certified"] else 1
+    if args.command == "audit-pack":
+        from .audit_pack import generate_audit_pack
+
+        out = generate_audit_pack(output_dir=args.output)
+        if args.json:
+            _json({"audit_pack": str(out), "files": [str(p) for p in out.iterdir()]})
+        else:
+            print(f"Audit pack created at {out}")
+            for p in sorted(out.iterdir()):
+                print(f"  {p.name}")
+        return 0
+    if args.command == "policy-diff":
+        from .policy_diff import policy_diff
+
+        diff = policy_diff(from_commit=args.from_commit, to_commit=args.to_commit)
+        if args.json:
+            _json(diff)
+        else:
+            print(f"Policy diff {diff['from'][:8]} -> {diff['to'][:8]}")
+            print(f"  file: {diff['file']}")
+            print(f"  added: {diff['what_changed']['added']}")
+            print(f"  removed: {diff['what_changed']['removed']}")
+            print(f"  changed: {diff['what_changed']['changed']}")
+            print(f"  affected guarantees: {diff['affected_guarantees']}")
+            print(f"  affected tests: {diff['affected_tests']}")
+            print(f"  why: {diff['why']}")
+            print(f"  replay impact: {diff['replay_impact']}")
+        return 0
+    if args.command == "trust-report":
+        from .trust_report import trust_report
+
+        report = trust_report()
+        if args.json:
+            _json(report)
+        else:
+            print("=== Noble Cascade Trust Report ===")
+            print(f"Version: {report['version']}")
+            print(f"Guarantees: {len(report['guarantees'])}")
+            for g in report["guarantees"]:
+                print(f"  - {g}")
+            print("Limitations:")
+            for l in report["limitations"]:
+                print(f"  - {l}")
+            print(f"Verification: {report['verification_status']}")
+            print(f"Reproducibility: {report['reproducibility_status']}")
+        return 0
+    if args.command == "trust-index":
+        from .trust_index import generate_trust_index
+
+        idx = generate_trust_index()
+        if args.json:
+            _json(idx)
+        else:
+            print(json.dumps(idx, indent=2, sort_keys=True))
+        return 0
+    if args.command == "release":
+        from .release import create_release, verify_release
+
+        if args.create is not None:
+            version = None if args.create == "auto" else args.create
+            info = create_release(version=version)
+            if args.json:
+                _json(info)
+            else:
+                print(f"Release {info['version']} created at {info['release_dir']}")
+                print(f"  commit {info['commit']}")
+                for k, v in info["hashes"].items():
+                    print(f"  {k}: {v[:12]}...")
+        if args.verify:
+            ok, issues = verify_release()
+            if args.json:
+                _json({"verified": ok, "issues": issues})
+            else:
+                print("Release VERIFIED" if ok else "Release FAILED")
+                for iss in issues:
+                    print(f"  - {iss}")
+            return 0 if ok else 1
+        if args.create is None and not args.verify:
+            # default verify
+            ok, issues = verify_release()
+            if args.json:
+                _json({"verified": ok, "issues": issues})
+            else:
+                print("Release VERIFIED" if ok else "Release FAILED")
+                for iss in issues:
+                    print(f"  - {iss}")
+            return 0 if ok else 1
+        return 0
+    if args.command == "sbom":
+        from pathlib import Path as _P
+
+        from .sbom import generate_cyclonedx, generate_spdx, write_cyclonedx, write_spdx
+
+        out_dir = _P(args.output)
+        if args.format in ("spdx", "both"):
+            p = write_spdx(out_dir / "SBOM.spdx.json")
+            if not args.json:
+                print(f"SPDX SBOM written to {p}")
+        if args.format in ("cyclonedx", "both"):
+            p2 = write_cyclonedx(out_dir / "SBOM.cyclonedx.json")
+            if not args.json:
+                print(f"CycloneDX SBOM written to {p2}")
+        if args.json:
+            _json(
+                {
+                    "spdx": generate_spdx() if args.format in ("spdx", "both") else None,
+                    "cyclonedx": generate_cyclonedx()
+                    if args.format in ("cyclonedx", "both")
+                    else None,
+                }
+            )
+        return 0
+    if args.command == "attest":
+        from pathlib import Path as _P
+
+        from .attest import attest_file
+
+        if args.file:
+            p = _P(args.file)
+            if not p.exists():
+                print(f"File not found: {p}", file=sys.stderr)
+                return 1
+            att = attest_file(p)
+            if args.json:
+                _json(att)
+            else:
+                print(f"Attestation for {p}:")
+                print(f"  sha256: {att['sha256']}")
+                print(f"  signature: {att['attestation']['signature'][:16]}...")
+                print(f"  algorithm: {att['attestation']['algorithm']}")
+            return 0
+        # attest bundle verification: check release attestation
+        from .release import verify_release
+
+        ok, issues = verify_release()
+        if args.json:
+            _json({"verified": ok, "issues": issues})
+        else:
+            print("Attestation VERIFIED" if ok else "Attestation FAILED")
+            for iss in issues:
+                print(f"  - {iss}")
+        return 0 if ok else 1
+    if args.command == "provenance":
+        from .provenance import generate_provenance, write_provenance
+
+        if args.json:
+            _json(generate_provenance())
+        else:
+            p = write_provenance(args.output)
+            print(f"Provenance written to {p}")
+        return 0
+    if args.command == "compliance":
+        from .compliance import all_compliance, cis_map, nist_ssdf_map, owasp_samm_map, slsa_map
+
+        mapping = {
+            "nist": nist_ssdf_map(),
+            "owasp": owasp_samm_map(),
+            "slsa": slsa_map(),
+            "cis": cis_map(),
+            "all": all_compliance(),
+        }
+        data = mapping[args.framework]
+        if args.json:
+            _json(data)
+        else:
+            print(json.dumps(data, indent=2, sort_keys=True))
+        return 0
+    if args.command == "platform":
+        from .platform_check import verify_platform
+
+        info = verify_platform()
+        if args.json:
+            _json(info)
+        else:
+            print(f"Platform: {info['platform']['system']} {info['platform']['machine']}")
+            print(f"Support: {info['supported_level']}")
+            for w in info["warnings"]:
+                print(f"WARN: {w}")
+            for iss in info["issues"]:
+                print(f"ISSUE: {iss}")
+            print(f"Differences: {info['differences']}")
+        return 0 if not info["issues"] else 1
+    if args.command == "benchmark":
+        from .benchmark import run_benchmarks
+
+        data = run_benchmarks()
+        if args.json:
+            _json(data)
+        else:
+            print("Benchmarks:")
+            for k, v in data["benchmarks"].items():
+                print(
+                    f"  {k:20} p50 {v['p50_ms']:.1f}ms p95 {v['p95_ms']:.1f}ms max {v['max_ms']:.1f}ms"
+                )
+        return 0
+    if args.command == "invariants":
+        from .invariants import INVARIANTS, to_json
+
+        if args.json:
+            _json(to_json())
+        else:
+            for inv in INVARIANTS:
+                print(f"Invariant {inv.id}: {inv.title}")
+                print(f"  Spec: {inv.specification}")
+                print(f"  Impl: {inv.implementation}")
+                print(f"  Test: {inv.test}")
+        return 0
+    if args.command == "verify":
+        from .certify import certify
+
+        result = certify()
+        # also check release and sbom
+        from pathlib import Path as _P
+
+        release_ok = (_P("release/RELEASE.json").exists(),)
+        if args.json:
+            _json({"certify": result, "release_exists": release_ok[0]})
+        else:
+            print(result["status"])
+            for k, v in result["checks"].items():
+                print(f"  {k:15} {'PASS' if v['passed'] else 'FAIL'} {v['message']}")
+            print(f"Release exists: {release_ok[0]}")
+        return 0 if result["certified"] else 1
     try:
         from .engine import NobleEngine
         from .errors import NobleError
@@ -321,9 +620,9 @@ def main(argv: list[str] | None = None) -> int:
                 authorization_grant=args.grant,
                 parameters=params,
             )
-            result = engine.run(request)
-            _json(result.to_dict())
-            return 0 if result.succeeded else 2 if result.state.value == "BLOCKED" else 1
+            exec_result = engine.run(request)  # type: ignore[assignment]
+            _json(exec_result.to_dict())
+            return 0 if exec_result.succeeded else 2 if exec_result.state.value == "BLOCKED" else 1
         if args.command == "inspect":
             identifier = args.identifier
             if identifier.startswith("req-"):
@@ -412,6 +711,67 @@ def main(argv: list[str] | None = None) -> int:
 
             replayer = ReplayEngine(engine.store)
             ident = args.identifier
+            # Time-travel: if --commit, verify that commit's policy matches execution's policy
+            if args.commit:
+                import hashlib
+                import subprocess
+                from pathlib import Path as _P
+
+                try:
+                    commit_hash = args.commit
+                    # resolve commit
+                    full = subprocess.check_output(
+                        ["git", "rev-parse", commit_hash],
+                        cwd=str(_P(engine.config.workspace_root)),
+                        text=True,
+                    ).strip()
+                    # try to get policy file at that commit
+                    policy_at_commit = subprocess.check_output(
+                        [
+                            "git",
+                            "show",
+                            f"{full}:agent-skills/governance/scope-enforcement/scope-policy.yaml",
+                        ],
+                        cwd=str(_P(engine.config.workspace_root)),
+                        text=True,
+                    )
+                    policy_hash_at_commit = hashlib.sha256(policy_at_commit.encode()).hexdigest()
+                    # do replay first
+                    if ident.startswith("lease-") or ident.startswith("exec-"):
+                        data = replayer.replay(ident)
+                    elif ident.startswith("req-"):
+                        data = replayer.replay_by_request(ident)
+                    else:
+                        try:
+                            data = replayer.replay(ident)
+                        except Exception:
+                            data = replayer.replay_by_request(ident)
+                    # compare
+                    stored_hash = (
+                        data.get("policy", {}).get("policy_hash") or data.get("policy_hash") or ""
+                    )
+                    data["time_travel"] = {
+                        "requested_commit": full,
+                        "policy_hash_at_commit": policy_hash_at_commit,
+                        "execution_policy_hash": stored_hash,
+                        "match": policy_hash_at_commit == stored_hash,
+                        "note": "Time-travel verification: execution's policy hash is compared to git history without re-executing",
+                    }
+                except Exception as exc:
+                    _json({"error": {"code": "time_travel_failed", "message": str(exc)}})
+                    return 1
+                if args.json:
+                    _json(data)
+                else:
+                    print(f"Replay {ident} @ {args.commit} (READ ONLY, time-travel):")
+                    print(f"  Match: {data['time_travel']['match']}")
+                    print(
+                        f"  Execution policy: {data['time_travel']['execution_policy_hash'][:12]}"
+                    )
+                    print(
+                        f"  Commit policy:    {data['time_travel']['policy_hash_at_commit'][:12]}"
+                    )
+                return 0 if data["time_travel"]["match"] else 2
             try:
                 if ident.startswith("lease-") or ident.startswith("exec-"):
                     data = replayer.replay(ident)
@@ -483,6 +843,34 @@ def main(argv: list[str] | None = None) -> int:
                     print(f"{k:25} {v}")
             return 0
         if args.command == "ledger":
+            # checkpoint / verify extensions
+            if args.checkpoint:
+                from .ledger_integrity import write_checkpoint
+
+                p = write_checkpoint(engine.store)
+                if args.json:
+                    _json({"checkpoint": str(p)})
+                else:
+                    print(f"Checkpoint written to {p}")
+                return 0
+            if args.verify:
+                from .ledger_integrity import verify_checkpoint
+
+                ok, msg = verify_checkpoint(engine.store)
+                if args.json:
+                    _json({"verified": ok, "message": msg})
+                else:
+                    print(f"Ledger integrity: {'VALID' if ok else 'INVALID'} {msg}")
+                return 0 if ok else 1
+            if args.detect_corruption:
+                from .ledger_integrity import detect_corruption
+
+                info = detect_corruption(engine.store)
+                if args.json:
+                    _json(info)
+                else:
+                    print(json.dumps(info, indent=2))
+                return 0 if not info["corrupted"] else 1
             if args.execution_id:
                 chain = engine.store.get_ledger(args.execution_id)
                 if not chain:

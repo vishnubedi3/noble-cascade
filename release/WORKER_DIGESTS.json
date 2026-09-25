@@ -1,0 +1,5 @@
+{
+  "worker_image_digest": "cfdeaeb1877498f89fe054f44206eeafa6bd5a500ec9ee3c455fe3034f768f78",
+  "worker_path": "noble/builtins/worker.py",
+  "worker_sha256": "cfdeaeb1877498f89fe054f44206eeafa6bd5a500ec9ee3c455fe3034f768f78"
+}
