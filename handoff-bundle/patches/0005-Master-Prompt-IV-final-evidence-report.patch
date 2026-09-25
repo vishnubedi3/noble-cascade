@@ -1,7 +1,7 @@
-From 1b83a71de9e33197fa0826d67d6a3c1030877361 Mon Sep 17 00:00:00 2001
+From 7eedf93eeefeebf3bf35a845f27ed48b1ed02969 Mon Sep 17 00:00:00 2001
 From: vishnubedi3 <309025711+vishnubedi3@users.noreply.github.com>
 Date: Fri, 25 Sep 2026 16:19:05 +0000
-Subject: [PATCH 5/8] Master Prompt IV: final evidence report
+Subject: [PATCH 05/10] Master Prompt IV: final evidence report
 
 - docs/repository-governance-report.md: 15-section evidence record
   (state, topology, CI, controls, checks, verification, supply chain,

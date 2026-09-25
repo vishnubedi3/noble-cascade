@@ -1,7 +1,7 @@
-From a2281c8b97bcbb3ce4c535d4ee0b029da31bb730 Mon Sep 17 00:00:00 2001
+From 0f2de55ab0597a8cbb5062e96d7c5fab2b5e213d Mon Sep 17 00:00:00 2001
 From: vishnubedi3 <309025711+vishnubedi3@users.noreply.github.com>
 Date: Fri, 25 Sep 2026 16:17:50 +0000
-Subject: [PATCH 4/8] Master Prompt IV: re-certified evidence (portable
+Subject: [PATCH 04/10] Master Prompt IV: re-certified evidence (portable
  attestation key)
 
 - release/ regenerated with path-independent attestation signatures

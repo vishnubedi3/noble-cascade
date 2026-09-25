@@ -1,5 +1,16 @@
 # Repository Governance Report — Master Prompt IV
 
+> **Addendum (2026-09-25, post-excision):** the authoring token lacked the
+> `workflows` scope, so `.github/workflows/` changes were excised from this
+> branch's history to make it pushable (re-certified at `46bb96c`); the
+> hardened files ship via `handoff-bundle/workflows/` for manual registration.
+> The full-green proof in §11 below was recorded pre-excision with workflows
+> present. Current branch state: CERTIFIED, Release VERIFIED, spec/audit/
+> offline/ruff green; 8 workflow-dependent tests + baseline/workflow-audit red
+> (single root cause: unregistered hardened workflows) until registration.
+> Re-run §11 after registration to restore 20/20.
+
+
 Date: 2026-09-25. Head: `5393684` (branch `arena/01a0d94c-noble-cascade`).
 Question: *can the repository prevent an unverified change from becoming an
 accepted release?* The machinery below makes the answer mechanically enforced

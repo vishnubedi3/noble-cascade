@@ -1,7 +1,7 @@
-From 8fd3c880f26daae46f8d8eaf86a70dbabf256f4a Mon Sep 17 00:00:00 2001
+From f41c063905ef9fdb7d05843d75ea7027578a9996 Mon Sep 17 00:00:00 2001
 From: vishnubedi3 <309025711+vishnubedi3@users.noreply.github.com>
 Date: Fri, 25 Sep 2026 16:17:17 +0000
-Subject: [PATCH 3/8] Master Prompt IV: portable attestations + baselined
+Subject: [PATCH 03/10] Master Prompt IV: portable attestations + baselined
  release machinery
 
 - _attestation_key no longer binds to the absolute workspace path: the

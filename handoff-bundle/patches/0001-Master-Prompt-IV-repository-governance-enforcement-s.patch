@@ -1,15 +1,14 @@
-From de408712a75726585a857b5be3db011afbb12ee7 Mon Sep 17 00:00:00 2001
+From 6c6f98be31734451b5a4cdb8cddc3e2bf94d590c Mon Sep 17 00:00:00 2001
 From: vishnubedi3 <309025711+vishnubedi3@users.noreply.github.com>
 Date: Fri, 25 Sep 2026 16:12:08 +0000
-Subject: [PATCH 1/8] Master Prompt IV: repository governance enforcement
+Subject: [PATCH 01/10] Master Prompt IV: repository governance enforcement
  (source)
 
-- Activate hardened CI: docs/ci-hardened.yml -> .github/workflows/ (live),
-  self-integrity checks pin to the live path, corrupt action pins replaced
-  with gh-resolved immutable SHAs, moving tags forbidden, top-level
-  permissions contents:read enforced in-workflow
-- Harden main.yml (pinned SHAs, minimal permissions); add
-  security-analysis.yml (dependency-review + CodeQL, pinned)
+- Hardened CI workflow prepared for manual registration (authoring token
+  lacks workflows scope): .github/workflows/ changes are EXCLUDED from this
+  branch and ship via handoff-bundle/workflows/ + HANDOFF.md instead.
+  docs/ci-hardened.yml duplicate removed; live workflow keeps main state
+  until the owner registers the hardened files (see PR description).
 - Add CODEOWNERS, dependabot.yml (same pipeline), security-critical.json
 - verify-everything.sh: 20 checks, stable exit codes, --json, isolated tmp,
   fail-closed, no silent skips; audit-pack/verification.sh hardened + the
@@ -32,9 +31,6 @@ Co-authored-by: arena-agent <297053741+arena-agent@users.noreply.github.com>
  .github/CODEOWNERS                            |  98 +++++
  .github/dependabot.yml                        |  35 ++
  .github/security-critical.json                |  91 ++++
- .github/workflows/ci-hardened.yml             |  37 +-
- .github/workflows/main.yml                    |  27 +-
- .github/workflows/security-analysis.yml       |  67 +++
  Makefile                                      |  11 +-
  README.md                                     |   5 +-
  docs/ci-activation.md                         |  42 ++
@@ -63,11 +59,10 @@ Co-authored-by: arena-agent <297053741+arena-agent@users.noreply.github.com>
  tests/security/test_repo_compromise.py        | 162 ++++++++
  .../test_verifier_rejects_corruption.py       | 205 +++++++++
  verify-everything.sh                          | 234 +++++++----
- 34 files changed, 2228 insertions(+), 339 deletions(-)
+ 31 files changed, 2110 insertions(+), 326 deletions(-)
  create mode 100644 .github/CODEOWNERS
  create mode 100644 .github/dependabot.yml
  create mode 100644 .github/security-critical.json
- create mode 100644 .github/workflows/security-analysis.yml
  create mode 100644 docs/ci-activation.md
  delete mode 100644 docs/ci-hardened.yml
  delete mode 100644 docs/ci-workflow-template.yml
@@ -323,207 +318,6 @@ index 0000000..c90cf23
 +    "required_verification": ["tests"]
 +  }
 +}
-diff --git a/.github/workflows/ci-hardened.yml b/.github/workflows/ci-hardened.yml
-index 52d0a40..79e85ab 100644
---- a/.github/workflows/ci-hardened.yml
-+++ b/.github/workflows/ci-hardened.yml
-@@ -1,6 +1,9 @@
- name: CI Trust Hardened
- 
--# Phase 11 — CI Trust Hardening: every workflow change reviewable, artifact tampering prevented
-+# Master Prompt IV — Repository-governance workflow (activated 2026-09-25).
-+# Relocated from docs/ci-hardened.yml to .github/workflows/ci-hardened.yml so
-+# GitHub Actions actually executes it. Self-integrity checks below still pin to
-+# .github/workflows/ci-hardened.yml. See docs/ci-activation.md.
- 
- on:
-   push:
-@@ -31,12 +34,29 @@ jobs:
-           echo "Workflow SHA: $(sha256sum .github/workflows/ci-hardened.yml | cut -d' ' -f1)"
-           git log --oneline -1 -- .github/workflows/
-           # fail if workflow contains risky patterns
--          if grep -q "pull_request_target" .github/workflows/*.yml; then echo "forbidden pull_request_target"; exit 1; fi
--          if grep -q "actions\/checkout.*persist-credentials: true" .github/workflows/*.yml; then echo "persist-credentials must be false"; exit 1; fi
-+          # Trigger-key match only, so this self-check cannot match its own text.
-+          if grep -rnE "^[[:space:]]+pull_request_target[[:space:]]*:" .github/workflows/; then echo "forbidden pull_request_target trigger"; exit 1; fi
-+          if grep -rn "persist-credentials:[[:space:]]*true" .github/workflows/ | grep -v "grep -rn"; then echo "persist-credentials must be false"; exit 1; fi
-+          # every third-party action must be pinned to an immutable 40-hex SHA
-+          if grep -rnE "uses:[[:space:]]*[^[:space:]#]+@v[0-9]" .github/workflows/; then echo "moving action tag found; pin to immutable SHA"; exit 1; fi
-+          # top-level permissions must be minimal (contents: read)
-+          python - <<'PYEOF'
-+          import sys
-+          from pathlib import Path as _P
-+          bad = []
-+          for wf in sorted(_P(".github/workflows").glob("*.yml")):
-+              top = wf.read_text(encoding="utf-8").split("jobs:")[0]
-+              if "permissions:" not in top or "contents: read" not in top:
-+                  bad.append(f"{wf}: top-level permissions must include 'contents: read'")
-+          if bad:
-+              print("\n".join(bad))
-+              sys.exit(1)
-+          print("Workflow integrity: PASS")
-+          PYEOF
- 
-       # 2. Dependency updates: hash-pinned, verify
-       - name: Python 3.11 (pinned)
--        uses: actions/setup-python@42375524e23c412d94c2214991ad92c5f2ab03d  # v5.4.0
-+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
-         with:
-           python-version: '3.11'
-           cache: 'pip'
-@@ -120,6 +140,13 @@ jobs:
-           python -m noble audit --verify
-           python -m noble spec --verify
- 
-+      # 7b. Repository governance verification (Master Prompt IV)
-+      - name: Repository governance verification (baseline + workflow audit)
-+        run: |
-+          python -m noble governance --baseline-verify --json
-+          python -m noble governance --workflow-audit --json
-+          python -m noble governance --pr-analysis --json | head -n 60
-+
-       # 8. Governance certification
-       - name: Governance certification (must be CERTIFIED)
-         run: |
-@@ -141,7 +168,7 @@ jobs:
-       # 11. Upload artifact with pinned digest (tamper-evident)
-       - name: Upload release artifact (tamper-evident)
-         if: always()
--        uses: actions/upload-artifact@ea4518b8d10158a423247c54a5862f03ac170ad96 # v4.0.7 pinned
-+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-         with:
-           name: noble-release-${{ github.sha }}
-           path: |
-diff --git a/.github/workflows/main.yml b/.github/workflows/main.yml
-index c1cc409..daf9c0a 100644
---- a/.github/workflows/main.yml
-+++ b/.github/workflows/main.yml
-@@ -1,7 +1,16 @@
--
--# The GitHub App used to open this pull request cannot update .github/workflows/.
--# A repository maintainer with workflow permission may review and copy this file
--# to .github/workflows/ci.yml in a separate, authorized change.
-+# Noble Cascade — Fast validation workflow (local-verification equivalent).
-+#
-+# This is the fast path: lint, format, type-check, unit tests, secret scan,
-+# dependency audit. The full governance chain (certification, release, SBOM,
-+# provenance, audit-pack, verify-everything.sh) runs in ci-hardened.yml.
-+# See docs/repository-governance.md for the check model.
-+#
-+# Security properties (audited per docs/repository-governance.md §CI model):
-+# - top-level permissions: contents: read only
-+# - all third-party actions pinned to immutable commit SHAs (version in comment)
-+# - persist-credentials: false (no credential persistence to disk)
-+# - no pull_request_target, no write permissions, no secret interpolation
-+# - no execution of untrusted PR code beyond the pinned checkout + locked deps
- name: Control-plane validation
- 
- on:
-@@ -15,17 +24,19 @@ jobs:
-   validate:
-     runs-on: ubuntu-latest
-     timeout-minutes: 15
-+    permissions:
-+      contents: read
-     steps:
-       - name: Checkout (no production credentials)
--        uses: actions/checkout@v4
-+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-         with:
-           persist-credentials: false
-       - name: Python 3.11
--        uses: actions/setup-python@v5
-+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
-         with:
-           python-version: '3.11'
-       - name: Node 22 for legacy Draft-07 adapter
--        uses: actions/setup-node@v4
-+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
-         with:
-           node-version: '22'
-       - name: Install hash-locked dependencies and local package
-@@ -48,7 +59,7 @@ jobs:
-         run: bandit -r noble -ll -q
-       - name: Secret candidate scan (no automated verification/network)
-         run: |
--          detect-secrets scan --no-verify --all-files noble tests agent-skills docs config README.md SECURITY_AGENT_RESEARCH_REPORT.md Untitled.md .github pyproject.toml > /tmp/noble-secrets.json
-+          detect-secrets scan --no-verify --all-files noble tests agent-skills docs config README.md SECURITY_AGENT_RESEARCH_REPORT.md .github pyproject.toml > /tmp/noble-secrets.json
-           python - <<'PY'
-           import json
-           data = json.load(open('/tmp/noble-secrets.json', encoding='utf-8'))
-diff --git a/.github/workflows/security-analysis.yml b/.github/workflows/security-analysis.yml
-new file mode 100644
-index 0000000..9928b4c
---- /dev/null
-+++ b/.github/workflows/security-analysis.yml
-@@ -0,0 +1,67 @@
-+# Noble Cascade — GitHub-native security analysis.
-+#
-+# This workflow ADDS evidence; it does not replace the Noble governance kernel.
-+# Relationship (docs/repository-governance.md):
-+#   GitHub Security + Noble Governance Kernel + Release Verification
-+# Noble's own invariants remain authoritative for Noble's execution behavior.
-+#
-+# Security properties:
-+# - top-level permissions: contents: read only; jobs grant only what they need
-+# - all third-party actions pinned to immutable commit SHAs (version in comment)
-+# - dependency-review runs on pull_request only (compares dependency diff)
-+# - CodeQL autobuild disabled; explicit `python -m compileall` build step, no
-+#   untrusted code execution beyond the checked-out tree and locked dependencies
-+# - persist-credentials: false everywhere
-+name: Security analysis
-+
-+on:
-+  pull_request:
-+  push:
-+    branches: [main]
-+  schedule:
-+    - cron: '0 6 * * 1' # weekly Monday 06:00 UTC
-+
-+permissions:
-+  contents: read
-+
-+jobs:
-+  dependency-review:
-+    if: github.event_name == 'pull_request'
-+    runs-on: ubuntu-latest
-+    timeout-minutes: 10
-+    permissions:
-+      contents: read
-+      pull-requests: read
-+    steps:
-+      - name: Checkout (no credentials)
-+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-+        with:
-+          persist-credentials: false
-+      - name: Dependency review (fail on high/critical in dependency diff)
-+        uses: actions/dependency-review-action@2031cfc080254a8a887f58cffee85186f0e49e48 # v4
-+        with:
-+          fail-on-severity: high
-+          deny-licenses: GPL-2.0, GPL-3.0
-+
-+  codeql:
-+    runs-on: ubuntu-latest
-+    timeout-minutes: 20
-+    permissions:
-+      contents: read
-+      security-events: write # required to upload CodeQL findings to code scanning
-+    steps:
-+      - name: Checkout (no credentials)
-+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-+        with:
-+          persist-credentials: false
-+      - name: Initialize CodeQL (python, security-extended)
-+        uses: github/codeql-action/init@1190a975f95ce23525efb6a3fc21ea29567c1b52 # v3
-+        with:
-+          languages: python
-+          queries: security-extended
-+      - name: Build (explicit compile, no autobuild of untrusted targets)
-+        run: python -m compileall -q noble
-+      - name: Perform CodeQL analysis
-+        uses: github/codeql-action/analyze@1190a975f95ce23525efb6a3fc21ea29567c1b52 # v3
-+        with:
-+          category: '/language:python'
 diff --git a/Makefile b/Makefile
 index f8d16b6..98eab23 100644
 --- a/Makefile

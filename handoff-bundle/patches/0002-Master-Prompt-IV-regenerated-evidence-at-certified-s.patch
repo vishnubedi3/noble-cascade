@@ -1,7 +1,7 @@
-From 2c5ceabd16fc0172b7a6a40747866d253550d71a Mon Sep 17 00:00:00 2001
+From a0be7847dc0eac0f31d8fbc5e1ed2c87e436faa0 Mon Sep 17 00:00:00 2001
 From: vishnubedi3 <309025711+vishnubedi3@users.noreply.github.com>
 Date: Fri, 25 Sep 2026 16:14:47 +0000
-Subject: [PATCH 2/8] Master Prompt IV: regenerated evidence at certified
+Subject: [PATCH 02/10] Master Prompt IV: regenerated evidence at certified
  source
 
 - release/ regenerated and bound to HEAD (no-drift proof passes)
