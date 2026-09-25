@@ -144,6 +144,25 @@ def create_baseline(workspace_root: Path | None = None) -> dict[str, Any]:
         "worker_digest": worker_digest,
         "verification_script_hash": _sha256_file(root / "verify-everything.sh") or "missing",
         "governance_module_hash": _sha256_file(root / "noble/governance.py") or "missing",
+        # Release/verification machinery: any quiet weakening of these modules
+        # drifts the baseline (§34 — the system cannot weaken its own verifiers).
+        "release_machinery_hashes": {
+            name: _sha256_file(root / "noble" / name) or "missing"
+            for name in (
+                "release.py",
+                "attest.py",
+                "provenance.py",
+                "sbom.py",
+                "audit_pack.py",
+                "spec.py",
+                "certify.py",
+                "ledger.py",
+                "ledger_integrity.py",
+                "store.py",
+                "signing.py",
+                "replay.py",
+            )
+        },
         "classification_hash": _sha256_file(root / CLASSIFICATION_PATH) or "missing",
         "release_configuration": {
             "release_dir": "release/",
@@ -197,6 +216,7 @@ def verify_baseline(workspace_root: Path | None = None) -> dict[str, Any]:
         "worker_digest",
         "verification_script_hash",
         "governance_module_hash",
+        "release_machinery_hashes",
         "classification_hash",
     ):
         if stored.get(key) != current.get(key):

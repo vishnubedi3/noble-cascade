@@ -131,3 +131,40 @@ def test_audit_pack_generator_cannot_downgrade_verification() -> None:
     assert verification_script_template() == committed
     assert "40 +" in committed  # stable exit-code contract present
     assert "Isolated" in committed or "mktemp" in committed  # tmp isolation present
+
+
+def test_release_machinery_tampering_is_detected() -> None:
+    """Quiet edits to release/verification modules drift the baseline."""
+    stored = _baseline()["release_machinery_hashes"]
+    expected = {
+        "release.py",
+        "attest.py",
+        "provenance.py",
+        "sbom.py",
+        "audit_pack.py",
+        "spec.py",
+        "certify.py",
+        "ledger.py",
+        "ledger_integrity.py",
+        "store.py",
+        "signing.py",
+        "replay.py",
+    }
+    assert set(stored) == expected
+    for name, digest in stored.items():
+        assert digest == _sha(REPO / "noble" / name), name  # control: pristine
+
+
+def test_attestation_is_portable_across_paths(tmp_path: Path) -> None:
+    """Attestations must verify independent of the absolute checkout path."""
+    import shutil
+
+    from noble.attest import sign_artifact, verify_attestation
+
+    other = tmp_path / "elsewhere"
+    shutil.copytree(REPO / "noble" / "builtins", other / "noble" / "builtins")
+    payload = {"artifact": "release", "sha256": "abc123"}
+    att_here = sign_artifact(payload, REPO)
+    # Same worker bytes at a different absolute path must produce the same key.
+    assert verify_attestation(payload, att_here, other) is True
+    assert verify_attestation(payload, att_here, REPO) is True
