@@ -1,0 +1,9 @@
+{
+  "fingerprint": {
+    "configuration_hash": "72e5f9f8c956cf242a5659807d27642f174c3c2455a184ee8078d129596e763c",
+    "policy_hash": "069153344401179e451cff7f39ea59be6c07f4db20b8e32af89d18d3e2c4d72d",
+    "policy_version": "1.0.0",
+    "worker_image_digest": "cfdeaeb1877498f89fe054f44206eeafa6bd5a500ec9ee3c455fe3034f768f78"
+  },
+  "generatedAt": "2026-09-25T15:47:48.259349+00:00"
+}

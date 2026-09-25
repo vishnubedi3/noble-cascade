@@ -1,0 +1,1170 @@
+{
+  "bomFormat": "CycloneDX",
+  "components": [
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "bcde640cdd5f804b2d9460045691c4f34450eca291e2edb95a956c01d5b10b40"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "ast_serialize",
+      "purl": "pkg:pypi/ast_serialize@0.11.2",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "0.11.2"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "4a4fe4c34b7b53d8c97c0db6d3c29bf15a2bc3cd74567ed1ce78ee8396c09af8"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "attrs",
+      "purl": "pkg:pypi/attrs@26.1.0",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "26.1.0"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "84e1d9427fd2c0cc65a8a75e1f3f83ac3ef1d9f887da5d2d7ac6f1cb17603ee0"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "name": "bandit",
+      "purl": "pkg:pypi/bandit@1.9.4",
+      "supplier": {
+        "name": "PyCQA"
+      },
+      "type": "library",
+      "version": "1.9.4"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "9e1ded008a32dad1ec03d434dbcb49630e738f1b2e5e386dc51ee58e70081be0"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-2-Clause"
+          }
+        }
+      ],
+      "name": "boolean.py",
+      "purl": "pkg:pypi/boolean.py@5.0",
+      "supplier": {
+        "name": "Sebastian Kraemer"
+      },
+      "type": "library",
+      "version": "5.0"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "3349cd981385f842a9341ee5b259b887f508e65c238f9cc2a535128cc126e6e1"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "CacheControl",
+      "purl": "pkg:pypi/cachecontrol@0.14.4",
+      "supplier": {
+        "name": "Eric Larson, Frost Ming, William Woodruff"
+      },
+      "type": "library",
+      "version": "0.14.4"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "2a175627d4d112cc476b94c8191aaee4edcd1662234c55444cade9a3767e40ac"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MPL-2.0"
+          }
+        }
+      ],
+      "name": "certifi",
+      "purl": "pkg:pypi/certifi@2026.7.22",
+      "supplier": {
+        "name": "Kenneth Reitz"
+      },
+      "type": "library",
+      "version": "2026.7.22"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "f0d6227fd4fd6234ca162cff6e255537939fff33a77faf3e513e327208054279"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "name": "charset-normalizer",
+      "purl": "pkg:pypi/charset-normalizer@3.5.1",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "3.5.1"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "1fac6127117656a2f8a2ba57fe2f51b4be949e484ae3f3e9c58744ca08fd4bf8"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "name": "cyclonedx-python-lib",
+      "purl": "pkg:pypi/cyclonedx-python-lib@11.12.0",
+      "supplier": {
+        "name": "Paul Horton"
+      },
+      "type": "library",
+      "version": "11.12.0"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "fa1ddc5fc3b77d9735590e396defeecb9c08cc95118bbee12497b4815d706ce3"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "PSFL"
+          }
+        }
+      ],
+      "name": "defusedxml",
+      "purl": "pkg:pypi/defusedxml@0.7.1",
+      "supplier": {
+        "name": "Christian Heimes"
+      },
+      "type": "library",
+      "version": "0.7.1"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "7f0b24d6e0658aeef1e6927c1eaf103cdc511fb887e85fc3150a9b8e4bfe7e50"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "detect-secrets",
+      "purl": "pkg:pypi/detect-secrets@1.5.0",
+      "supplier": {
+        "name": "Yelp, Inc."
+      },
+      "type": "library",
+      "version": "1.5.0"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "35fe636957629e7ecf5ea113e57a5a3b58455b1d8c8b7b58767b0db1386f311b"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "filelock",
+      "purl": "pkg:pypi/filelock@4.0.3",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "4.0.3"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "35873373d1a897e6d22bea1de133db336fa039aa4fbb9fa24ee8305fb6787dbe"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "idna",
+      "purl": "pkg:pypi/idna@3.20",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "3.20"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "35863b42d6d879b58db80f9f20f4eb3e9ac4825d5ae6f948767384489c5d4ae0"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "iniconfig",
+      "purl": "pkg:pypi/iniconfig@2.3.0",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "2.3.0"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "35ca0c7f5d104e01ef2ba09b673c2b528cd1094a2cdc17eec8831b46d1198f26"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "jsonschema",
+      "purl": "pkg:pypi/jsonschema@4.26.0",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "4.26.0"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "ab7a3b8c0aa5cefb9d44f086d89f3f3867efb980f1180c5e9d12743cb61ae553"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "jsonschema-specifications",
+      "purl": "pkg:pypi/jsonschema-specifications@2025.9.1",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "2025.9.1"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "6f9920e19669b7e15c5ba63735ea73e72b0b5e673429c895a70ad49bce2dd35b"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "librt",
+      "purl": "pkg:pypi/librt@0.15.0",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "0.15.0"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "e7b497483464e9e3b1fcdd72be265ffc7b1692ecf3de134c865e61c6e93b9119"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "name": "license-expression",
+      "purl": "pkg:pypi/license-expression@30.4.4",
+      "supplier": {
+        "name": "nexB. Inc. and others"
+      },
+      "type": "library",
+      "version": "30.4.4"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "f31c433b6056d2d1d17bb75c20e44318b820db0d012727dbbfdda827871a0c91"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "markdown-it-py",
+      "purl": "pkg:pypi/markdown-it-py@4.2.0",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "4.2.0"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "45fc0de019699d3feb4a437856505965147054b5588db1520a73b36e531aa165"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "mdurl",
+      "purl": "pkg:pypi/mdurl@0.1.2",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "0.1.2"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "f73aa5d8746a6181abfb2b38d9b9e059b8ba615f4ad734a9dc90ad09c6560dbe"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "msgpack",
+      "purl": "pkg:pypi/msgpack@1.2.2",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "1.2.2"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "c75e7182d8af427e28a7891f72649a09481f9c274eee48d383229b00f143edc1"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "mypy",
+      "purl": "pkg:pypi/mypy@2.3.1",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "2.3.1"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "7e7299e33e1681b8b632ecc406dbf2323b463d2976cd704f3426dedb0a0f5837"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "mypy_extensions",
+      "purl": "pkg:pypi/mypy_extensions@1.1.0",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "1.1.0"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "43d84a7dd57015a77ef929c9c3ab16e86be023c41022206c88b6cc202e589a86"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "NOASSERTION"
+          }
+        }
+      ],
+      "name": "noble-cascade",
+      "purl": "pkg:pypi/noble-cascade@0.2.0",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "0.2.0"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "43d84a7dd57015a77ef929c9c3ab16e86be023c41022206c88b6cc202e589a86"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "NOASSERTION"
+          }
+        }
+      ],
+      "name": "noble-cascade",
+      "purl": "pkg:pypi/noble-cascade@0.2.0",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "0.2.0"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "56a12d8b5109b00ea27bf7565913ef24e4f4709f7b6e7cf94eb9d104af098e59"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "name": "noble-cascade",
+      "purl": "pkg:pypi/noble-cascade@0.2.0",
+      "supplier": {
+        "name": "Noble Cascade"
+      },
+      "type": "library",
+      "version": "0.2.0"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "8ece68893440134cfbf83b4e4aca575444fd9b269d30ee7dbefabd1a47ee0e39"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "name": "packageurl-python",
+      "purl": "pkg:pypi/packageurl-python@0.17.6",
+      "supplier": {
+        "name": "the purl authors"
+      },
+      "type": "library",
+      "version": "0.17.6"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "6141a0ec9ee9141116c85297f5cb37fe9f2fa7ef111f65fb571818333d239b99"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "packaging",
+      "purl": "pkg:pypi/packaging@26.3",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "26.3"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "99b2481c40a437133d9783aa75df6c9dbea6b981d8d64d89ef5737f827ca0496"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "pathspec",
+      "purl": "pkg:pypi/pathspec@1.1.1",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "1.1.1"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "d6d65d85a7fd8289a6ce3c2935d21d59b596a9360cd6fc46e5ac6a5a0a695850"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "name": "pip",
+      "purl": "pkg:pypi/pip@23.0.1",
+      "supplier": {
+        "name": "The pip developers"
+      },
+      "type": "library",
+      "version": "23.0.1"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "ca332970ee28fb216668f4daa343aa86a4583f7f808e832ddcbbb2b49109c53f"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "name": "pip-requirements-parser",
+      "purl": "pkg:pypi/pip-requirements-parser@32.0.1",
+      "supplier": {
+        "name": "The pip authors, nexB. Inc. and others"
+      },
+      "type": "library",
+      "version": "32.0.1"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "200cff2ce6d88a1b1e00ad02af57e88e976231f0e7304b1ee75152aa800e4a2a"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "NOASSERTION"
+          }
+        }
+      ],
+      "name": "pip_api",
+      "purl": "pkg:pypi/pip_api@0.0.35",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "0.0.35"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "9cc5126f82b9d23855641e255fabc7468bee1b7af7961de6fbfcb7f0d32c6136"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "pip_audit",
+      "purl": "pkg:pypi/pip_audit@2.10.1",
+      "supplier": {
+        "name": "Alex Cameron"
+      },
+      "type": "library",
+      "version": "2.10.1"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "4ea2cc668a3331e3f3fcb17d250b6fc09bb392e52656bf780ee3d9e1c893ff3b"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "platformdirs",
+      "purl": "pkg:pypi/platformdirs@4.11.13",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "4.11.13"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "15b689bbc4737b80027e0576b1887124aecde8bf976f11f36395a24afdde9b87"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "name": "pluggy",
+      "purl": "pkg:pypi/pluggy@1.6.0",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "1.6.0"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "d889a2d893bdabba3c2b2ba862190bd175def68dea636f4b699f388b20d478eb"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "name": "py-serializable",
+      "purl": "pkg:pypi/py-serializable@2.1.0",
+      "supplier": {
+        "name": "Paul Horton"
+      },
+      "type": "library",
+      "version": "2.1.0"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "711829f19febadebdbb55bdd698c4c462d385dcfa87f5fd34b9f18f2f8e1a9c6"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "Pygments",
+      "purl": "pkg:pypi/pygments@2.21.0",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "2.21.0"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "8541fa1aef20303c7eaa7e022a237ae11a50105df4d47d7502df1a7b9e476d5c"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "pyparsing",
+      "purl": "pkg:pypi/pyparsing@3.3.3",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "3.3.3"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "98470a16075de81bbd04a694288f466c181cfd274113fb812501e5ccc19dfc1f"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "pytest",
+      "purl": "pkg:pypi/pytest@9.1.1",
+      "supplier": {
+        "name": "Brianna Laugher, Bruno Oliveira, Floris Bruynooghe, Freya Bruhin, Holger Krekel, Others (See AUTHORS), Ronny Pfannschmidt"
+      },
+      "type": "library",
+      "version": "9.1.1"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "e65f59966473f3c3303058643c02e3b2d4b3df3fd8e9d3cb3b3125bffa314dbe"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "name": "PyYAML",
+      "purl": "pkg:pypi/pyyaml@6.0.3",
+      "supplier": {
+        "name": "Kirill Simonov"
+      },
+      "type": "library",
+      "version": "6.0.3"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "a6192c128a8cdbc9ef89da531369faf09a9d33fc413b070eae727bd3d32083df"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "referencing",
+      "purl": "pkg:pypi/referencing@0.37.0",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "0.37.0"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "b45003f86caef535f69dde250916ed6fa5721101c3f722aecd9b15c4bbf1b8c6"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "name": "requests",
+      "purl": "pkg:pypi/requests@2.34.2",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "2.34.2"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "6a8cdbca91fd8c5482888e7abf2e1325f413109794ac57de40ef53ef3b00342b"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "name": "rich",
+      "purl": "pkg:pypi/rich@15.0.0",
+      "supplier": {
+        "name": "Will McGugan"
+      },
+      "type": "library",
+      "version": "15.0.0"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "67091c31ca869eb1cce6f3b8b6a03c2a63a24e57a88d3aaca95ebf3f39373f0f"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "rpds-py",
+      "purl": "pkg:pypi/rpds-py@2026.6.3",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "2026.6.3"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "b1011bcef2e7b8a1ae5f5b11488817538d8d66c16beb3f4d525826dd786d338d"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "ruff",
+      "purl": "pkg:pypi/ruff@0.16.9",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "0.16.9"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "95ac7d5a5e6d89637fa7197d2b00d0ebbdd3c08a92c5ebb214aa62d2ac616188"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "setuptools",
+      "purl": "pkg:pypi/setuptools@66.1.1",
+      "supplier": {
+        "name": "Python Packaging Authority"
+      },
+      "type": "library",
+      "version": "66.1.1"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "23af1e82d3a918aecee3bc043dc5ec75bd7c7337c1f8a591aefacacc8934c9c7"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache 2.0"
+          }
+        }
+      ],
+      "name": "sortedcontainers",
+      "purl": "pkg:pypi/sortedcontainers@2.4.0",
+      "supplier": {
+        "name": "Grant Jenks"
+      },
+      "type": "library",
+      "version": "2.4.0"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "91d161a6813f93cb5b1c4cc44148fde9776be8889176bd66a9fa8e61f7f6776c"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "stevedore",
+      "purl": "pkg:pypi/stevedore@5.9.1",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "5.9.1"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "fa0146e70e777ede0cb2b948b38265eab21f025e69080557429f1bad68f790c9"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "tomli",
+      "purl": "pkg:pypi/tomli@2.4.1",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "2.4.1"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "528b0fb94144207fa8974cfc3ef0b149912dc131f6933a40a37dbbd523e24e5d"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "tomli_w",
+      "purl": "pkg:pypi/tomli_w@1.2.0",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "1.2.0"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "bf2984f9c2f5f5890424972dd9dc77c3b0e66eddd8efbc8fa0a1834342b6da47"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "typing_extensions",
+      "purl": "pkg:pypi/typing_extensions@4.16.0",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "4.16.0"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "913558819a9fb2bb6d883d0b40ec3ec02f609d49009eda4ea2f89392ddea5de4"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "UNKNOWN"
+          }
+        }
+      ],
+      "name": "urllib3",
+      "purl": "pkg:pypi/urllib3@2.8.0",
+      "supplier": {
+        "name": "UNKNOWN"
+      },
+      "type": "library",
+      "version": "2.8.0"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "c6e1f1ef67ab331cbb83bfbd5bbb9b766fbb2228ce848b038141cb7d2cad3158"
+        }
+      ],
+      "name": "python3",
+      "purl": "pkg:generic/python3@3.11.2",
+      "type": "application",
+      "version": "3.11.2"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "2540879925a6881e3877ff7e3330746ba3027b04edf16a3a12dccd1644c4f32d"
+        }
+      ],
+      "name": "git",
+      "purl": "pkg:generic/git@unknown",
+      "type": "application",
+      "version": "unknown"
+    }
+  ],
+  "metadata": {
+    "component": {
+      "name": "noble-cascade",
+      "purl": "pkg:pypi/noble-cascade@0.2.0",
+      "type": "application",
+      "version": "0.2.0"
+    },
+    "timestamp": "2026-09-25T15:47:32.694103+00:00",
+    "tools": [
+      {
+        "name": "noble",
+        "vendor": "Noble Cascade",
+        "version": "0.2.0"
+      }
+    ]
+  },
+  "serialNumber": "urn:uuid:a2133624-f446-0000-0000-000000000000",
+  "specVersion": "1.5",
+  "version": 1
+}

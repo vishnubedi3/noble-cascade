@@ -63,11 +63,11 @@ def grant_verify(engine: NobleEngine) -> str:
 def make_scan_request(
     grant_id: str | None, *, target: str = str(FIXTURE), **kwargs: object
 ) -> SecurityRequest:
-    return SecurityRequest(
+    return SecurityRequest(  # type: ignore[arg-type]
         action="static-analysis",
         target=target,
         requester="researcher",
         tool="static-code-scan",
         authorization_grant=grant_id,
-        **kwargs,
+        **kwargs,  # type: ignore[arg-type]
     )

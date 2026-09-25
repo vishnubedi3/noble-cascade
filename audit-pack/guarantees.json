@@ -1,0 +1,65 @@
+{
+  "contracts": {
+    "approval": {
+      "description": "Self-approval never allows high-risk",
+      "input": "requester, approver",
+      "invariant": "requester == approver -> DENY",
+      "output": "APPROVED / DENIED"
+    },
+    "authorization": {
+      "description": "Only exact principal/target/purpose/time grants allow",
+      "input": "request + grant",
+      "invariant": "mismatch -> DENY",
+      "output": "AUTHORIZED / DENIED"
+    },
+    "evidence": {
+      "description": "Hash mismatch prevents trust",
+      "input": "content_hash",
+      "invariant": "mismatch -> UNTRUSTED",
+      "output": "TRUSTED / UNTRUSTED"
+    },
+    "sandbox": {
+      "description": "Unavailable sandbox prevents execution",
+      "input": "sandbox_available",
+      "invariant": "not available -> not executed",
+      "output": "EXECUTED / BLOCKED"
+    },
+    "scope": {
+      "description": "Unknown never becomes allow",
+      "input": "target",
+      "invariant": "UNKNOWN -> DENY",
+      "output": [
+        "ALLOW",
+        "DENY",
+        "UNKNOWN"
+      ]
+    },
+    "tool_output": {
+      "description": "Invalid output never becomes finding",
+      "input": "tool_output_valid",
+      "invariant": "invalid -> no finding",
+      "output": "FINDING / NO_FINDING"
+    }
+  },
+  "execution_chain": [
+    "Request",
+    "Policy",
+    "Authorization",
+    "Approval",
+    "Worker",
+    "Tool",
+    "Evidence",
+    "Finding",
+    "Report",
+    "Audit"
+  ],
+  "generatedAt": "2026-09-25T15:47:48.259349+00:00",
+  "policies": {
+    "approval": "PENDING->APPROVED/REJECTED/EXPIRED/REVOKED, compare-and-swap, no self-approval",
+    "authorization": "exact principal/target/action/purpose/time/permissions",
+    "network": "hard deny \u2014 no network-capable tool registered",
+    "sandbox": "process-local rlimits, bounded I/O, no filesystem/network namespace",
+    "scope": "deny-by-default, anchored matches, forbidden precedence, CIDR full containment"
+  },
+  "spec_version": "0.2.0"
+}

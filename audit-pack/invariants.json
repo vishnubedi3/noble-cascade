@@ -1,0 +1,163 @@
+{
+  "contracts": {
+    "approval": {
+      "description": "Self-approval never allows high-risk",
+      "input": "requester, approver",
+      "invariant": "requester == approver -> DENY",
+      "output": "APPROVED / DENIED"
+    },
+    "authorization": {
+      "description": "Only exact principal/target/purpose/time grants allow",
+      "input": "request + grant",
+      "invariant": "mismatch -> DENY",
+      "output": "AUTHORIZED / DENIED"
+    },
+    "evidence": {
+      "description": "Hash mismatch prevents trust",
+      "input": "content_hash",
+      "invariant": "mismatch -> UNTRUSTED",
+      "output": "TRUSTED / UNTRUSTED"
+    },
+    "sandbox": {
+      "description": "Unavailable sandbox prevents execution",
+      "input": "sandbox_available",
+      "invariant": "not available -> not executed",
+      "output": "EXECUTED / BLOCKED"
+    },
+    "scope": {
+      "description": "Unknown never becomes allow",
+      "input": "target",
+      "invariant": "UNKNOWN -> DENY",
+      "output": [
+        "ALLOW",
+        "DENY",
+        "UNKNOWN"
+      ]
+    },
+    "tool_output": {
+      "description": "Invalid output never becomes finding",
+      "input": "tool_output_valid",
+      "invariant": "invalid -> no finding",
+      "output": "FINDING / NO_FINDING"
+    }
+  },
+  "generatedAt": "2026-09-25T15:47:48.259349+00:00",
+  "hash": "0fa9d579af14d4e206e3e017fc1a335620b0db12b806dd8f95f9e2bf053f2eea",
+  "invariants": [
+    "No tool executes outside authorized scope (UNKNOWN -> DENY)",
+    "High-risk actions cannot execute without required approval",
+    "Agent cannot approve its own action",
+    "Unknown policy decisions fail closed",
+    "Target content cannot override system policy",
+    "Tool output cannot directly become trusted evidence without validation",
+    "Credentials are not exposed unnecessarily",
+    "Every security-sensitive execution is auditable",
+    "Sandbox failure prevents execution rather than silently weakening isolation",
+    "Web/API cannot bypass CLI controls"
+  ],
+  "state_machine": {
+    "states": [
+      "CREATED",
+      "VALIDATING",
+      "SCOPE_CHECK",
+      "AUTHORIZATION_CHECK",
+      "RISK_ASSESSMENT",
+      "WAITING_FOR_APPROVAL",
+      "APPROVED",
+      "PLANNED",
+      "DISPATCHED",
+      "RUNNING",
+      "EXECUTING",
+      "COLLECTING_EVIDENCE",
+      "VALIDATING_RESULT",
+      "REPORTING",
+      "COMPLETED",
+      "BLOCKED",
+      "FAILED",
+      "TIMED_OUT",
+      "CANCELLED"
+    ],
+    "terminal": [
+      "FAILED",
+      "TIMED_OUT",
+      "COMPLETED",
+      "BLOCKED",
+      "CANCELLED"
+    ],
+    "transitions": {
+      "APPROVED": [
+        "BLOCKED",
+        "EXECUTING",
+        "FAILED",
+        "PLANNED"
+      ],
+      "AUTHORIZATION_CHECK": [
+        "BLOCKED",
+        "FAILED",
+        "RISK_ASSESSMENT"
+      ],
+      "BLOCKED": [],
+      "CANCELLED": [],
+      "COLLECTING_EVIDENCE": [
+        "FAILED",
+        "VALIDATING_RESULT"
+      ],
+      "COMPLETED": [],
+      "CREATED": [
+        "VALIDATING"
+      ],
+      "DISPATCHED": [
+        "BLOCKED",
+        "FAILED",
+        "RUNNING"
+      ],
+      "EXECUTING": [
+        "BLOCKED",
+        "COLLECTING_EVIDENCE",
+        "FAILED",
+        "TIMED_OUT"
+      ],
+      "FAILED": [],
+      "PLANNED": [
+        "BLOCKED",
+        "DISPATCHED",
+        "FAILED"
+      ],
+      "REPORTING": [
+        "COMPLETED",
+        "FAILED"
+      ],
+      "RISK_ASSESSMENT": [
+        "BLOCKED",
+        "FAILED",
+        "WAITING_FOR_APPROVAL"
+      ],
+      "RUNNING": [
+        "COLLECTING_EVIDENCE",
+        "FAILED",
+        "TIMED_OUT"
+      ],
+      "SCOPE_CHECK": [
+        "AUTHORIZATION_CHECK",
+        "BLOCKED",
+        "FAILED"
+      ],
+      "TIMED_OUT": [],
+      "VALIDATING": [
+        "BLOCKED",
+        "FAILED",
+        "SCOPE_CHECK"
+      ],
+      "VALIDATING_RESULT": [
+        "COMPLETED",
+        "FAILED",
+        "REPORTING"
+      ],
+      "WAITING_FOR_APPROVAL": [
+        "APPROVED",
+        "BLOCKED",
+        "FAILED"
+      ]
+    }
+  }
+}

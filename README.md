@@ -11,7 +11,14 @@ Noble Cascade is an **offline, single-user, policy-governed research runtime** f
 
 The CLI and runtime have **no network-capable, write-capable, general PoC, or high-risk tools**. Missing Semgrep, Bandit, Gitleaks, Checkov, OSV-Scanner, Go, or Docker never turns into a successful scan. The 34 `agent-skills/` entries remain a categorized historical inventory; their wrappers and `SKILL.md` files are *not* registered tools. `noble doctor` reports the distinction.
 
-## Install (Linux, Python 3.11+)
+## Install — One-Command Setup (Phase 18)
+
+```bash
+make setup            # or:
+python3 -m venv .venv && .venv/bin/pip install --require-hashes -r requirements-dev.lock && .venv/bin/pip install -e . --no-deps && .venv/bin/noble doctor
+```
+
+Fallback (Linux, Python 3.11+):
 
 ```bash
 python3 -m venv .venv
@@ -63,13 +70,27 @@ Local OS operator → CLI → validated SecurityRequest → scope (deny unknown)
 
 High-risk approvals use a target/action/scope/risk/expiry-bound state machine and forbid self-approval. **No high-risk tool is registered**, and the single-user CLI cannot independently attest a second human identity. `--approve` on the old wrapper is explicitly rejected. Process limits are **not** an OS filesystem or egress sandbox; the worker is trusted local code that reads untrusted files as data. Any future external/network tool must be isolated independently before registration.
 
-## Validate
+## Validate — One-Command Verification (Phases 5, 16, 18, 19)
 
 ```bash
+make verify           # ./verify-everything.sh — full offline verification
+make certify          # noble certify — CERTIFIED/FAILED
+make release          # noble release --create && verify
+
+# Or manually:
 .venv/bin/python -m pytest -q
-.venv/bin/ruff check noble tests
-.venv/bin/ruff format --check noble tests
-.venv/bin/mypy noble
+.venv/bin/ruff check noble tests && .venv/bin/ruff format --check noble tests && .venv/bin/mypy noble
+.venv/bin/python -m noble certify --json          # governance certification
+.venv/bin/python -m noble release --verify        # reproducible release
+.venv/bin/python -m noble audit-pack              # independent audit bundle
+.venv/bin/python -m noble trust-report --json     # self-assessment
+.venv/bin/python -m noble trust-index --json      # machine trust index
+./verify-everything.sh                            # fresh-clone verification
+```
+
+See `docs/hardening-report.md`, `docs/release-process.md`, `docs/compliance-mapping.md` for phase coverage.
+
+```bash
 .venv/bin/bandit -r noble -ll -q
 .venv/bin/pip-audit -r requirements.lock --disable-pip
 .venv/bin/pip-audit -r requirements-dev.lock --disable-pip

@@ -1,0 +1,104 @@
+{
+  "commit": "46a74040beb1484887731bc9ac8b41875debcc2e",
+  "generatedAt": "2026-09-25T15:47:32.514451+00:00",
+  "inputs": {
+    "agent-skills/governance/scope-enforcement/scope-policy.yaml": "069153344401179e451cff7f39ea59be6c07f4db20b8e32af89d18d3e2c4d72d",
+    "config/runtime.yaml": "72e5f9f8c956cf242a5659807d27642f174c3c2455a184ee8078d129596e763c",
+    "docs/security-spec.json": "9ae28f04672a4184413a8c5a1ec3cc3df097266f41f6ccaa09db233726861de5",
+    "noble/builtins/worker.py": "cfdeaeb1877498f89fe054f44206eeafa6bd5a500ec9ee3c455fe3034f768f78",
+    "pyproject.toml": "bb617f1c8a3fb007df983028dbd269e4724f84ba45df338ace37f5889a7a730a",
+    "requirements-dev.lock": "53a7eaaa05d8a4ec9a52bc4a0798de5e57e4466927a0ac432c674bc89fc58639",
+    "requirements.lock": "d0fd4e1d9a99218255fa1903d4a4f2021ce48b2cb455ddd9168f1ba7c80c53a0"
+  },
+  "predicate": {
+    "buildConfig": {
+      "architecture": "x86_64",
+      "platform": "Linux-6.1.158+-x86_64-with-glibc2.36",
+      "pythonVersion": "3.11.2"
+    },
+    "buildType": "https://noble-cascade.local/build/v0.2.0",
+    "builder": {
+      "id": "local+noble-cascade"
+    },
+    "invocation": {
+      "configSource": {
+        "digest": {
+          "sha1": "46a74040beb1484887731bc9ac8b41875debcc2e"
+        },
+        "entryPoint": "noble release",
+        "uri": "git+https://github.com/vishnubedi3/noble-cascade@46a74040beb1484887731bc9ac8b41875debcc2e"
+      },
+      "parameters": {}
+    },
+    "materials": [
+      {
+        "digest": {
+          "sha1": "46a74040beb1484887731bc9ac8b41875debcc2e"
+        },
+        "uri": "git+https://github.com/vishnubedi3/noble-cascade"
+      },
+      {
+        "digest": {
+          "sha256": "bb617f1c8a3fb007df983028dbd269e4724f84ba45df338ace37f5889a7a730a"
+        },
+        "uri": "file://pyproject.toml"
+      },
+      {
+        "digest": {
+          "sha256": "d0fd4e1d9a99218255fa1903d4a4f2021ce48b2cb455ddd9168f1ba7c80c53a0"
+        },
+        "uri": "file://requirements.lock"
+      },
+      {
+        "digest": {
+          "sha256": "53a7eaaa05d8a4ec9a52bc4a0798de5e57e4466927a0ac432c674bc89fc58639"
+        },
+        "uri": "file://requirements-dev.lock"
+      },
+      {
+        "digest": {
+          "sha256": "72e5f9f8c956cf242a5659807d27642f174c3c2455a184ee8078d129596e763c"
+        },
+        "uri": "file://config/runtime.yaml"
+      },
+      {
+        "digest": {
+          "sha256": "069153344401179e451cff7f39ea59be6c07f4db20b8e32af89d18d3e2c4d72d"
+        },
+        "uri": "file://agent-skills/governance/scope-enforcement/scope-policy.yaml"
+      },
+      {
+        "digest": {
+          "sha256": "cfdeaeb1877498f89fe054f44206eeafa6bd5a500ec9ee3c455fe3034f768f78"
+        },
+        "uri": "file://noble/builtins/worker.py"
+      },
+      {
+        "digest": {
+          "sha256": "9ae28f04672a4184413a8c5a1ec3cc3df097266f41f6ccaa09db233726861de5"
+        },
+        "uri": "file://docs/security-spec.json"
+      }
+    ],
+    "metadata": {
+      "buildFinishedOn": "2026-09-25T15:47:32.514451+00:00",
+      "buildStartedOn": "2026-09-25T15:47:32.514451+00:00",
+      "completeness": {
+        "environment": true,
+        "materials": true,
+        "parameters": true
+      },
+      "dirty": true,
+      "reproducible": true
+    }
+  },
+  "predicateType": "https://slsa.dev/provenance/v1",
+  "subject": [
+    {
+      "digest": {
+        "sha256": "d45d8f490087a4d74f11b130f517f7c84f0429d5d801937a8e058a337077744d"
+      },
+      "name": "release"
+    }
+  ]
+}
