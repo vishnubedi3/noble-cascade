@@ -1,41 +1,41 @@
 {
   "deterministic": true,
-  "generatedAt": "2026-09-25T15:47:48.259349+00:00",
+  "generatedAt": "2026-09-25T16:12:13.882341+00:00",
   "proofs": [
     {
       "evidence_count": 2,
-      "execution_id": "lease-a5d5cdbc1cf54b649ca9921c5c4a0bd1",
+      "execution_id": "lease-1965cac43b334f53bdd93d33498e1bd3",
       "findings_count": 1,
       "outcome": "success_with_findings",
       "policy": {
         "configuration_hash": "72e5f9f8c956cf242a5659807d27642f174c3c2455a184ee8078d129596e763c",
         "policy_hash": "069153344401179e451cff7f39ea59be6c07f4db20b8e32af89d18d3e2c4d72d",
         "policy_version": "1.0.0",
-        "tool_run_id": "toolrun-f3e8a4bd50134a409b4d3017f8d5a316",
-        "worker_id": "worker-c3bc13c9f5a8487d8e0be8fcc185d60b",
+        "tool_run_id": "toolrun-23688f291fbb4930b263535b0db894de",
+        "worker_id": "worker-70d9a32502f1494a865b1a3c512d6204",
         "worker_image_digest": "cfdeaeb1877498f89fe054f44206eeafa6bd5a500ec9ee3c455fe3034f768f78"
       },
       "read_only": true,
       "replay_note": "This replay is read-only; no tool was re-executed. Policy and evidence are reconstructed from persisted state.",
-      "request_id": "req-624d94ea7de344b29f99be48ce9ca581",
+      "request_id": "req-530bb537561749159eb729e501aee20f",
       "state": "COMPLETED"
     },
     {
       "evidence_count": 2,
-      "execution_id": "lease-797e005abadf4792a2a105dd062bc2ba",
+      "execution_id": "lease-92f43de019a24c79ac1892dae4b36222",
       "findings_count": 1,
       "outcome": "success_with_findings",
       "policy": {
         "configuration_hash": "72e5f9f8c956cf242a5659807d27642f174c3c2455a184ee8078d129596e763c",
         "policy_hash": "069153344401179e451cff7f39ea59be6c07f4db20b8e32af89d18d3e2c4d72d",
         "policy_version": "1.0.0",
-        "tool_run_id": "toolrun-07f4e2c456394388a89c8c954b396233",
-        "worker_id": "worker-e3e009633244411e879bd3be7e3d3fbf",
+        "tool_run_id": "toolrun-89d9c543732d4816b2a5535f733e7c50",
+        "worker_id": "worker-6a0757ff5b46475dbddd9ed1891b20fd",
         "worker_image_digest": "cfdeaeb1877498f89fe054f44206eeafa6bd5a500ec9ee3c455fe3034f768f78"
       },
       "read_only": true,
       "replay_note": "This replay is read-only; no tool was re-executed. Policy and evidence are reconstructed from persisted state.",
-      "request_id": "req-638bfa102c1e49fdb9548b82641a2ac4",
+      "request_id": "req-c5d91737d17e48ec9f2f6d3a988e703f",
       "state": "COMPLETED"
     }
   ],

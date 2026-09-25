@@ -1,6 +1,6 @@
 {
-  "security_spec_hash": "b6d0f9056b4ac524040da5a31a193ac13fabfb0c6624846d01f8a27a67f71e39",
-  "sha256": "b6d0f9056b4ac524040da5a31a193ac13fabfb0c6624846d01f8a27a67f71e39",
+  "security_spec_hash": "88991e9c160194d804ce5752c9a7739587374324b18289a5096de60fc13da566",
+  "sha256": "88991e9c160194d804ce5752c9a7739587374324b18289a5096de60fc13da566",
   "spec": {
     "contracts": {
       "approval": {
@@ -692,11 +692,11 @@
         "CANCELLED"
       ],
       "terminal": [
-        "TIMED_OUT",
-        "COMPLETED",
         "BLOCKED",
+        "CANCELLED",
+        "COMPLETED",
         "FAILED",
-        "CANCELLED"
+        "TIMED_OUT"
       ],
       "transitions": {
         "APPROVED": [

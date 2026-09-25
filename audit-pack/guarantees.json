@@ -53,7 +53,7 @@
     "Report",
     "Audit"
   ],
-  "generatedAt": "2026-09-25T15:47:48.259349+00:00",
+  "generatedAt": "2026-09-25T16:12:13.882341+00:00",
   "policies": {
     "approval": "PENDING->APPROVED/REJECTED/EXPIRED/REVOKED, compare-and-swap, no self-approval",
     "authorization": "exact principal/target/action/purpose/time/permissions",

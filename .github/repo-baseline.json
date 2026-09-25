@@ -1,0 +1,77 @@
+{
+  "action_shas": {
+    "ci-hardened.yml": [
+      "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+      "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+      "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+    ],
+    "main.yml": [
+      "actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+      "actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+      "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065"
+    ],
+    "security-analysis.yml": [
+      "actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+      "actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+      "actions/dependency-review-action@2031cfc080254a8a887f58cffee85186f0e49e48",
+      "github/codeql-action/analyze@1190a975f95ce23525efb6a3fc21ea29567c1b52",
+      "github/codeql-action/init@1190a975f95ce23525efb6a3fc21ea29567c1b52"
+    ]
+  },
+  "branch_expectations": {
+    "branch_deletion": "prohibited",
+    "default_branch": "main",
+    "direct_push": "prohibited (requires owner-level branch protection)",
+    "force_push": "prohibited",
+    "protected_branches": [
+      "main"
+    ],
+    "required_pull_request": true
+  },
+  "classification_hash": "d7d078bccad6a840960d43c06eada5c5164ed2f52c34ab3be9dd4beb24ceb869",
+  "commit": "de408712a75726585a857b5be3db011afbb12ee7",
+  "config_hash": "72e5f9f8c956cf242a5659807d27642f174c3c2455a184ee8078d129596e763c",
+  "dependency_hashes": {
+    "requirements-dev.lock": "53a7eaaa05d8a4ec9a52bc4a0798de5e57e4466927a0ac432c674bc89fc58639",
+    "requirements.lock": "d0fd4e1d9a99218255fa1903d4a4f2021ce48b2cb455ddd9168f1ba7c80c53a0"
+  },
+  "description": "Repository security baseline. Drift from this baseline is detectable via `noble governance --baseline-verify`. Regenerate only through a reviewed PR; the regeneration itself is evidence.",
+  "governance_module_hash": "f865f32d3164951af687234bcc4dfe059bea338affe0918670a5fc43d29dcf15",
+  "policy_hash": "069153344401179e451cff7f39ea59be6c07f4db20b8e32af89d18d3e2c4d72d",
+  "release_configuration": {
+    "audit_pack_dir": "audit-pack/",
+    "release_dir": "release/",
+    "tag_binding": "RELEASE.json commit must equal tagged commit"
+  },
+  "required_verification_commands": [
+    "ruff check noble tests",
+    "ruff format --check noble tests",
+    "mypy noble",
+    "python -m pytest -q",
+    "bandit -r noble -ll -q",
+    "pip-audit -r requirements-dev.lock --disable-pip",
+    "python -m noble doctor --json",
+    "python -m noble health --json",
+    "python -m noble drift --json",
+    "python -m noble ledger --verify --json",
+    "python -m noble audit --verify",
+    "python -m noble spec --verify",
+    "python -m noble certify --json",
+    "python -m noble trust-index --json",
+    "python -m noble trust-report",
+    "python -m noble release --verify",
+    "bash verify-everything.sh",
+    "bash audit-pack/verification.sh",
+    "python -m noble governance --baseline-verify",
+    "python -m noble governance --workflow-audit"
+  ],
+  "security_spec_hash": "f5662bab9cda37e0dcd059916f86b4cc522c9feabc15ab0637b9124dc564607d",
+  "verification_script_hash": "3e5f4826938fcbb580bee9892f7f571d6e620f8b53f019b0531ac73650895b6a",
+  "version": 1,
+  "worker_digest": "cfdeaeb1877498f89fe054f44206eeafa6bd5a500ec9ee3c455fe3034f768f78",
+  "workflow_hashes": {
+    "ci-hardened.yml": "1bc2cec9ae053871718de8b590ac084ce87c4c30e6c62f737dedb419e2c8f5a3",
+    "main.yml": "a134e1db34f20427c2baa97cb1e18fdcb28a443543c30f0ceef8498d5dd36a57",
+    "security-analysis.yml": "81b9344e967740cc93063098bd8e32a2dd29bb87b23a0f18c21c2f4712284c4e"
+  }
+}
