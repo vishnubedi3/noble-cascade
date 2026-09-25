@@ -1,0 +1,67 @@
+# Noble Cascade — GitHub-native security analysis.
+#
+# This workflow ADDS evidence; it does not replace the Noble governance kernel.
+# Relationship (docs/repository-governance.md):
+#   GitHub Security + Noble Governance Kernel + Release Verification
+# Noble's own invariants remain authoritative for Noble's execution behavior.
+#
+# Security properties:
+# - top-level permissions: contents: read only; jobs grant only what they need
+# - all third-party actions pinned to immutable commit SHAs (version in comment)
+# - dependency-review runs on pull_request only (compares dependency diff)
+# - CodeQL autobuild disabled; explicit `python -m compileall` build step, no
+#   untrusted code execution beyond the checked-out tree and locked dependencies
+# - persist-credentials: false everywhere
+name: Security analysis
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 6 * * 1' # weekly Monday 06:00 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - name: Checkout (no credentials)
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Dependency review (fail on high/critical in dependency diff)
+        uses: actions/dependency-review-action@2031cfc080254a8a887f58cffee85186f0e49e48 # v4
+        with:
+          fail-on-severity: high
+          deny-licenses: GPL-2.0, GPL-3.0
+
+  codeql:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      security-events: write # required to upload CodeQL findings to code scanning
+    steps:
+      - name: Checkout (no credentials)
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Initialize CodeQL (python, security-extended)
+        uses: github/codeql-action/init@1190a975f95ce23525efb6a3fc21ea29567c1b52 # v3
+        with:
+          languages: python
+          queries: security-extended
+      - name: Build (explicit compile, no autobuild of untrusted targets)
+        run: python -m compileall -q noble
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@1190a975f95ce23525efb6a3fc21ea29567c1b52 # v3
+        with:
+          category: '/language:python'

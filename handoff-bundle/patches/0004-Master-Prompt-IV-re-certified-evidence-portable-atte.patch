@@ -1,0 +1,318 @@
+From a2281c8b97bcbb3ce4c535d4ee0b029da31bb730 Mon Sep 17 00:00:00 2001
+From: vishnubedi3 <309025711+vishnubedi3@users.noreply.github.com>
+Date: Fri, 25 Sep 2026 16:17:50 +0000
+Subject: [PATCH 4/8] Master Prompt IV: re-certified evidence (portable
+ attestation key)
+
+- release/ regenerated with path-independent attestation signatures
+- .github/repo-baseline.json regenerated (covers release machinery)
+
+Co-authored-by: arena-agent <297053741+arena-agent@users.noreply.github.com>
+---
+ .github/repo-baseline.json  | 18 ++++++++++++++++--
+ release/ATTESTATION.json    | 18 +++++++++---------
+ release/ATTESTATION.md      | 28 ++++++++++++++--------------
+ release/POLICY_HASHES.json  |  8 ++++----
+ release/PROVENANCE.json     | 14 +++++++-------
+ release/RELEASE.json        |  8 ++++----
+ release/SBOM.cyclonedx.json |  4 ++--
+ release/SBOM.spdx.json      |  6 +++---
+ release/TEST_RESULTS.json   |  2 +-
+ 9 files changed, 60 insertions(+), 46 deletions(-)
+
+diff --git a/.github/repo-baseline.json b/.github/repo-baseline.json
+index 7280f8e..492921d 100644
+--- a/.github/repo-baseline.json
++++ b/.github/repo-baseline.json
+@@ -29,20 +29,34 @@
+     "required_pull_request": true
+   },
+   "classification_hash": "d7d078bccad6a840960d43c06eada5c5164ed2f52c34ab3be9dd4beb24ceb869",
+-  "commit": "de408712a75726585a857b5be3db011afbb12ee7",
++  "commit": "8fd3c880f26daae46f8d8eaf86a70dbabf256f4a",
+   "config_hash": "72e5f9f8c956cf242a5659807d27642f174c3c2455a184ee8078d129596e763c",
+   "dependency_hashes": {
+     "requirements-dev.lock": "53a7eaaa05d8a4ec9a52bc4a0798de5e57e4466927a0ac432c674bc89fc58639",
+     "requirements.lock": "d0fd4e1d9a99218255fa1903d4a4f2021ce48b2cb455ddd9168f1ba7c80c53a0"
+   },
+   "description": "Repository security baseline. Drift from this baseline is detectable via `noble governance --baseline-verify`. Regenerate only through a reviewed PR; the regeneration itself is evidence.",
+-  "governance_module_hash": "f865f32d3164951af687234bcc4dfe059bea338affe0918670a5fc43d29dcf15",
++  "governance_module_hash": "611db709c4f74a28979bf9083a5a9add9a4209d92eba1e6998ab99ef5526312e",
+   "policy_hash": "069153344401179e451cff7f39ea59be6c07f4db20b8e32af89d18d3e2c4d72d",
+   "release_configuration": {
+     "audit_pack_dir": "audit-pack/",
+     "release_dir": "release/",
+     "tag_binding": "RELEASE.json commit must equal tagged commit"
+   },
++  "release_machinery_hashes": {
++    "attest.py": "8c94e728687b2a7d57b45fac7ab2ff5d0dea11ce51b90b87f0b9b381a48b0a36",
++    "audit_pack.py": "9393559a12c500d5257db9f44d21fded2c146e721d02c482c417156b761a169e",
++    "certify.py": "fdf61c34502661661e638c04c147f1f7403d36be9b0757fa78255e7a6ea3293c",
++    "ledger.py": "4deb63e96b6edf4e7cccd63ba2357006627078d3fef1c6e70bbb63a63ff0f264",
++    "ledger_integrity.py": "dcea74a26eaf3b02f7a42c89488af4b67aa9a2130b5a887576b69007b6800a32",
++    "provenance.py": "c136d146f49f86a84b90de5762309dede0d6de056d0f4f756327b9cf143b5a6b",
++    "release.py": "94038e9ca73cd1e95b95ff78c5a0102e1c6119c70046a2d19895a37014b9c099",
++    "replay.py": "a544fa68a9e35c4411d6297bd45b0c7c1a97fff94c2f929a6681d22829952eb5",
++    "sbom.py": "c2352faef2f998bcb30a7abf0d92712d49d33f86fe80a397fe2620ca82684577",
++    "signing.py": "e5c2278a79e414c9b3b33af3a7979b13443c73b1471d126491e231930dd2c70c",
++    "spec.py": "267db2d877679ccc1fd4318c9e17ca2ddd6352ee13fcf1645067c7f899ffe043",
++    "store.py": "ef4557f5fa19f7a14b0b229760a4c084561b148d43d8605e99f5bc7fda2ce9ea"
++  },
+   "required_verification_commands": [
+     "ruff check noble tests",
+     "ruff format --check noble tests",
+diff --git a/release/ATTESTATION.json b/release/ATTESTATION.json
+index 04f4c4f..5d1b65d 100644
+--- a/release/ATTESTATION.json
++++ b/release/ATTESTATION.json
+@@ -1,19 +1,19 @@
+ {
+   "attestation": {
+     "algorithm": "HMAC-SHA256",
+-    "digest": "5f017b19fe137aea463126a28a144e3addb09284f82cc4e66549317f223f3e92",
+-    "key_id": "db309be0c4d8e96a",
+-    "signature": "25e1450600a2414b451675896923da74bf2371c99727642f6048b648c787496b"
++    "digest": "e688cb0fe75a51f6114aa29895267a39b2a9e86f89d6af8bffab5ac75b6a62ec",
++    "key_id": "126b652aa1c3ef41",
++    "signature": "f9891f45ee8729cdac88744d5cb6090a18ef8828e4df7879a7a2cea12d224a45"
+   },
+   "markdown": "ATTESTATION.md",
+   "payload": {
+-    "cyclonedx": "f5a521a5e36610234984c8777b36c7b0cfc26056d0f4819251d97cea9a63e147",
+-    "policy_hashes": "d056ffdf1e32892fea44c37067c1c778a89e86216c4e7afa6b284e0838b566e9",
+-    "provenance": "c605718047c1989e7ea9e3bd68f7f7a3e695201d4ad745ab8212bf9e84ab0a83",
+-    "release": "213300aaa3cd31d22d62c4cf5606350354188dd960b9b54c34862fffa8611390",
++    "cyclonedx": "a0b4918f264ba28439aeaf61e5951bb35faad162bec269a0a79fd03a354eb0e7",
++    "policy_hashes": "bdc1107a559d4ac39fdd429e149d7bbafc58c85fd66c6e163a7274b6782f0c48",
++    "provenance": "36df8262489d31600d4484adf40295158cdaca6423c7a68b2d11984cfbd49933",
++    "release": "8109d42a64d33af8c27ebcfe29c3cdb7c1f74a63f1f19c0e6a62663bce417160",
+     "security_spec": "c7d595490a51b65ec2ca5bd34dd002ec045307e0f998231094bb04964f1ff492",
+-    "spdx": "6741401bba4c2028ac8f0cc33f7fa04f126bf5e6bb92439eaa2ab857d7ab9fa6",
+-    "test_results": "ceff486a2cc12c540c970bbf0cc6fc73fb5d99854739f4748c31e8676e4d047d",
++    "spdx": "7e816ab8afddd174405f7541cb2bbcf6974a532347a5268b7d37d4d481ae1cd4",
++    "test_results": "74aa5c0e610485af06b8d946c1219161b7210720cd61833b60146208dbe37c43",
+     "worker": "213da6da3d3212dbdaee7c972b8c7ac464f36fa2193c97f9e77576b41782a83f"
+   }
+ }
+\ No newline at end of file
+diff --git a/release/ATTESTATION.md b/release/ATTESTATION.md
+index ec8b787..ad3e62d 100644
+--- a/release/ATTESTATION.md
++++ b/release/ATTESTATION.md
+@@ -1,26 +1,26 @@
+ # Noble Cascade Release Attestation
+ 
+-Version: 0.2.0-de40871
+-Commit: de408712a75726585a857b5be3db011afbb12ee7
+-Created: 2026-09-25T16:13:54.278085+00:00
++Version: 0.2.0-8fd3c88
++Commit: 8fd3c880f26daae46f8d8eaf86a70dbabf256f4a
++Created: 2026-09-25T16:17:18.220128+00:00
+ 
+ ## Hashes
+ 
+-- RELEASE.json: 213300aaa3cd31d22d62c4cf5606350354188dd960b9b54c34862fffa8611390
+-- SBOM.spdx.json: 6741401bba4c2028ac8f0cc33f7fa04f126bf5e6bb92439eaa2ab857d7ab9fa6
+-- SBOM.cyclonedx.json: f5a521a5e36610234984c8777b36c7b0cfc26056d0f4819251d97cea9a63e147
+-- PROVENANCE.json: c605718047c1989e7ea9e3bd68f7f7a3e695201d4ad745ab8212bf9e84ab0a83
+-- POLICY_HASHES.json: d056ffdf1e32892fea44c37067c1c778a89e86216c4e7afa6b284e0838b566e9
+-- TEST_RESULTS.json: ceff486a2cc12c540c970bbf0cc6fc73fb5d99854739f4748c31e8676e4d047d
++- RELEASE.json: 8109d42a64d33af8c27ebcfe29c3cdb7c1f74a63f1f19c0e6a62663bce417160
++- SBOM.spdx.json: 7e816ab8afddd174405f7541cb2bbcf6974a532347a5268b7d37d4d481ae1cd4
++- SBOM.cyclonedx.json: a0b4918f264ba28439aeaf61e5951bb35faad162bec269a0a79fd03a354eb0e7
++- PROVENANCE.json: 36df8262489d31600d4484adf40295158cdaca6423c7a68b2d11984cfbd49933
++- POLICY_HASHES.json: bdc1107a559d4ac39fdd429e149d7bbafc58c85fd66c6e163a7274b6782f0c48
++- TEST_RESULTS.json: 74aa5c0e610485af06b8d946c1219161b7210720cd61833b60146208dbe37c43
+ - SECURITY_SPEC_HASH.json: c7d595490a51b65ec2ca5bd34dd002ec045307e0f998231094bb04964f1ff492
+ - WORKER_DIGESTS.json: 213da6da3d3212dbdaee7c972b8c7ac464f36fa2193c97f9e77576b41782a83f
+ 
+ ## Attestation
+ 
+ Algorithm: HMAC-SHA256
+-Digest: 5f017b19fe137aea463126a28a144e3addb09284f82cc4e66549317f223f3e92
+-Signature: 25e1450600a2414b451675896923da74bf2371c99727642f6048b648c787496b
+-Key ID: db309be0c4d8e96a
++Digest: e688cb0fe75a51f6114aa29895267a39b2a9e86f89d6af8bffab5ac75b6a62ec
++Signature: f9891f45ee8729cdac88744d5cb6090a18ef8828e4df7879a7a2cea12d224a45
++Key ID: 126b652aa1c3ef41
+ 
+ Verification: `noble release --verify` or `noble attest --verify release/ATTESTATION.md`
+ 
+@@ -32,7 +32,7 @@ For production, replace with Sigstore.
+ To reproduce:
+ ```bash
+ git clone https://github.com/vishnubedi3/noble-cascade && cd noble-cascade
+-git checkout de408712a75726585a857b5be3db011afbb12ee7
+-noble release --create 0.2.0-de40871
++git checkout 8fd3c880f26daae46f8d8eaf86a70dbabf256f4a
++noble release --create 0.2.0-8fd3c88
+ # compare hashes in release/
+ ```
+diff --git a/release/POLICY_HASHES.json b/release/POLICY_HASHES.json
+index 8644ab5..4466d16 100644
+--- a/release/POLICY_HASHES.json
++++ b/release/POLICY_HASHES.json
+@@ -2,10 +2,10 @@
+   "configuration_hash": "72e5f9f8c956cf242a5659807d27642f174c3c2455a184ee8078d129596e763c",
+   "policy_hash": "069153344401179e451cff7f39ea59be6c07f4db20b8e32af89d18d3e2c4d72d",
+   "policy_version": "1.0.0",
+-  "provenance_sha256": "c605718047c1989e7ea9e3bd68f7f7a3e695201d4ad745ab8212bf9e84ab0a83",
+-  "release_json_sha256": "213300aaa3cd31d22d62c4cf5606350354188dd960b9b54c34862fffa8611390",
+-  "sbom_cyclonedx_sha256": "f5a521a5e36610234984c8777b36c7b0cfc26056d0f4819251d97cea9a63e147",
+-  "sbom_spdx_sha256": "6741401bba4c2028ac8f0cc33f7fa04f126bf5e6bb92439eaa2ab857d7ab9fa6",
++  "provenance_sha256": "36df8262489d31600d4484adf40295158cdaca6423c7a68b2d11984cfbd49933",
++  "release_json_sha256": "8109d42a64d33af8c27ebcfe29c3cdb7c1f74a63f1f19c0e6a62663bce417160",
++  "sbom_cyclonedx_sha256": "a0b4918f264ba28439aeaf61e5951bb35faad162bec269a0a79fd03a354eb0e7",
++  "sbom_spdx_sha256": "7e816ab8afddd174405f7541cb2bbcf6974a532347a5268b7d37d4d481ae1cd4",
+   "security_spec_hash": "88991e9c160194d804ce5752c9a7739587374324b18289a5096de60fc13da566",
+   "worker_image_digest": "cfdeaeb1877498f89fe054f44206eeafa6bd5a500ec9ee3c455fe3034f768f78"
+ }
+\ No newline at end of file
+diff --git a/release/PROVENANCE.json b/release/PROVENANCE.json
+index e9cb41d..94eaa87 100644
+--- a/release/PROVENANCE.json
++++ b/release/PROVENANCE.json
+@@ -1,6 +1,6 @@
+ {
+-  "commit": "de408712a75726585a857b5be3db011afbb12ee7",
+-  "generatedAt": "2026-09-25T16:13:54.406244+00:00",
++  "commit": "8fd3c880f26daae46f8d8eaf86a70dbabf256f4a",
++  "generatedAt": "2026-09-25T16:17:18.312503+00:00",
+   "inputs": {
+     "agent-skills/governance/scope-enforcement/scope-policy.yaml": "069153344401179e451cff7f39ea59be6c07f4db20b8e32af89d18d3e2c4d72d",
+     "config/runtime.yaml": "72e5f9f8c956cf242a5659807d27642f174c3c2455a184ee8078d129596e763c",
+@@ -23,17 +23,17 @@
+     "invocation": {
+       "configSource": {
+         "digest": {
+-          "sha1": "de408712a75726585a857b5be3db011afbb12ee7"
++          "sha1": "8fd3c880f26daae46f8d8eaf86a70dbabf256f4a"
+         },
+         "entryPoint": "noble release",
+-        "uri": "git+https://github.com/vishnubedi3/noble-cascade@de408712a75726585a857b5be3db011afbb12ee7"
++        "uri": "git+https://github.com/vishnubedi3/noble-cascade@8fd3c880f26daae46f8d8eaf86a70dbabf256f4a"
+       },
+       "parameters": {}
+     },
+     "materials": [
+       {
+         "digest": {
+-          "sha1": "de408712a75726585a857b5be3db011afbb12ee7"
++          "sha1": "8fd3c880f26daae46f8d8eaf86a70dbabf256f4a"
+         },
+         "uri": "git+https://github.com/vishnubedi3/noble-cascade"
+       },
+@@ -81,8 +81,8 @@
+       }
+     ],
+     "metadata": {
+-      "buildFinishedOn": "2026-09-25T16:13:54.406244+00:00",
+-      "buildStartedOn": "2026-09-25T16:13:54.406244+00:00",
++      "buildFinishedOn": "2026-09-25T16:17:18.312503+00:00",
++      "buildStartedOn": "2026-09-25T16:17:18.312503+00:00",
+       "completeness": {
+         "environment": true,
+         "materials": true,
+diff --git a/release/RELEASE.json b/release/RELEASE.json
+index c939521..0fa555c 100644
+--- a/release/RELEASE.json
++++ b/release/RELEASE.json
+@@ -4,7 +4,7 @@
+     "python": "Python 3.11.2"
+   },
+   "configuration_hash": "72e5f9f8c956cf242a5659807d27642f174c3c2455a184ee8078d129596e763c",
+-  "createdAt": "2026-09-25T16:13:54.278085+00:00",
++  "createdAt": "2026-09-25T16:17:18.220128+00:00",
+   "dependency_locks": {
+     "requirements-dev.lock": {
+       "hash": "53a7eaaa05d8a4ec9a52bc4a0798de5e57e4466927a0ac432c674bc89fc58639",
+@@ -17,8 +17,8 @@
+       "present": true
+     }
+   },
+-  "git_commit": "de408712a75726585a857b5be3db011afbb12ee7",
+-  "git_tag": "0.2.0-de40871",
++  "git_commit": "8fd3c880f26daae46f8d8eaf86a70dbabf256f4a",
++  "git_tag": "0.2.0-8fd3c88",
+   "name": "noble-cascade",
+   "policy_hash": "069153344401179e451cff7f39ea59be6c07f4db20b8e32af89d18d3e2c4d72d",
+   "policy_version": "1.0.0",
+@@ -29,7 +29,7 @@
+     "raw": "",
+     "tests": []
+   },
+-  "version": "0.2.0-de40871",
++  "version": "0.2.0-8fd3c88",
+   "worker_image_digest": "cfdeaeb1877498f89fe054f44206eeafa6bd5a500ec9ee3c455fe3034f768f78",
+   "working_tree_clean": false
+ }
+\ No newline at end of file
+diff --git a/release/SBOM.cyclonedx.json b/release/SBOM.cyclonedx.json
+index adea8be..7448fe0 100644
+--- a/release/SBOM.cyclonedx.json
++++ b/release/SBOM.cyclonedx.json
+@@ -1155,7 +1155,7 @@
+       "type": "application",
+       "version": "0.2.0"
+     },
+-    "timestamp": "2026-09-25T16:13:54.393435+00:00",
++    "timestamp": "2026-09-25T16:17:18.300661+00:00",
+     "tools": [
+       {
+         "name": "noble",
+@@ -1164,7 +1164,7 @@
+       }
+     ]
+   },
+-  "serialNumber": "urn:uuid:3b93dc00-f446-0000-0000-000000000000",
++  "serialNumber": "urn:uuid:f7cffa78-f446-0000-0000-000000000000",
+   "specVersion": "1.5",
+   "version": 1
+ }
+\ No newline at end of file
+diff --git a/release/SBOM.spdx.json b/release/SBOM.spdx.json
+index 7b4e858..94c2547 100644
+--- a/release/SBOM.spdx.json
++++ b/release/SBOM.spdx.json
+@@ -1,7 +1,7 @@
+ {
+   "SPDXID": "SPDXRef-DOCUMENT",
+   "creationInfo": {
+-    "created": "2026-09-25T16:13:54.359064+00:00",
++    "created": "2026-09-25T16:17:18.269538+00:00",
+     "creators": [
+       "Tool: noble-sbom-0.2.0",
+       "Organization: Noble Cascade"
+@@ -9,7 +9,7 @@
+     "licenseListVersion": "3.22"
+   },
+   "dataLicense": "CC0-1.0",
+-  "documentNamespace": "https://noble-cascade.local/sbom/c5ca68bfe222",
++  "documentNamespace": "https://noble-cascade.local/sbom/9ece0cc68d28",
+   "name": "noble-cascade-sbom",
+   "packages": [
+     {
+@@ -626,7 +626,7 @@
+     }
+   ],
+   "provenance": {
+-    "buildTime": "2026-09-25T16:13:54.359064+00:00",
++    "buildTime": "2026-09-25T16:17:18.269538+00:00",
+     "generatedBy": "noble sbom",
+     "generatorVersion": "0.2.0"
+   },
+diff --git a/release/TEST_RESULTS.json b/release/TEST_RESULTS.json
+index 7de01e2..bad8abf 100644
+--- a/release/TEST_RESULTS.json
++++ b/release/TEST_RESULTS.json
+@@ -2,5 +2,5 @@
+   "exit_code": 1,
+   "passed": false,
+   "summary": [],
+-  "timestamp": "2026-09-25T16:13:54.269116+00:00"
++  "timestamp": "2026-09-25T16:17:18.212095+00:00"
+ }
+\ No newline at end of file
+-- 
+2.39.5
+

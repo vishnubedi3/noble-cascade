@@ -1,0 +1,51 @@
+From 292f3051fa260885cde3ebe05871cdcbeaa6be3e Mon Sep 17 00:00:00 2001
+From: vishnubedi3 <309025711+vishnubedi3@users.noreply.github.com>
+Date: Fri, 25 Sep 2026 16:21:33 +0000
+Subject: [PATCH 8/8] Master Prompt IV: report records final HEAD + fresh-clone
+ re-proof
+
+Co-authored-by: arena-agent <297053741+arena-agent@users.noreply.github.com>
+---
+ docs/repository-governance-report.md | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/docs/repository-governance-report.md b/docs/repository-governance-report.md
+index c9f36ce..7e846d9 100644
+--- a/docs/repository-governance-report.md
++++ b/docs/repository-governance-report.md
+@@ -1,6 +1,6 @@
+ # Repository Governance Report — Master Prompt IV
+ 
+-Date: 2026-09-25. Head: `a2281c8` (branch `arena/01a0d94c-noble-cascade`).
++Date: 2026-09-25. Head: `5393684` (branch `arena/01a0d94c-noble-cascade`).
+ Question: *can the repository prevent an unverified change from becoming an
+ accepted release?* The machinery below makes the answer mechanically enforced
+ where code can enforce it, and explicitly MANUAL where only a human can.
+@@ -8,9 +8,13 @@ where code can enforce it, and explicitly MANUAL where only a human can.
+ ## 1. Repository state
+ 
+ - Single-commit `main` (`c42d8d2`) was the ground truth; all work is on the
+-  session branch as 4 commits: source (de40871), evidence (2c5ceab),
++  session branch as 8 commits: source (de40871), evidence (2c5ceab),
+   attestation portability + machinery baseline (8fd3c88), re-certified
+-  evidence (a2281c8).
++  evidence (a2281c8), this report (1b83a71), repo-wide lint/format (be4e56f),
++  re-certified evidence (5393684), report head update (this commit). Each
++  source commit that touched governed files is followed by a re-certification
++  commit — the no-drift invariant requires it, and intermediate staleness is
++  documented in §14 rather than hidden.
+ - Baseline audit before modification found: CI workflow duplicated between
+   `docs/` (inactive) and `.github/workflows/` (live); two corrupt action pins
+   (39/41 hex chars); committed `release/` stale vs `main` HEAD (certified for
+@@ -130,7 +134,7 @@ analysis / codeql`. Every check maps to a real invariant
+ 
+ ## 11. Fresh-clone results
+ 
+-From a clean clone at `a2281c8` (`git clone ... -b arena/01a0d94c-noble-cascade`,
++From a clean clone at `5393684` (`git clone ... -b arena/01a0d94c-noble-cascade`,
+ fresh venv, hash-locked install, `noble drift --baseline`): 179 passed,
+ CERTIFIED, Release VERIFIED, Baseline VERIFIED, offline 9/9,
+ `verify-everything.sh` 20/20. Full chain: clone -> setup -> tests ->
+-- 
+2.39.5
+
