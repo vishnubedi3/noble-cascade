@@ -18,7 +18,7 @@ python3 -m venv .venv
 .venv/bin/noble doctor
 ```
 
-The hash-locked runtime requirements cover PyYAML, jsonschema and their resolved transitive dependencies. The project file `pyproject.toml` constrains compatible releases; use the lock for reproducibility. **Only source-checkout/editable operation from the repository root is supported**: `config/runtime.yaml`, the scope policy, and the synthetic fixture live in the checkout rather than in a standalone wheel. The inactive [CI template](ci-workflow-template.yml) proposes a wheel metadata build, but no GitHub CI is enabled by this PR; a maintainer with workflow permission must install it separately. A wheel build alone does not mean the runtime works without the source checkout. For development, install **`requirements-dev.lock` instead of `requirements.lock`**, then install the editable project without dependencies:
+The hash-locked runtime requirements cover PyYAML, jsonschema and their resolved transitive dependencies. The project file `pyproject.toml` constrains compatible releases; use the lock for reproducibility. **Only source-checkout/editable operation from the repository root is supported**: `config/runtime.yaml`, the scope policy, and the synthetic fixture live in the checkout rather than in a standalone wheel. CI (`.github/workflows/`) builds wheel metadata as one step (see `docs/ci-activation.md`); A wheel build alone does not mean the runtime works without the source checkout. For development, install **`requirements-dev.lock` instead of `requirements.lock`**, then install the editable project without dependencies:
 
 ```bash
 .venv/bin/python -m pip install --require-hashes -r requirements-dev.lock

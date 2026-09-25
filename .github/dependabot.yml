@@ -1,0 +1,35 @@
+# Noble Cascade — dependency automation enters the SAME governance pipeline.
+# Update -> lockfile change -> dependency audit -> tests -> security
+# verification -> review -> merge. Dependabot cannot bypass governance:
+# its PRs run the full required-check set and need CODEOWNERS review of
+# requirements*.lock (owned by @noble-cascade/ci).
+version: 2
+updates:
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+    # Security updates only from the default branch pipeline; version updates
+    # are grouped to keep the governance review surface small.
+    groups:
+      dev-dependencies:
+        patterns: ['pytest*', 'ruff*', 'mypy*', 'bandit*', 'pip-audit*', 'detect-secrets*']
+    allow:
+      - dependency-type: direct
+    commit-message:
+      prefix: 'deps'
+    labels: [dependencies, governance-review-required]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+    groups:
+      actions:
+        patterns: ['*']
+    commit-message:
+      prefix: 'ci'
+    labels: [ci, governance-review-required]

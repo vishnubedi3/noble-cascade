@@ -184,6 +184,23 @@ def make_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("invariants", help="formal security invariants")
     p.add_argument("--json", action="store_true")
 
+    # --- Master Prompt IV: repository governance ---
+    p = sub.add_parser(
+        "governance", help="repository governance: baseline, workflow audit, PR analysis"
+    )
+    p.add_argument(
+        "--baseline-create", action="store_true", help="write .github/repo-baseline.json"
+    )
+    p.add_argument(
+        "--baseline-verify", action="store_true", help="verify checkout against baseline"
+    )
+    p.add_argument("--workflow-audit", action="store_true", help="audit .github/workflows/*")
+    p.add_argument("--pr-analysis", action="store_true", help="analyze changed files vs guarantees")
+    p.add_argument("--from", dest="from_commit", default=None, help="from commit (default HEAD~1)")
+    p.add_argument("--to", dest="to_commit", default=None, help="to commit (default HEAD)")
+    p.add_argument("--paths", nargs="*", default=None, help="explicit paths for guarantee impact")
+    p.add_argument("--json", action="store_true")
+
     return parser
 
 
@@ -309,9 +326,11 @@ def main(argv: list[str] | None = None) -> int:
         else:
             print("=== Noble Cascade Trust Report ===")
             print(f"Version: {report['version']}")
-            print(f"Guarantees: {len(report['guarantees'])}")
-            for g in report["guarantees"]:
-                print(f"  - {g}")
+            print(
+                "Assertions (status: ENFORCED > VERIFIED > DOCUMENTED > MANUAL > EXPERIMENTAL > UNSUPPORTED):"
+            )
+            for name, info in report.get("assertion_status", {}).items():
+                print(f"  [{info['status']:12}] {name}")
             print("Limitations:")
             for l in report["limitations"]:
                 print(f"  - {l}")
@@ -478,6 +497,62 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"  Spec: {inv.specification}")
                 print(f"  Impl: {inv.implementation}")
                 print(f"  Test: {inv.test}")
+        return 0
+    if args.command == "governance":
+        from .governance import (
+            audit_workflows,
+            guarantee_impact,
+            pr_analysis,
+            verify_baseline,
+            write_baseline,
+        )
+
+        if args.baseline_create:
+            out = write_baseline()
+            if args.json:
+                _json({"baseline": str(out)})
+            else:
+                print(f"Baseline written to {out}")
+            return 0
+        if args.baseline_verify:
+            result = verify_baseline()
+            if args.json:
+                _json(result)
+            else:
+                print("Baseline VERIFIED" if result["verified"] else "Baseline DRIFTED")
+                for item in result["drift"]:
+                    print(f"  - {item}")
+                print(f"  baseline commit: {result['baseline_commit'][:12]}")
+                print(f"  current commit:  {result['current_commit'][:12]}")
+            return 0 if result["verified"] else 1
+        if args.workflow_audit:
+            report = audit_workflows()
+            if args.json:
+                _json(report)
+            else:
+                print(f"Workflows audited: {report['count']}")
+                for name, wf in report["workflows"].items():
+                    print(f"  {name}: {'PASS' if wf['passed'] else 'FAIL'}")
+                    for finding in wf["findings"]:
+                        print(f"    - {finding}")
+            return 0 if report["passed"] else 1
+        if args.paths:
+            result = guarantee_impact(args.paths)
+        else:
+            result = pr_analysis(args.from_commit, args.to_commit)
+        if args.json:
+            _json(result)
+        else:
+            files = result.get("files_changed", result.get("paths", []))
+            print(f"Files changed: {result.get('files_count', len(files))}")
+            for f in files[:30]:
+                print(f"  - {f}")
+            print(f"Severity: {result['severity']}")
+            critical = result.get("security_critical", result["severity"] != "standard")
+            print(f"Security-critical: {critical}")
+            print(f"Surface: {result.get('security_surface', result.get('guarantees_affected'))}")
+            print(f"Guarantees affected: {result['guarantees_affected']}")
+            print(f"Verification required: {result['required_verification']}")
         return 0
     if args.command == "verify":
         from .certify import certify

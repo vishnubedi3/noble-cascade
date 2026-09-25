@@ -1,3 +1,9 @@
+> **Superseded in part (2026-09-25, Master Prompt IV):** CI is now active —
+> `.github/workflows/ci-hardened.yml` was relocated from `docs/` and executes
+> the full governance chain. See `docs/ci-activation.md` and
+> `docs/repository-governance.md`. Rows below marked historical describe the
+> pre-activation state and are kept for audit continuity.
+
 # Noble Cascade — Engineering Report
 
 - **Date:** 2026-09-25

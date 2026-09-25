@@ -37,7 +37,29 @@ release/
 └── ATTESTATION.json          # machine attestation (HMAC-SHA256)
 ```
 
-## Verification without trust
+## Release tags as security boundaries (Master Prompt IV)
+
+```
+Commit -> Verified main -> Release candidate -> Certification -> Tag
+  -> Artifacts -> Attestation
+```
+
+A release tag identifies exactly which source was certified: tags are created
+only from verified `main` (maintainer discipline, see
+`docs/maintainer-security-checklist.md`), and `noble release --verify` binds
+the tag to the certified source mechanically (below). Release flow:
+
+```bash
+git checkout main && git pull --ff-only
+./verify-everything.sh            # all 20 checks must pass
+noble certify                     # must print CERTIFIED
+git tag -a vX.Y.Z -m "Noble Cascade vX.Y.Z"
+noble release --create vX.Y.Z     # artifacts bound to tag + commit
+noble release --verify            # no-drift proof must pass
+git push origin main vX.Y.Z
+```
+
+## Verification without trust (no release drift)
 
 ```bash
 noble release --verify
@@ -45,11 +67,20 @@ noble release --verify
 python -m noble release --verify --json
 ```
 
-Checks:
-- All 8 required files present
+Proves `certified source == tagged source == built source == attested source`.
+Any mismatch fails:
+
+- All 9 required files present
+- Certified source is HEAD or an ancestor of HEAD with no governed file changed since certification (no release drift; regenerate after any source change). `RELEASE.json` records whether the build tree was clean — authoritative release evidence comes from a clean CI checkout
+- Exact git tag == stored `git_tag` when HEAD is tagged (no tag drift)
+- Artifact bytes == `POLICY_HASHES.json` hashes (no artifact replacement)
 - Attestation HMAC verifies against repo-derived key (worker.py hash)
 - Stored policy/config/worker hashes == current (no drift)
 - SBOMs are valid SPDX/CycloneDX
+
+Noble attestation (HMAC-SHA256 over canonical JSON) is the primary chain. If
+GitHub artifact attestations are adopted later, they form cross-system
+provenance (`Noble attestation + GitHub attestation`) — never a replacement.
 
 ## Reproducibility
 

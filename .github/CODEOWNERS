@@ -1,0 +1,98 @@
+# Noble Cascade — Code ownership for security-critical areas.
+#
+# Repository teams are placeholders until the owner creates them; replace
+# @noble-cascade/<team> with the real team slugs. Until then, every rule also
+# requires a human maintainer review via branch protection (see
+# docs/maintainer-security-checklist.md — "requires maintainer action").
+#
+# Ownership domains:
+#   governance  — trust model, security spec, certification, release evidence
+#   runtime     — execution kernel, ledger, replay, audit
+#   sandbox     — process boundary, execution limits
+#   policy      — scope/auth policy, worker definitions, config schemas
+#   workers     — trusted built-in tools
+#   ci          — workflows, verification scripts, dependency automation
+#   release     — release machinery, attestations, SBOM/provenance
+
+# Governance (security specification is the trust root of all guarantees)
+/docs/security-spec.json               @noble-cascade/governance
+/docs/guarantee-matrix.md              @noble-cascade/governance
+/docs/governance-proof.md              @noble-cascade/governance
+/docs/repository-governance.md         @noble-cascade/governance
+/docs/maintainer-security-checklist.md @noble-cascade/governance
+/noble/certify.py                      @noble-cascade/governance
+/noble/trust_report.py                 @noble-cascade/governance
+/noble/trust_index.py                  @noble-cascade/governance
+/noble/governance.py                   @noble-cascade/governance
+/noble/spec.py                         @noble-cascade/governance
+/noble/compliance.py                   @noble-cascade/governance
+
+# Runtime (execution kernel, ledger, replay, audit chain)
+/noble/kernel.py                       @noble-cascade/runtime
+/noble/engine.py                       @noble-cascade/runtime
+/noble/ledger.py                       @noble-cascade/runtime
+/noble/ledger_integrity.py             @noble-cascade/runtime
+/noble/replay.py                       @noble-cascade/runtime
+/noble/audit.py                        @noble-cascade/runtime
+/noble/store.py                        @noble-cascade/runtime
+/noble/state_machine.py                @noble-cascade/runtime
+/noble/recovery.py                     @noble-cascade/runtime
+/noble/backup.py                       @noble-cascade/runtime
+
+# Sandbox (process boundary)
+/noble/execution.py                    @noble-cascade/sandbox
+/noble/network.py                      @noble-cascade/sandbox
+/noble/contracts.py                    @noble-cascade/sandbox
+/noble/invariants.py                   @noble-cascade/sandbox
+/tests/security/                       @noble-cascade/sandbox
+/tests/invariants/                     @noble-cascade/sandbox
+
+# Policy (scope, authorization, approvals, config, risk)
+/noble/scope.py                        @noble-cascade/policy
+/noble/authorization.py                @noble-cascade/policy
+/noble/approvals.py                    @noble-cascade/policy
+/noble/policy_version.py               @noble-cascade/policy
+/noble/policy_diff.py                  @noble-cascade/policy
+/noble/config.py                       @noble-cascade/policy
+/noble/config_schema.py                @noble-cascade/policy
+/noble/risk.py                         @noble-cascade/policy
+/noble/targets.py                      @noble-cascade/policy
+/agent-skills/governance/              @noble-cascade/policy
+/config/                               @noble-cascade/policy
+/docs/security-model.md                @noble-cascade/policy
+
+# Workers (trusted built-in tools only — no network/high-risk tools registered)
+/noble/builtins/                       @noble-cascade/workers
+/noble/worker_identity.py              @noble-cascade/workers
+/noble/supply_chain.py                 @noble-cascade/workers
+/noble/registry.py                     @noble-cascade/workers
+
+# CI (workflows, verification scripts, locks, packaging)
+/.github/workflows/                    @noble-cascade/ci
+/.github/dependabot.yml                @noble-cascade/ci
+/.github/security-critical.json        @noble-cascade/ci
+/.github/repo-baseline.json            @noble-cascade/ci
+/verify-everything.sh                  @noble-cascade/ci
+/Makefile                              @noble-cascade/ci
+/pyproject.toml                        @noble-cascade/ci
+/requirements.lock                     @noble-cascade/ci
+/requirements-dev.lock                 @noble-cascade/ci
+
+# Release system (provenance chain: source -> tag -> artifacts -> attestation)
+/noble/release.py                      @noble-cascade/release
+/noble/attest.py                       @noble-cascade/release
+/noble/provenance.py                   @noble-cascade/release
+/noble/sbom.py                         @noble-cascade/release
+/noble/signing.py                      @noble-cascade/release
+/noble/audit_pack.py                   @noble-cascade/release
+/release/                              @noble-cascade/release
+/audit-pack/                           @noble-cascade/release
+/docs/release-process.md               @noble-cascade/release
+/docs/compliance-mapping.md            @noble-cascade/release
+
+# Security regression corpus — every entry is a permanent fixture, never deleted
+/tests/regression/                     @noble-cascade/governance @noble-cascade/sandbox
+/tests/integration/                    @noble-cascade/runtime
+
+# Default: everything else still needs a maintainer
+*                                      @noble-cascade/governance

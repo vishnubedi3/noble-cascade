@@ -67,6 +67,7 @@ ignore = ["E501", "S110", "S112", "E741", "B007", "S108", "B905", "SIM105", "E72
 "noble/ledger_integrity.py" = ["S110"]
 "noble/platform.py" = ["S110", "S103"]
 "noble/compliance.py" = ["S110"]
+"noble/governance.py" = ["S603", "S607", "S110"]
 
 [tool.mypy]
 python_version = "3.11"

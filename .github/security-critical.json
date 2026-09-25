@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "description": "Security-critical file classification. Any change matching a rule receives stronger review (CODEOWNERS) and must pass the listed verification before merge. Consumed by `noble governance --pr-analysis` and CI.",
+  "rules": [
+    {
+      "id": "governance-kernel",
+      "paths": ["noble/kernel.py", "noble/engine.py", "noble/contracts.py", "noble/invariants.py"],
+      "domain": "governance",
+      "severity": "critical",
+      "guarantees": ["deny-by-default scope", "exact authorization", "no self-approval", "validated tool output"],
+      "required_verification": ["tests", "specification-verification", "governance-certification", "external-verification"]
+    },
+    {
+      "id": "execution-ledger",
+      "paths": ["noble/ledger.py", "noble/ledger_integrity.py", "noble/store.py", "noble/audit.py", "noble/signing.py", "noble/state_machine.py"],
+      "domain": "runtime",
+      "severity": "critical",
+      "guarantees": ["chained audit", "deterministic replay", "tamper-evident ledger"],
+      "required_verification": ["tests", "ledger-verification", "governance-certification", "external-verification"]
+    },
+    {
+      "id": "replay-recovery",
+      "paths": ["noble/replay.py", "noble/recovery.py", "noble/backup.py", "noble/migrate.py"],
+      "domain": "runtime",
+      "severity": "high",
+      "guarantees": ["deterministic replay", "restorable evidence"],
+      "required_verification": ["tests", "governance-certification"]
+    },
+    {
+      "id": "sandbox-boundary",
+      "paths": ["noble/execution.py", "noble/network.py"],
+      "domain": "sandbox",
+      "severity": "critical",
+      "guarantees": ["sandbox failure blocks execution", "offline-only execution", "no shell execution"],
+      "required_verification": ["tests", "security-analysis", "governance-certification", "external-verification"]
+    },
+    {
+      "id": "policy-surface",
+      "paths": ["noble/scope.py", "noble/authorization.py", "noble/approvals.py", "noble/policy_version.py", "noble/policy_diff.py", "noble/config.py", "noble/config_schema.py", "noble/risk.py", "noble/targets.py", "agent-skills/governance/", "config/"],
+      "domain": "policy",
+      "severity": "critical",
+      "guarantees": ["deny-by-default scope", "exact authorization", "no self-approval", "policy integrity"],
+      "required_verification": ["tests", "specification-verification", "drift-verification", "governance-certification"]
+    },
+    {
+      "id": "trusted-workers",
+      "paths": ["noble/builtins/", "noble/worker_identity.py", "noble/registry.py", "noble/supply_chain.py"],
+      "domain": "workers",
+      "severity": "critical",
+      "guarantees": ["trusted built-in worker only", "hash-locked fixture", "no network tools"],
+      "required_verification": ["tests", "dependency-audit", "drift-verification", "governance-certification"]
+    },
+    {
+      "id": "security-spec",
+      "paths": ["docs/security-spec.json", "noble/spec.py", "docs/guarantee-matrix.md", "docs/governance-proof.md"],
+      "domain": "governance",
+      "severity": "critical",
+      "guarantees": ["all guarantees (spec is the trust root)"],
+      "required_verification": ["specification-verification", "governance-certification"]
+    },
+    {
+      "id": "ci-trust",
+      "paths": [".github/workflows/", ".github/dependabot.yml", ".github/security-critical.json", ".github/repo-baseline.json", "verify-everything.sh", "Makefile", "pyproject.toml", "requirements.lock", "requirements-dev.lock"],
+      "domain": "ci",
+      "severity": "critical",
+      "guarantees": ["reproducible verification", "pinned supply chain", "CI enforces governance"],
+      "required_verification": ["tests", "security-analysis", "dependency-audit", "external-verification"]
+    },
+    {
+      "id": "release-evidence",
+      "paths": ["noble/release.py", "noble/attest.py", "noble/provenance.py", "noble/sbom.py", "noble/audit_pack.py", "release/", "audit-pack/", "docs/release-process.md"],
+      "domain": "release",
+      "severity": "critical",
+      "guarantees": ["reproducible releases", "cross-system provenance", "offline audit verification"],
+      "required_verification": ["tests", "governance-certification", "external-verification"]
+    },
+    {
+      "id": "security-tests",
+      "paths": ["tests/security/", "tests/invariants/", "tests/regression/", "tests/integration/"],
+      "domain": "governance",
+      "severity": "high",
+      "guarantees": ["adversarial resistance", "invariant survival", "no silent weakening of verification"],
+      "required_verification": ["tests", "external-verification"]
+    }
+  ],
+  "default": {
+    "domain": "general",
+    "severity": "standard",
+    "required_verification": ["tests"]
+  }
+}

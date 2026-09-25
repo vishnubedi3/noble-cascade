@@ -30,6 +30,77 @@ def _hash_json(data: Any) -> str:
     ).hexdigest()
 
 
+def verification_script_template() -> str:
+    """Hardened offline verification script (Master Prompt IV).
+
+    MUST stay byte-identical to audit-pack/verification.sh; the
+    drift-guard test fails if regeneration would downgrade verification.
+    """
+    return """#!/usr/bin/env bash
+# Noble Cascade — Offline Audit Verification (Master Prompt IV hardened).
+#
+# Must succeed with: no GitHub credentials, no repository credentials, no
+# private services, no developer-only environment variables. Network access is
+# NOT required; if any check ever needs it, that is a bug to document, not to
+# silently accept. Exit 0 = OFFLINE VERIFICATION PASSED; exit 40+N = check N
+# failed (stable contract); exit 2 = environment/setup failure.
+set -uo pipefail
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$ROOT"
+if [ -x "$ROOT/.venv/bin/python" ]; then PYTHON="$ROOT/.venv/bin/python"; else PYTHON="python3"; fi
+echo "=== Noble Cascade Offline Verification ==="
+echo "Root: $ROOT"
+echo "Python: $PYTHON ($($PYTHON --version 2>&1 || echo MISSING))"
+echo "Credentials required: none | Network required: none"
+echo "GH_TOKEN present: $([ -n "${GH_TOKEN:-}" ] && echo yes-ignored || echo no)"
+echo "GITHUB_TOKEN present: $([ -n "${GITHUB_TOKEN:-}" ] && echo yes-ignored || echo no)"
+echo ""
+
+if ! command -v "$PYTHON" >/dev/null 2>&1; then echo "SETUP: python not found" >&2; exit 2; fi
+if ! "$PYTHON" -c "import noble" 2>/dev/null; then
+  echo "SETUP: 'noble' package not importable — run: pip install -e . --no-deps" >&2
+  exit 2
+fi
+
+TMPDIR_ISOLATED="$(mktemp -d "${TMPDIR:-/tmp}/noble-offline.XXXXXX")"
+trap 'rm -rf "$TMPDIR_ISOLATED"' EXIT
+export TMPDIR="$TMPDIR_ISOLATED"
+
+first_fail=0
+check() { # $1=num $2=name $3=command
+  local num="$1" name="$2" cmd="$3"
+  local code=$((40 + num))
+  echo -n "[$num] $name ... "
+  local out
+  if out=$(eval "$cmd" 2>&1); then echo "PASS"; else
+    echo "FAIL (exit $code)"
+    echo "$out" | tail -n 8 | sed 's/^/     | /'
+    if [ "$first_fail" -eq 0 ]; then first_fail=$code; fi
+  fi
+}
+
+check 1 "policy proof" \\
+  "$PYTHON -c 'import json; d=json.load(open(\\"audit-pack/policy-proof.json\\")); assert \\"fingerprint\\" in d, d.keys()'"
+check 2 "drift proof" \\
+  "$PYTHON -c 'import json; d=json.load(open(\\"audit-pack/drift-proof.json\\")); assert d[\\"drift\\"].get(\\"drift_detected\\")==False, d'"
+check 3 "worker proof" \\
+  "$PYTHON -c 'import json; d=json.load(open(\\"audit-pack/worker-proof.json\\")); assert d.get(\\"valid\\"), d'"
+check 4 "replay proof" \\
+  "$PYTHON -c 'import json; d=json.load(open(\\"audit-pack/replay-proof.json\\")); assert d.get(\\"deterministic\\"), d'"
+check 5 "invariants" \\
+  "$PYTHON -c 'import json; d=json.load(open(\\"audit-pack/invariants.json\\")); assert len(d.get(\\"invariants\\",[]))>=10, d'"
+check 6 "audit chain" "$PYTHON -m noble audit --verify"
+check 7 "spec sync" "$PYTHON -m noble spec --verify"
+check 8 "certify" \\
+  "$PYTHON -m noble certify --json | $PYTHON -c 'import json,sys; d=json.load(sys.stdin); assert d.get(\\"status\\")==\\"CERTIFIED\\", d'"
+check 9 "sbom exists" "test -f release/SBOM.spdx.json || test -f audit-pack/guarantees.json"
+
+echo ""
+if [ "$first_fail" -eq 0 ]; then echo "OFFLINE VERIFICATION PASSED (9/9)"; exit 0
+else echo "OFFLINE VERIFICATION FAILED (first failure exit $first_fail)"; exit "$first_fail"; fi
+"""
+
+
 def generate_audit_pack(
     workspace_root: Path | None = None, output_dir: Path | str = "audit-pack"
 ) -> Path:
@@ -210,29 +281,8 @@ def generate_audit_pack(
         json.dumps(tests_json, indent=2, sort_keys=True), encoding="utf-8"
     )
 
-    # 9 verification.sh
-    verification_sh = """#!/usr/bin/env bash
-set -euo pipefail
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-echo "=== Noble Cascade Offline Verification ==="
-echo "Root: $ROOT"
-fail=0
-check() {
-  echo -n "$1 ... "
-  if eval "$2" >/dev/null 2>&1; then echo "PASS"; else echo "FAIL"; fail=1; fi
-}
-check "policy proof" "cat audit-pack/policy-proof.json | python3 -c 'import json,sys; d=json.load(open(\"audit-pack/policy-proof.json\")); assert \"fingerprint\" in d'"
-check "drift proof" "cat audit-pack/drift-proof.json | python3 -c 'import json; json.load(open(\"audit-pack/drift-proof.json\"))'"
-check "worker proof" "cat audit-pack/worker-proof.json | python3 -c 'import json; d=json.load(open(\"audit-pack/worker-proof.json\")); assert d.get(\"valid\")'"
-check "replay proof" "cat audit-pack/replay-proof.json | python3 -c 'import json; d=json.load(open(\"audit-pack/replay-proof.json\")); assert d.get(\"deterministic\")'"
-check "invariants" "cat audit-pack/invariants.json | python3 -c 'import json; d=json.load(open(\"audit-pack/invariants.json\")); assert len(d.get(\"invariants\",[]))>=10'"
-check "audit chain" "python3 -m noble audit --verify"
-check "spec sync" "python3 -m noble spec --verify"
-check "certify" "python3 -m noble certify --json | python3 -c 'import json,sys; d=json.load(sys.stdin); assert d.get(\"status\")==\"CERTIFIED\"'"
-check "sbom exists" "test -f release/SBOM.spdx.json || test -f audit-pack/guarantees.json"
-echo ""
-if [ $fail -eq 0 ]; then echo "OFFLINE VERIFICATION PASSED"; else echo "OFFLINE VERIFICATION FAILED"; exit 1; fi
-"""
+    # 9 verification.sh (hardened offline contract; see template fn)
+    verification_sh = verification_script_template()
     (out / "verification.sh").write_text(verification_sh, encoding="utf-8")
     (out / "verification.sh").chmod(0o755)
     return out

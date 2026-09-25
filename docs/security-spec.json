@@ -689,11 +689,11 @@
       "CANCELLED"
     ],
     "terminal": [
-      "TIMED_OUT",
-      "FAILED",
-      "COMPLETED",
+      "BLOCKED",
       "CANCELLED",
-      "BLOCKED"
+      "COMPLETED",
+      "FAILED",
+      "TIMED_OUT"
     ],
     "transitions": {
       "APPROVED": [
