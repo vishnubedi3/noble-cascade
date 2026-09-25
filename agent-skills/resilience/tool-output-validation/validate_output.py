@@ -16,5 +16,8 @@ def validate_output(output_text: str) -> bool:
 
 
 if __name__ == "__main__":
-    print("UNAVAILABLE: standalone regex validation disabled. Use 'noble validate' for the fixture.", file=sys.stderr)
+    print(
+        "UNAVAILABLE: standalone regex validation disabled. Use 'noble validate' for the fixture.",
+        file=sys.stderr,
+    )
     raise SystemExit(3)

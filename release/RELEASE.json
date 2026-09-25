@@ -4,7 +4,7 @@
     "python": "Python 3.11.2"
   },
   "configuration_hash": "72e5f9f8c956cf242a5659807d27642f174c3c2455a184ee8078d129596e763c",
-  "createdAt": "2026-09-25T15:47:32.389826+00:00",
+  "createdAt": "2026-09-25T16:35:09.923575+00:00",
   "dependency_locks": {
     "requirements-dev.lock": {
       "hash": "53a7eaaa05d8a4ec9a52bc4a0798de5e57e4466927a0ac432c674bc89fc58639",
@@ -17,18 +17,19 @@
       "present": true
     }
   },
-  "git_commit": "46a74040beb1484887731bc9ac8b41875debcc2e",
-  "git_tag": "0.2.0-46a7404",
+  "git_commit": "b313e181d4b495be1802c4a9df199dae35334112",
+  "git_tag": "0.2.0-b313e18",
   "name": "noble-cascade",
   "policy_hash": "069153344401179e451cff7f39ea59be6c07f4db20b8e32af89d18d3e2c4d72d",
   "policy_version": "1.0.0",
   "reproducible": true,
-  "security_spec_hash": "b6d0f9056b4ac524040da5a31a193ac13fabfb0c6624846d01f8a27a67f71e39",
+  "security_spec_hash": "88991e9c160194d804ce5752c9a7739587374324b18289a5096de60fc13da566",
   "test_manifest": {
     "count": 0,
     "raw": "",
     "tests": []
   },
-  "version": "0.2.0-46a7404",
-  "worker_image_digest": "cfdeaeb1877498f89fe054f44206eeafa6bd5a500ec9ee3c455fe3034f768f78"
+  "version": "0.2.0-b313e18",
+  "worker_image_digest": "cfdeaeb1877498f89fe054f44206eeafa6bd5a500ec9ee3c455fe3034f768f78",
+  "working_tree_clean": true
 }

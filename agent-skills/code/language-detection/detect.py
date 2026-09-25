@@ -8,10 +8,18 @@ import os
 from pathlib import Path
 
 EXTENSIONS = {
-    ".py": "Python", ".js": "JavaScript", ".cjs": "JavaScript",
-    ".mjs": "JavaScript", ".ts": "TypeScript",
-    ".go": "Go", ".rs": "Rust", ".java": "Java", ".rb": "Ruby",
-    ".php": "PHP", ".tf": "Terraform", ".yaml": "YAML/Config",
+    ".py": "Python",
+    ".js": "JavaScript",
+    ".cjs": "JavaScript",
+    ".mjs": "JavaScript",
+    ".ts": "TypeScript",
+    ".go": "Go",
+    ".rs": "Rust",
+    ".java": "Java",
+    ".rb": "Ruby",
+    ".php": "PHP",
+    ".tf": "Terraform",
+    ".yaml": "YAML/Config",
     ".json": "JSON/Config",
 }
 MANIFESTS = {

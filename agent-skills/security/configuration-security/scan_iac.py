@@ -11,7 +11,10 @@ import sys
 
 
 def scan_iac() -> int:
-    print("UNAVAILABLE: no authorized Checkov/IaC scanner is registered. See 'noble doctor'.", file=sys.stderr)
+    print(
+        "UNAVAILABLE: no authorized Checkov/IaC scanner is registered. See 'noble doctor'.",
+        file=sys.stderr,
+    )
     return 3
 
 

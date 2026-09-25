@@ -15,7 +15,7 @@ The CLI and runtime have **no network-capable, write-capable, general PoC, or hi
 
 ```bash
 make setup            # or:
-python3 -m venv .venv && .venv/bin/pip install --require-hashes -r requirements-dev.lock && .venv/bin/pip install -e . --no-deps && .venv/bin/noble doctor
+python3 -m venv .venv && .venv/bin/pip install --require-hashes -r requirements-dev.lock && .venv/bin/pip install -e . --no-deps && .venv/bin/noble doctor && .venv/bin/noble drift --baseline
 ```
 
 Fallback (Linux, Python 3.11+):
@@ -25,6 +25,7 @@ python3 -m venv .venv
 .venv/bin/python -m pip install --require-hashes -r requirements.lock
 .venv/bin/python -m pip install -e . --no-deps
 .venv/bin/noble doctor
+.venv/bin/noble drift --baseline
 ```
 
 The checked-in lock includes hashes of all direct and transitive **runtime** dependencies. Optional development dependencies are in `requirements-dev.lock`. The legacy Node smoke validator additionally needs Node.js; the runtime itself does not.
@@ -99,6 +100,6 @@ See `docs/hardening-report.md`, `docs/release-process.md`, `docs/compliance-mapp
 
 > The intentional SQL injection in `tests/fixtures/sql_injection.py` and its in-memory reproduction is a test fixture, not a vulnerability in a deployed target. Do **not** deploy or import it.
 
-The proposed [CI workflow template](docs/ci-workflow-template.yml) is **inactive** under `docs/`. This PR cannot modify `.github/workflows/` because the GitHub App lacks `workflows` permission; a maintainer must review and install the template separately before any GitHub Actions checks run.
+CI is **active** (Master Prompt IV): `.github/workflows/main.yml` runs fast validation, `.github/workflows/ci-hardened.yml` runs the full governance chain (certification, release, audit-pack, `./verify-everything.sh`), and `.github/workflows/security-analysis.yml` adds dependency-review + CodeQL evidence. See [Repository Governance](docs/repository-governance.md), the [Maintainer Security Checklist](docs/maintainer-security-checklist.md) (branch protection and teams are owner-configured), and the [External Auditor Workflow](docs/external-auditor.md).
 
 See [Installation](docs/installation.md), [Operator Guide](docs/operator-guide.md), [Architecture](docs/architecture.md), [Security Model](docs/security-model.md), [Capability Inventory](docs/skill-manifest.md), and the [Engineering Report](docs/engineering-report.md).

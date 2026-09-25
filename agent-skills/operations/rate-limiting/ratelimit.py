@@ -10,7 +10,6 @@ from __future__ import annotations
 
 import sys
 
-
 if __name__ == "__main__":
     print("UNAVAILABLE: use 'noble scan/validate' for integrated rate limits.", file=sys.stderr)
     raise SystemExit(3)

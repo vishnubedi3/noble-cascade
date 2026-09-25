@@ -1,0 +1,136 @@
+From f41c063905ef9fdb7d05843d75ea7027578a9996 Mon Sep 17 00:00:00 2001
+From: vishnubedi3 <309025711+vishnubedi3@users.noreply.github.com>
+Date: Fri, 25 Sep 2026 16:17:17 +0000
+Subject: [PATCH 03/10] Master Prompt IV: portable attestations + baselined
+ release machinery
+
+- _attestation_key no longer binds to the absolute workspace path: the
+  path binding broke fresh-clone verification without adding security
+  (key is tamper-evidence, not a secret). HMAC tamper-evidence preserved.
+- Baseline now covers release/verification machinery (release, attest,
+  provenance, sbom, audit_pack, spec, certify, ledger, store, signing,
+  replay): quiet weakening of any verifier drifts the baseline.
+- Tests: machinery-tampering detection + cross-path attestation portability.
+
+NOTE: this commit intentionally leaves release/ stale (key rotation);
+re-certified in the following evidence commit.
+
+Co-authored-by: arena-agent <297053741+arena-agent@users.noreply.github.com>
+---
+ noble/attest.py                        | 10 +++++--
+ noble/governance.py                    | 20 ++++++++++++++
+ tests/security/test_governance_self.py | 37 ++++++++++++++++++++++++++
+ 3 files changed, 65 insertions(+), 2 deletions(-)
+
+diff --git a/noble/attest.py b/noble/attest.py
+index 66097fe..93ad40b 100644
+--- a/noble/attest.py
++++ b/noble/attest.py
+@@ -20,13 +20,19 @@ from typing import Any
+ 
+ 
+ def _attestation_key(workspace_root: Path) -> bytes:
+-    # Deterministic key derived from worker.py + repo root; not a secret, just binds attestation to source
++    # Deterministic key derived from worker.py bytes + fixed domain string.
++    # Master Prompt IV: MUST NOT include the absolute workspace path. Binding
++    # to an absolute path tied every attestation to one directory (fresh
++    # clones could never verify) without adding security: the key is not a
++    # secret, it provides tamper-evidence, and anyone who can rewrite the
++    # payload can recompute either derivation. Tamper-evidence is preserved:
++    # any payload change invalidates the HMAC.
+     worker = workspace_root / "noble/builtins/worker.py"
+     try:
+         wb = worker.read_bytes()
+     except Exception:
+         wb = b"noble-cascade-default-key"
+-    return hashlib.sha256(wb + str(workspace_root).encode()).digest()
++    return hashlib.sha256(wb + b"noble-cascade-attestation-v1").digest()
+ 
+ 
+ def _canonical(data: Any) -> bytes:
+diff --git a/noble/governance.py b/noble/governance.py
+index c369b6c..3522444 100644
+--- a/noble/governance.py
++++ b/noble/governance.py
+@@ -144,6 +144,25 @@ def create_baseline(workspace_root: Path | None = None) -> dict[str, Any]:
+         "worker_digest": worker_digest,
+         "verification_script_hash": _sha256_file(root / "verify-everything.sh") or "missing",
+         "governance_module_hash": _sha256_file(root / "noble/governance.py") or "missing",
++        # Release/verification machinery: any quiet weakening of these modules
++        # drifts the baseline (§34 — the system cannot weaken its own verifiers).
++        "release_machinery_hashes": {
++            name: _sha256_file(root / "noble" / name) or "missing"
++            for name in (
++                "release.py",
++                "attest.py",
++                "provenance.py",
++                "sbom.py",
++                "audit_pack.py",
++                "spec.py",
++                "certify.py",
++                "ledger.py",
++                "ledger_integrity.py",
++                "store.py",
++                "signing.py",
++                "replay.py",
++            )
++        },
+         "classification_hash": _sha256_file(root / CLASSIFICATION_PATH) or "missing",
+         "release_configuration": {
+             "release_dir": "release/",
+@@ -197,6 +216,7 @@ def verify_baseline(workspace_root: Path | None = None) -> dict[str, Any]:
+         "worker_digest",
+         "verification_script_hash",
+         "governance_module_hash",
++        "release_machinery_hashes",
+         "classification_hash",
+     ):
+         if stored.get(key) != current.get(key):
+diff --git a/tests/security/test_governance_self.py b/tests/security/test_governance_self.py
+index 2c5d326..6d5af1b 100644
+--- a/tests/security/test_governance_self.py
++++ b/tests/security/test_governance_self.py
+@@ -131,3 +131,40 @@ def test_audit_pack_generator_cannot_downgrade_verification() -> None:
+     assert verification_script_template() == committed
+     assert "40 +" in committed  # stable exit-code contract present
+     assert "Isolated" in committed or "mktemp" in committed  # tmp isolation present
++
++
++def test_release_machinery_tampering_is_detected() -> None:
++    """Quiet edits to release/verification modules drift the baseline."""
++    stored = _baseline()["release_machinery_hashes"]
++    expected = {
++        "release.py",
++        "attest.py",
++        "provenance.py",
++        "sbom.py",
++        "audit_pack.py",
++        "spec.py",
++        "certify.py",
++        "ledger.py",
++        "ledger_integrity.py",
++        "store.py",
++        "signing.py",
++        "replay.py",
++    }
++    assert set(stored) == expected
++    for name, digest in stored.items():
++        assert digest == _sha(REPO / "noble" / name), name  # control: pristine
++
++
++def test_attestation_is_portable_across_paths(tmp_path: Path) -> None:
++    """Attestations must verify independent of the absolute checkout path."""
++    import shutil
++
++    from noble.attest import sign_artifact, verify_attestation
++
++    other = tmp_path / "elsewhere"
++    shutil.copytree(REPO / "noble" / "builtins", other / "noble" / "builtins")
++    payload = {"artifact": "release", "sha256": "abc123"}
++    att_here = sign_artifact(payload, REPO)
++    # Same worker bytes at a different absolute path must produce the same key.
++    assert verify_attestation(payload, att_here, other) is True
++    assert verify_attestation(payload, att_here, REPO) is True
+-- 
+2.39.5
+

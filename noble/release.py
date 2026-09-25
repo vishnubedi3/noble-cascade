@@ -149,6 +149,13 @@ def create_release(
 
     git_tag = version or _git_tag(root)
     git_commit = _git_commit(root)
+    try:
+        _porcelain = subprocess.check_output(
+            ["git", "status", "--porcelain"], cwd=str(root), text=True, timeout=15
+        ).strip()
+        working_tree_clean = _porcelain == ""
+    except Exception:
+        working_tree_clean = False
 
     # Build RELEASE.json
     release = {
@@ -156,6 +163,7 @@ def create_release(
         "version": git_tag,
         "git_commit": git_commit,
         "git_tag": git_tag,
+        "working_tree_clean": working_tree_clean,
         "createdAt": datetime.now(timezone.utc).isoformat(),
         "policy_version": policy_version,
         "policy_hash": policy_hash,
@@ -311,6 +319,91 @@ def verify_release(
     for f in expected:
         if not (rd / f).exists():
             issues.append(f"missing {f}")
+    # Master Prompt IV — no release drift: the certified source must be HEAD
+    # itself or an ancestor of HEAD with no governed file changed since
+    # certification (release/ + baseline may advance in a follow-up commit;
+    # anything affecting the build must trigger regeneration). A tagged HEAD
+    # must carry the stored tag. Any mismatch fails.
+    try:
+        release_doc = json.loads((rd / "RELEASE.json").read_text(encoding="utf-8"))
+        head = _git_commit(root)
+        stored_commit = release_doc.get("git_commit", "")
+        if head != "unknown" and stored_commit and head != stored_commit:
+            governed = [
+                "noble",
+                "tests",
+                "pyproject.toml",
+                "requirements.lock",
+                "requirements-dev.lock",
+                "config",
+                "agent-skills/governance",
+                "docs/security-spec.json",
+                ".github/workflows",
+                "verify-everything.sh",
+                "Makefile",
+            ]
+            try:
+                merge_base = subprocess.check_output(
+                    ["git", "merge-base", "HEAD", stored_commit],
+                    cwd=str(root),
+                    text=True,
+                    timeout=15,
+                ).strip()
+                if merge_base != stored_commit:
+                    issues.append(
+                        f"release drift: certified source {stored_commit[:12]} is not "
+                        f"an ancestor of HEAD {head[:12]} (regenerate with noble release --create)"
+                    )
+                else:
+                    diff = subprocess.check_output(
+                        ["git", "diff", "--name-only", f"{stored_commit}..HEAD", "--", *governed],
+                        cwd=str(root),
+                        text=True,
+                        timeout=15,
+                    ).strip()
+                    if diff:
+                        changed = sorted(diff.splitlines())
+                        issues.append(
+                            "release drift: governed files changed since certification "
+                            f"({len(changed)}: {', '.join(changed[:5])}) "
+                            "(regenerate with noble release --create)"
+                        )
+            except Exception:
+                issues.append(
+                    f"release drift: cannot prove certified source {stored_commit[:12]} "
+                    f"covers HEAD {head[:12]} (regenerate with noble release --create)"
+                )
+        try:
+            exact_tag = subprocess.check_output(
+                ["git", "describe", "--tags", "--exact-match"],
+                cwd=str(root),
+                text=True,
+                timeout=15,
+            ).strip()
+        except Exception:
+            exact_tag = ""
+        stored_tag = release_doc.get("git_tag", "")
+        if exact_tag and stored_tag and exact_tag != stored_tag:
+            issues.append(f"tag drift: tagged source {exact_tag} != certified tag {stored_tag}")
+        # built == attested: artifact bytes must match POLICY_HASHES.json
+        if (rd / "POLICY_HASHES.json").exists():
+            hashes_doc = json.loads((rd / "POLICY_HASHES.json").read_text(encoding="utf-8"))
+            for artifact, key in (
+                ("RELEASE.json", "release_json_sha256"),
+                ("SBOM.spdx.json", "sbom_spdx_sha256"),
+                ("SBOM.cyclonedx.json", "sbom_cyclonedx_sha256"),
+                ("PROVENANCE.json", "provenance_sha256"),
+            ):
+                expected = hashes_doc.get(key)
+                if expected and (rd / artifact).exists():
+                    actual = _hash_file(rd / artifact)
+                    if actual != expected:
+                        issues.append(
+                            f"artifact drift: {artifact} bytes != attested {key} "
+                            f"({actual[:12]} != {expected[:12]})"
+                        )
+    except Exception as exc:
+        issues.append(f"source-binding verify error: {type(exc).__name__}: {exc}")
     # verify hashes if present
     try:
         from .attest import verify_attestation

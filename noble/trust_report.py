@@ -123,6 +123,89 @@ def trust_report(workspace_root: Path | None = None) -> dict[str, Any]:
         },
         "invariants": 10,
         "state_machine_states": 19,
+        # Master Prompt IV: every assertion classified. ENFORCED = code refuses
+        # the violating state; VERIFIED = checked by an executed verifier;
+        # DOCUMENTED = true by description only; MANUAL = needs human action;
+        # EXPERIMENTAL = incomplete; UNSUPPORTED = explicitly not provided.
+        # Documentation is never represented as enforcement.
+        "assertion_status": {
+            "deny-by-default scope": {
+                "status": "ENFORCED",
+                "evidence": "noble/scope.py + tests/unit/test_scope_and_targets.py",
+            },
+            "exact authorization": {
+                "status": "ENFORCED",
+                "evidence": "noble/authorization.py + tests/unit/test_authorization_approval_risk.py",
+            },
+            "no self-approval": {
+                "status": "ENFORCED",
+                "evidence": "noble/approvals.py (requester == approver -> DENY)",
+            },
+            "quarantined untrusted content": {
+                "status": "ENFORCED",
+                "evidence": "noble/evidence.py + tests/security/test_tool_poisoning.py",
+            },
+            "validated tool output": {
+                "status": "ENFORCED",
+                "evidence": "noble kernel schema+provenance re-check + test_tool_output_cannot_forge",
+            },
+            "redacted credentials": {
+                "status": "ENFORCED",
+                "evidence": "noble/evidence.py::redact_sensitive + tests",
+            },
+            "chained audit": {
+                "status": "VERIFIED",
+                "evidence": "noble audit --verify (SQLite chain; same-UID replacement detectable, not WORM)",
+            },
+            "sandbox failure blocks execution": {
+                "status": "ENFORCED",
+                "evidence": "noble/execution.py + tests/security/test_process_boundary.py",
+            },
+            "CLI-only control": {
+                "status": "VERIFIED",
+                "evidence": "noble health reports dashboard DEGRADED; no bypass path registered",
+            },
+            "reproducible releases": {
+                "status": "VERIFIED",
+                "evidence": "noble release --verify + verify-everything.sh checks 3/8/9",
+            },
+            "pinned supply chain": {
+                "status": "VERIFIED",
+                "evidence": "hash-locked requirements + pip-audit + noble supply-chain",
+            },
+            "CI enforces governance": {
+                "status": "VERIFIED",
+                "evidence": ".github/workflows/ci-hardened.yml + noble governance --workflow-audit",
+            },
+            "branch protection (no unreviewed push to main)": {
+                "status": "MANUAL",
+                "evidence": "requires owner-level GitHub configuration; see docs/maintainer-security-checklist.md",
+            },
+            "CODEOWNERS review of security-critical paths": {
+                "status": "MANUAL",
+                "evidence": ".github/CODEOWNERS present; team slugs are placeholders until owner creates teams",
+            },
+            "release tag provenance (Sigstore/GitHub attestation)": {
+                "status": "EXPERIMENTAL",
+                "evidence": "local HMAC attestation only (noble/attest.py); no Sigstore integration",
+            },
+            "SLSA provenance": {
+                "status": "EXPERIMENTAL",
+                "evidence": "locally generated PROVENANCE.json, not third-party attested",
+            },
+            "multi-user attestation": {
+                "status": "UNSUPPORTED",
+                "evidence": "single-user OS identity by design",
+            },
+            "network/high-risk tool execution": {
+                "status": "UNSUPPORTED",
+                "evidence": "hard-deny; no such tool registered",
+            },
+            "container/namespace isolation": {
+                "status": "UNSUPPORTED",
+                "evidence": "process-local rlimits only; documented limitation",
+            },
+        },
         "trust_index": {
             "governance": "verified" if policy_ok else "failed",
             "replay": "unknown",

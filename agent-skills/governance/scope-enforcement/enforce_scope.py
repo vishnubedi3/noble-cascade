@@ -19,11 +19,15 @@ from noble.scope import ScopeEngine  # noqa: E402
 
 def check_scope(target: str, action: str) -> bool:
     try:
-        _, decision = ScopeEngine.from_file(workspace_root=ROOT).normalize_and_evaluate(target, action)
+        _, decision = ScopeEngine.from_file(workspace_root=ROOT).normalize_and_evaluate(
+            target, action
+        )
     except NobleError as exc:
         print(f"[!] Scope check BLOCKED: {exc.code}.")
         return False
-    print(f"[{'+' if decision.allowed else '!'}] Scope {decision.decision.value}: {decision.reason}.")
+    print(
+        f"[{'+' if decision.allowed else '!'}] Scope {decision.decision.value}: {decision.reason}."
+    )
     return decision.allowed
 
 

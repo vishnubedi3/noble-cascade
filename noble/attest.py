@@ -20,13 +20,19 @@ from typing import Any
 
 
 def _attestation_key(workspace_root: Path) -> bytes:
-    # Deterministic key derived from worker.py + repo root; not a secret, just binds attestation to source
+    # Deterministic key derived from worker.py bytes + fixed domain string.
+    # Master Prompt IV: MUST NOT include the absolute workspace path. Binding
+    # to an absolute path tied every attestation to one directory (fresh
+    # clones could never verify) without adding security: the key is not a
+    # secret, it provides tamper-evidence, and anyone who can rewrite the
+    # payload can recompute either derivation. Tamper-evidence is preserved:
+    # any payload change invalidates the HMAC.
     worker = workspace_root / "noble/builtins/worker.py"
     try:
         wb = worker.read_bytes()
     except Exception:
         wb = b"noble-cascade-default-key"
-    return hashlib.sha256(wb + str(workspace_root).encode()).digest()
+    return hashlib.sha256(wb + b"noble-cascade-attestation-v1").digest()
 
 
 def _canonical(data: Any) -> bytes:

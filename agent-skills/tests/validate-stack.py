@@ -23,7 +23,9 @@ from noble.registry import ToolRegistry  # noqa: E402
 
 
 def _run(*args: str) -> subprocess.CompletedProcess[str]:
-    return subprocess.run([*args], cwd=ROOT, capture_output=True, text=True, timeout=15, check=False)
+    return subprocess.run(
+        [*args], cwd=ROOT, capture_output=True, text=True, timeout=15, check=False
+    )
 
 
 def test_manifest() -> None:
@@ -31,15 +33,25 @@ def test_manifest() -> None:
     skills = data["skills"]
     assert len(skills) == 34, "expected 34 historical skill references"
     assert all((ROOT / item["integration_wrapper"]).exists() for item in skills)
-    assert len(ToolRegistry(RuntimeConfig.load()).list()) == 2, "only 2 local tools are actually registered"
+    assert len(ToolRegistry(RuntimeConfig.load()).list()) == 2, (
+        "only 2 local tools are actually registered"
+    )
     assert all(item.get("status") != "INSTALLED" for item in skills), "stale status claim"
     print("[+] 34 historical references; 2 registered offline tools; no false INSTALLED claims")
 
 
 def test_scope() -> None:
     program = "agent-skills/governance/scope-enforcement/enforce_scope.py"
-    assert _run(sys.executable, program, "vishnubedi3/noble-cascade", "static-analysis").returncode == 0
-    for target in ("unauthorized-target.gov", "evil.com/localhost", "notvishnubedi3/noble-cascade", "attacker.example/?repo=vishnubedi3/noble-cascade"):
+    assert (
+        _run(sys.executable, program, "vishnubedi3/noble-cascade", "static-analysis").returncode
+        == 0
+    )
+    for target in (
+        "unauthorized-target.gov",
+        "evil.com/localhost",
+        "notvishnubedi3/noble-cascade",
+        "attacker.example/?repo=vishnubedi3/noble-cascade",
+    ):
         assert _run(sys.executable, program, target, "static-analysis").returncode != 0, target
     print("[+] Exact repository allow; forbidden and three substring-bypass regressions blocked")
 

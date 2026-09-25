@@ -9,17 +9,17 @@
       "rationale": "Known fixture hash and source AST match; in-memory SQLite reproduction independently confirmed",
       "score": 94
     },
-    "created_at": "2026-09-25T15:47:07.744203+00:00",
+    "created_at": "2026-09-25T16:11:53.145811+00:00",
     "cwe": "CWE-89",
     "description": "Known fixture interpolates a value in SQL; isolated SQLite comparison demonstrates differing results.",
     "evidence_ids": [
-      "ev-4f243c2157c742d8aa6d9b8633915a7b",
-      "ev-b057e13d43cf47da9e1e1609f6c930cc"
+      "ev-3a876b435ba449ddadf0fb9b566636bb",
+      "ev-100f5693ce8a4f79bad784c07b51063e"
     ],
-    "finding_id": "finding-266d3dbc82a343a5a72d4469ea05c60f",
+    "finding_id": "finding-bab53dbc9a9541dc80da0f447b5e1dd5",
     "impact": "Synthetic input returned both fixture records rather than no records.",
     "provenance": {
-      "assessed_at": "2026-09-25T15:47:07.744185+00:00",
+      "assessed_at": "2026-09-25T16:11:53.145788+00:00",
       "classification": "synthetic",
       "false_positive_analysis": {
         "benign_explanations": [],
@@ -28,8 +28,8 @@
         "missing": [],
         "notes": "Synthetic local fixture only",
         "supporting": [
-          "ev-4f243c2157c742d8aa6d9b8633915a7b",
-          "ev-b057e13d43cf47da9e1e1609f6c930cc"
+          "ev-3a876b435ba449ddadf0fb9b566636bb",
+          "ev-100f5693ce8a4f79bad784c07b51063e"
         ],
         "validation_steps": [
           "Independently re-check fixture digest and AST",
@@ -37,9 +37,9 @@
         ],
         "verdict": "CONFIRMED"
       },
-      "grant_id": "grant-b5cc70fc1aa24a58958e6aa680ffd4bf",
+      "grant_id": "grant-1009c66b27944b76bf85998a5235fca4",
       "operator": "user",
-      "request_id": "req-624d94ea7de344b29f99be48ce9ca581",
+      "request_id": "req-530bb537561749159eb729e501aee20f",
       "source": "trusted-local-worker",
       "tool": "fixture-sql-verify",
       "tool_version": "1.0.0"
@@ -82,17 +82,17 @@
       "rationale": "Known fixture hash and source AST match; in-memory SQLite reproduction independently confirmed",
       "score": 94
     },
-    "created_at": "2026-09-25T15:46:13.835634+00:00",
+    "created_at": "2026-09-25T16:10:21.605864+00:00",
     "cwe": "CWE-89",
     "description": "Known fixture interpolates a value in SQL; isolated SQLite comparison demonstrates differing results.",
     "evidence_ids": [
-      "ev-00caf70cede24e87acc2ac0898343633",
-      "ev-c7ee893042f94d7d8e6ac029c32db2d8"
+      "ev-56fc997ae1bf489c817f81f345a0fcd7",
+      "ev-207aeac21f874429b1e0d860a3ffa62f"
     ],
-    "finding_id": "finding-cb332277edaa43479d7ca58c7a8b7676",
+    "finding_id": "finding-d327dbab036640ccb8edddbacd648c46",
     "impact": "Synthetic input returned both fixture records rather than no records.",
     "provenance": {
-      "assessed_at": "2026-09-25T15:46:13.835613+00:00",
+      "assessed_at": "2026-09-25T16:10:21.605846+00:00",
       "classification": "synthetic",
       "false_positive_analysis": {
         "benign_explanations": [],
@@ -101,8 +101,8 @@
         "missing": [],
         "notes": "Synthetic local fixture only",
         "supporting": [
-          "ev-00caf70cede24e87acc2ac0898343633",
-          "ev-c7ee893042f94d7d8e6ac029c32db2d8"
+          "ev-56fc997ae1bf489c817f81f345a0fcd7",
+          "ev-207aeac21f874429b1e0d860a3ffa62f"
         ],
         "validation_steps": [
           "Independently re-check fixture digest and AST",
@@ -110,9 +110,9 @@
         ],
         "verdict": "CONFIRMED"
       },
-      "grant_id": "grant-bef3d132b8d6439197c161c2a6646734",
+      "grant_id": "grant-29c35a0ae3eb4788895223250f770831",
       "operator": "user",
-      "request_id": "req-638bfa102c1e49fdb9548b82641a2ac4",
+      "request_id": "req-c5d91737d17e48ec9f2f6d3a988e703f",
       "source": "trusted-local-worker",
       "tool": "fixture-sql-verify",
       "tool_version": "1.0.0"
@@ -155,17 +155,17 @@
       "rationale": "Known fixture hash and source AST match; in-memory SQLite reproduction independently confirmed",
       "score": 94
     },
-    "created_at": "2026-09-25T15:37:30.367197+00:00",
+    "created_at": "2026-09-25T16:08:22.255172+00:00",
     "cwe": "CWE-89",
     "description": "Known fixture interpolates a value in SQL; isolated SQLite comparison demonstrates differing results.",
     "evidence_ids": [
-      "ev-5ef87ee0a39e4a05b3f9b877ea3a5852",
-      "ev-e651bb4f6a804f09bb7a6c2826ce87fc"
+      "ev-2717a7c9a82544c29202db1395e663c1",
+      "ev-8a1e505ad35640819fb5579199dcf667"
     ],
-    "finding_id": "finding-deb37909bf044f1a84c238936fc4d783",
+    "finding_id": "finding-c57775685e1d40babcdc32c9acf380df",
     "impact": "Synthetic input returned both fixture records rather than no records.",
     "provenance": {
-      "assessed_at": "2026-09-25T15:37:30.367173+00:00",
+      "assessed_at": "2026-09-25T16:08:22.255152+00:00",
       "classification": "synthetic",
       "false_positive_analysis": {
         "benign_explanations": [],
@@ -174,8 +174,8 @@
         "missing": [],
         "notes": "Synthetic local fixture only",
         "supporting": [
-          "ev-5ef87ee0a39e4a05b3f9b877ea3a5852",
-          "ev-e651bb4f6a804f09bb7a6c2826ce87fc"
+          "ev-2717a7c9a82544c29202db1395e663c1",
+          "ev-8a1e505ad35640819fb5579199dcf667"
         ],
         "validation_steps": [
           "Independently re-check fixture digest and AST",
@@ -183,9 +183,9 @@
         ],
         "verdict": "CONFIRMED"
       },
-      "grant_id": "grant-016ee97db99b42b7b84a36e4ed090450",
+      "grant_id": "grant-fe84f6fa0f014b3ba9e7a0fbe7762123",
       "operator": "user",
-      "request_id": "req-25cd213f1ece4e77a48e8d1518a6e6f6",
+      "request_id": "req-2a6a597eecb249a8ac8489f3946ad80b",
       "source": "trusted-local-worker",
       "tool": "fixture-sql-verify",
       "tool_version": "1.0.0"
@@ -228,17 +228,17 @@
       "rationale": "Known fixture hash and source AST match; in-memory SQLite reproduction independently confirmed",
       "score": 94
     },
-    "created_at": "2026-09-25T15:36:36.862047+00:00",
+    "created_at": "2026-09-25T16:07:57.435638+00:00",
     "cwe": "CWE-89",
     "description": "Known fixture interpolates a value in SQL; isolated SQLite comparison demonstrates differing results.",
     "evidence_ids": [
-      "ev-05f51153049b4196a639353d31e875c7",
-      "ev-8f7fa7ab00b343588267b78304d38b99"
+      "ev-8ecbad7d138943e699ad81f84afb08f2",
+      "ev-8c0e36115ad941d5807743a8fccd547b"
     ],
-    "finding_id": "finding-50391e90e9034c839a41f450f68d9ddf",
+    "finding_id": "finding-0c4e31e421a14abeb0d64c215f1e73a2",
     "impact": "Synthetic input returned both fixture records rather than no records.",
     "provenance": {
-      "assessed_at": "2026-09-25T15:36:36.862021+00:00",
+      "assessed_at": "2026-09-25T16:07:57.435607+00:00",
       "classification": "synthetic",
       "false_positive_analysis": {
         "benign_explanations": [],
@@ -247,8 +247,8 @@
         "missing": [],
         "notes": "Synthetic local fixture only",
         "supporting": [
-          "ev-05f51153049b4196a639353d31e875c7",
-          "ev-8f7fa7ab00b343588267b78304d38b99"
+          "ev-8ecbad7d138943e699ad81f84afb08f2",
+          "ev-8c0e36115ad941d5807743a8fccd547b"
         ],
         "validation_steps": [
           "Independently re-check fixture digest and AST",
@@ -256,447 +256,9 @@
         ],
         "verdict": "CONFIRMED"
       },
-      "grant_id": "grant-14af7e768d134937974f1a583623c2f2",
+      "grant_id": "grant-c1f2345f2a7a4d43b1856ce96b26014f",
       "operator": "user",
-      "request_id": "req-7f1aafd4c1774d6e8665ecc5db99eca4",
-      "source": "trusted-local-worker",
-      "tool": "fixture-sql-verify",
-      "tool_version": "1.0.0"
-    },
-    "references": [
-      "https://cwe.mitre.org/data/definitions/89.html"
-    ],
-    "remediation": "Use parameterized queries instead of interpolating SQL values.",
-    "reproduction": {
-      "controlled": true,
-      "execution_id": null,
-      "non_destructive": true,
-      "result": "Reproduced against the local synthetic fixture only",
-      "steps": [
-        "Verify the known fixture's SHA-256 and interpolated SQL AST",
-        "Create an in-memory SQLite table with two synthetic records",
-        "Contrast unsafe interpolated query (2 rows) with parameterized query (0 rows)"
-      ]
-    },
-    "severity": {
-      "exploitability": 3,
-      "exposure": 0,
-      "impact": 5,
-      "rationale": "Local-only evidence; production impact was not assessed",
-      "tier": "MEDIUM",
-      "vector": "local synthetic fixture / no production exposure"
-    },
-    "state": "confirmed",
-    "status": "CONFIRMED",
-    "target": "/home/user/noble-cascade/tests/fixtures/sql_injection.py",
-    "title": "Synthetic SQL injection reproduced in isolated in-memory SQLite"
-  },
-  {
-    "affected_component": "tests/fixtures/sql_injection.py:10",
-    "category": "sql-injection",
-    "confidence": {
-      "contradictions": 0,
-      "evidence_count": 2,
-      "level": "HIGH",
-      "rationale": "Known fixture hash and source AST match; in-memory SQLite reproduction independently confirmed",
-      "score": 94
-    },
-    "created_at": "2026-09-25T15:35:35.293227+00:00",
-    "cwe": "CWE-89",
-    "description": "Known fixture interpolates a value in SQL; isolated SQLite comparison demonstrates differing results.",
-    "evidence_ids": [
-      "ev-56bb6ef1944041f789eb1e078fecfaf7",
-      "ev-c7927b8a68404771a3a9f9a38c2093f2"
-    ],
-    "finding_id": "finding-d66ca105d7864ecc9636e4dc30976063",
-    "impact": "Synthetic input returned both fixture records rather than no records.",
-    "provenance": {
-      "assessed_at": "2026-09-25T15:35:35.293208+00:00",
-      "classification": "synthetic",
-      "false_positive_analysis": {
-        "benign_explanations": [],
-        "claim": "Synthetic SQL injection reproduced in isolated in-memory SQLite",
-        "contradictory": [],
-        "missing": [],
-        "notes": "Synthetic local fixture only",
-        "supporting": [
-          "ev-56bb6ef1944041f789eb1e078fecfaf7",
-          "ev-c7927b8a68404771a3a9f9a38c2093f2"
-        ],
-        "validation_steps": [
-          "Independently re-check fixture digest and AST",
-          "Compare interpolated and parameterized SQL in isolated in-memory SQLite"
-        ],
-        "verdict": "CONFIRMED"
-      },
-      "grant_id": "grant-117c9386e7864835878ea22e6d72f015",
-      "operator": "user",
-      "request_id": "req-a84bb47c7ed2416e8078075a57e0a1f5",
-      "source": "trusted-local-worker",
-      "tool": "fixture-sql-verify",
-      "tool_version": "1.0.0"
-    },
-    "references": [
-      "https://cwe.mitre.org/data/definitions/89.html"
-    ],
-    "remediation": "Use parameterized queries instead of interpolating SQL values.",
-    "reproduction": {
-      "controlled": true,
-      "execution_id": null,
-      "non_destructive": true,
-      "result": "Reproduced against the local synthetic fixture only",
-      "steps": [
-        "Verify the known fixture's SHA-256 and interpolated SQL AST",
-        "Create an in-memory SQLite table with two synthetic records",
-        "Contrast unsafe interpolated query (2 rows) with parameterized query (0 rows)"
-      ]
-    },
-    "severity": {
-      "exploitability": 3,
-      "exposure": 0,
-      "impact": 5,
-      "rationale": "Local-only evidence; production impact was not assessed",
-      "tier": "MEDIUM",
-      "vector": "local synthetic fixture / no production exposure"
-    },
-    "state": "confirmed",
-    "status": "CONFIRMED",
-    "target": "/home/user/noble-cascade/tests/fixtures/sql_injection.py",
-    "title": "Synthetic SQL injection reproduced in isolated in-memory SQLite"
-  },
-  {
-    "affected_component": "tests/fixtures/sql_injection.py:10",
-    "category": "sql-injection",
-    "confidence": {
-      "contradictions": 0,
-      "evidence_count": 2,
-      "level": "HIGH",
-      "rationale": "Known fixture hash and source AST match; in-memory SQLite reproduction independently confirmed",
-      "score": 94
-    },
-    "created_at": "2026-09-25T15:33:07.339909+00:00",
-    "cwe": "CWE-89",
-    "description": "Known fixture interpolates a value in SQL; isolated SQLite comparison demonstrates differing results.",
-    "evidence_ids": [
-      "ev-b255faadd4874aeb92449b3f3c2a8856",
-      "ev-01c5cb58521a4a5e92299fccdc9deea8"
-    ],
-    "finding_id": "finding-c36219b7863c425db4fd9c0cc2f241e3",
-    "impact": "Synthetic input returned both fixture records rather than no records.",
-    "provenance": {
-      "assessed_at": "2026-09-25T15:33:07.339885+00:00",
-      "classification": "synthetic",
-      "false_positive_analysis": {
-        "benign_explanations": [],
-        "claim": "Synthetic SQL injection reproduced in isolated in-memory SQLite",
-        "contradictory": [],
-        "missing": [],
-        "notes": "Synthetic local fixture only",
-        "supporting": [
-          "ev-b255faadd4874aeb92449b3f3c2a8856",
-          "ev-01c5cb58521a4a5e92299fccdc9deea8"
-        ],
-        "validation_steps": [
-          "Independently re-check fixture digest and AST",
-          "Compare interpolated and parameterized SQL in isolated in-memory SQLite"
-        ],
-        "verdict": "CONFIRMED"
-      },
-      "grant_id": "grant-69b9b3a6ea154fefa83c2d8f221e0293",
-      "operator": "user",
-      "request_id": "req-391afdc0beea431688d97fc56e29727d",
-      "source": "trusted-local-worker",
-      "tool": "fixture-sql-verify",
-      "tool_version": "1.0.0"
-    },
-    "references": [
-      "https://cwe.mitre.org/data/definitions/89.html"
-    ],
-    "remediation": "Use parameterized queries instead of interpolating SQL values.",
-    "reproduction": {
-      "controlled": true,
-      "execution_id": null,
-      "non_destructive": true,
-      "result": "Reproduced against the local synthetic fixture only",
-      "steps": [
-        "Verify the known fixture's SHA-256 and interpolated SQL AST",
-        "Create an in-memory SQLite table with two synthetic records",
-        "Contrast unsafe interpolated query (2 rows) with parameterized query (0 rows)"
-      ]
-    },
-    "severity": {
-      "exploitability": 3,
-      "exposure": 0,
-      "impact": 5,
-      "rationale": "Local-only evidence; production impact was not assessed",
-      "tier": "MEDIUM",
-      "vector": "local synthetic fixture / no production exposure"
-    },
-    "state": "confirmed",
-    "status": "CONFIRMED",
-    "target": "/home/user/noble-cascade/tests/fixtures/sql_injection.py",
-    "title": "Synthetic SQL injection reproduced in isolated in-memory SQLite"
-  },
-  {
-    "affected_component": "tests/fixtures/sql_injection.py:10",
-    "category": "sql-injection",
-    "confidence": {
-      "contradictions": 0,
-      "evidence_count": 2,
-      "level": "HIGH",
-      "rationale": "Known fixture hash and source AST match; in-memory SQLite reproduction independently confirmed",
-      "score": 94
-    },
-    "created_at": "2026-09-25T15:31:44.962881+00:00",
-    "cwe": "CWE-89",
-    "description": "Known fixture interpolates a value in SQL; isolated SQLite comparison demonstrates differing results.",
-    "evidence_ids": [
-      "ev-8448f6e39acf42a6ad04d12d871f17d8",
-      "ev-bb62dab7e86e4c3c8a26dde3cc603b33"
-    ],
-    "finding_id": "finding-db3505350b314fb0b436122bad7887a9",
-    "impact": "Synthetic input returned both fixture records rather than no records.",
-    "provenance": {
-      "assessed_at": "2026-09-25T15:31:44.962858+00:00",
-      "classification": "synthetic",
-      "false_positive_analysis": {
-        "benign_explanations": [],
-        "claim": "Synthetic SQL injection reproduced in isolated in-memory SQLite",
-        "contradictory": [],
-        "missing": [],
-        "notes": "Synthetic local fixture only",
-        "supporting": [
-          "ev-8448f6e39acf42a6ad04d12d871f17d8",
-          "ev-bb62dab7e86e4c3c8a26dde3cc603b33"
-        ],
-        "validation_steps": [
-          "Independently re-check fixture digest and AST",
-          "Compare interpolated and parameterized SQL in isolated in-memory SQLite"
-        ],
-        "verdict": "CONFIRMED"
-      },
-      "grant_id": "grant-354e88879e364cc19f76705121b6fcee",
-      "operator": "user",
-      "request_id": "req-d8e5b17911a744548faf26857e668121",
-      "source": "trusted-local-worker",
-      "tool": "fixture-sql-verify",
-      "tool_version": "1.0.0"
-    },
-    "references": [
-      "https://cwe.mitre.org/data/definitions/89.html"
-    ],
-    "remediation": "Use parameterized queries instead of interpolating SQL values.",
-    "reproduction": {
-      "controlled": true,
-      "execution_id": null,
-      "non_destructive": true,
-      "result": "Reproduced against the local synthetic fixture only",
-      "steps": [
-        "Verify the known fixture's SHA-256 and interpolated SQL AST",
-        "Create an in-memory SQLite table with two synthetic records",
-        "Contrast unsafe interpolated query (2 rows) with parameterized query (0 rows)"
-      ]
-    },
-    "severity": {
-      "exploitability": 3,
-      "exposure": 0,
-      "impact": 5,
-      "rationale": "Local-only evidence; production impact was not assessed",
-      "tier": "MEDIUM",
-      "vector": "local synthetic fixture / no production exposure"
-    },
-    "state": "confirmed",
-    "status": "CONFIRMED",
-    "target": "/home/user/noble-cascade/tests/fixtures/sql_injection.py",
-    "title": "Synthetic SQL injection reproduced in isolated in-memory SQLite"
-  },
-  {
-    "affected_component": "tests/fixtures/sql_injection.py:10",
-    "category": "sql-injection",
-    "confidence": {
-      "contradictions": 0,
-      "evidence_count": 2,
-      "level": "HIGH",
-      "rationale": "Known fixture hash and source AST match; in-memory SQLite reproduction independently confirmed",
-      "score": 94
-    },
-    "created_at": "2026-09-25T15:29:12.885844+00:00",
-    "cwe": "CWE-89",
-    "description": "Known fixture interpolates a value in SQL; isolated SQLite comparison demonstrates differing results.",
-    "evidence_ids": [
-      "ev-01efa9859b1244f99b92562cb0fbe76a",
-      "ev-f38090fde3c641628d6243a959698d41"
-    ],
-    "finding_id": "finding-09842fb058a4487da9b0fc5b9a756dca",
-    "impact": "Synthetic input returned both fixture records rather than no records.",
-    "provenance": {
-      "assessed_at": "2026-09-25T15:29:12.885823+00:00",
-      "classification": "synthetic",
-      "false_positive_analysis": {
-        "benign_explanations": [],
-        "claim": "Synthetic SQL injection reproduced in isolated in-memory SQLite",
-        "contradictory": [],
-        "missing": [],
-        "notes": "Synthetic local fixture only",
-        "supporting": [
-          "ev-01efa9859b1244f99b92562cb0fbe76a",
-          "ev-f38090fde3c641628d6243a959698d41"
-        ],
-        "validation_steps": [
-          "Independently re-check fixture digest and AST",
-          "Compare interpolated and parameterized SQL in isolated in-memory SQLite"
-        ],
-        "verdict": "CONFIRMED"
-      },
-      "grant_id": "grant-4724e9a8dfe54ac8bb1d71edf94123ba",
-      "operator": "user",
-      "request_id": "req-1674a5fb1fd54abbbfc249a48afbb929",
-      "source": "trusted-local-worker",
-      "tool": "fixture-sql-verify",
-      "tool_version": "1.0.0"
-    },
-    "references": [
-      "https://cwe.mitre.org/data/definitions/89.html"
-    ],
-    "remediation": "Use parameterized queries instead of interpolating SQL values.",
-    "reproduction": {
-      "controlled": true,
-      "execution_id": null,
-      "non_destructive": true,
-      "result": "Reproduced against the local synthetic fixture only",
-      "steps": [
-        "Verify the known fixture's SHA-256 and interpolated SQL AST",
-        "Create an in-memory SQLite table with two synthetic records",
-        "Contrast unsafe interpolated query (2 rows) with parameterized query (0 rows)"
-      ]
-    },
-    "severity": {
-      "exploitability": 3,
-      "exposure": 0,
-      "impact": 5,
-      "rationale": "Local-only evidence; production impact was not assessed",
-      "tier": "MEDIUM",
-      "vector": "local synthetic fixture / no production exposure"
-    },
-    "state": "confirmed",
-    "status": "CONFIRMED",
-    "target": "/home/user/noble-cascade/tests/fixtures/sql_injection.py",
-    "title": "Synthetic SQL injection reproduced in isolated in-memory SQLite"
-  },
-  {
-    "affected_component": "tests/fixtures/sql_injection.py:10",
-    "category": "sql-injection",
-    "confidence": {
-      "contradictions": 0,
-      "evidence_count": 2,
-      "level": "HIGH",
-      "rationale": "Known fixture hash and source AST match; in-memory SQLite reproduction independently confirmed",
-      "score": 94
-    },
-    "created_at": "2026-09-25T15:28:48.175121+00:00",
-    "cwe": "CWE-89",
-    "description": "Known fixture interpolates a value in SQL; isolated SQLite comparison demonstrates differing results.",
-    "evidence_ids": [
-      "ev-7efe6d0e191141f78a845853a2d0afe0",
-      "ev-a6adbd1595d94469a56318ad55cfa6e4"
-    ],
-    "finding_id": "finding-f7510ddb43a440ffafe324b8c897e692",
-    "impact": "Synthetic input returned both fixture records rather than no records.",
-    "provenance": {
-      "assessed_at": "2026-09-25T15:28:48.175097+00:00",
-      "classification": "synthetic",
-      "false_positive_analysis": {
-        "benign_explanations": [],
-        "claim": "Synthetic SQL injection reproduced in isolated in-memory SQLite",
-        "contradictory": [],
-        "missing": [],
-        "notes": "Synthetic local fixture only",
-        "supporting": [
-          "ev-7efe6d0e191141f78a845853a2d0afe0",
-          "ev-a6adbd1595d94469a56318ad55cfa6e4"
-        ],
-        "validation_steps": [
-          "Independently re-check fixture digest and AST",
-          "Compare interpolated and parameterized SQL in isolated in-memory SQLite"
-        ],
-        "verdict": "CONFIRMED"
-      },
-      "grant_id": "grant-d0651716b6524db6872c647c5e135f90",
-      "operator": "user",
-      "request_id": "req-f83154bfaa234209bd983c5078f69d6f",
-      "source": "trusted-local-worker",
-      "tool": "fixture-sql-verify",
-      "tool_version": "1.0.0"
-    },
-    "references": [
-      "https://cwe.mitre.org/data/definitions/89.html"
-    ],
-    "remediation": "Use parameterized queries instead of interpolating SQL values.",
-    "reproduction": {
-      "controlled": true,
-      "execution_id": null,
-      "non_destructive": true,
-      "result": "Reproduced against the local synthetic fixture only",
-      "steps": [
-        "Verify the known fixture's SHA-256 and interpolated SQL AST",
-        "Create an in-memory SQLite table with two synthetic records",
-        "Contrast unsafe interpolated query (2 rows) with parameterized query (0 rows)"
-      ]
-    },
-    "severity": {
-      "exploitability": 3,
-      "exposure": 0,
-      "impact": 5,
-      "rationale": "Local-only evidence; production impact was not assessed",
-      "tier": "MEDIUM",
-      "vector": "local synthetic fixture / no production exposure"
-    },
-    "state": "confirmed",
-    "status": "CONFIRMED",
-    "target": "/home/user/noble-cascade/tests/fixtures/sql_injection.py",
-    "title": "Synthetic SQL injection reproduced in isolated in-memory SQLite"
-  },
-  {
-    "affected_component": "tests/fixtures/sql_injection.py:10",
-    "category": "sql-injection",
-    "confidence": {
-      "contradictions": 0,
-      "evidence_count": 2,
-      "level": "HIGH",
-      "rationale": "Known fixture hash and source AST match; in-memory SQLite reproduction independently confirmed",
-      "score": 94
-    },
-    "created_at": "2026-09-25T15:26:14.126533+00:00",
-    "cwe": "CWE-89",
-    "description": "Known fixture interpolates a value in SQL; isolated SQLite comparison demonstrates differing results.",
-    "evidence_ids": [
-      "ev-a7b91c8919084e258cca144f1ca13cd7",
-      "ev-9566c25db1f94010a95285bfd359f4b1"
-    ],
-    "finding_id": "finding-e4156235ad0144198134c31164802fce",
-    "impact": "Synthetic input returned both fixture records rather than no records.",
-    "provenance": {
-      "assessed_at": "2026-09-25T15:26:14.126512+00:00",
-      "classification": "synthetic",
-      "false_positive_analysis": {
-        "benign_explanations": [],
-        "claim": "Synthetic SQL injection reproduced in isolated in-memory SQLite",
-        "contradictory": [],
-        "missing": [],
-        "notes": "Synthetic local fixture only",
-        "supporting": [
-          "ev-a7b91c8919084e258cca144f1ca13cd7",
-          "ev-9566c25db1f94010a95285bfd359f4b1"
-        ],
-        "validation_steps": [
-          "Independently re-check fixture digest and AST",
-          "Compare interpolated and parameterized SQL in isolated in-memory SQLite"
-        ],
-        "verdict": "CONFIRMED"
-      },
-      "grant_id": "grant-de2ec7c8426c4f5bb80b74f12530eaa4",
-      "operator": "user",
-      "request_id": "req-b7b9e3ff10504f7c9b0f490a13502028",
+      "request_id": "req-446f087cd18f49e6b16be6e28b9ef2f0",
       "source": "trusted-local-worker",
       "tool": "fixture-sql-verify",
       "tool_version": "1.0.0"

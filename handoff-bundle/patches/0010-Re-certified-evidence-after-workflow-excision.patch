@@ -1,0 +1,274 @@
+From 46bb96c649142d2fcab54702dfa0cd32afe64cbd Mon Sep 17 00:00:00 2001
+From: vishnubedi3 <309025711+vishnubedi3@users.noreply.github.com>
+Date: Fri, 25 Sep 2026 16:36:02 +0000
+Subject: [PATCH 10/10] Re-certified evidence after workflow excision
+
+- release/ regenerated at rebased HEAD (rebase invalidated source binding)
+- Known state: CERTIFIED, spec/audit/offline/ruff green; 8 workflow-
+  dependent tests + baseline/workflow-audit red until hardened workflows
+  are manually registered (see PR description)
+
+Co-authored-by: arena-agent <297053741+arena-agent@users.noreply.github.com>
+---
+ release/ATTESTATION.json    | 16 ++++++++--------
+ release/ATTESTATION.md      | 26 +++++++++++++-------------
+ release/POLICY_HASHES.json  |  8 ++++----
+ release/PROVENANCE.json     | 14 +++++++-------
+ release/RELEASE.json        |  8 ++++----
+ release/SBOM.cyclonedx.json |  4 ++--
+ release/SBOM.spdx.json      |  6 +++---
+ release/TEST_RESULTS.json   |  2 +-
+ 8 files changed, 42 insertions(+), 42 deletions(-)
+
+diff --git a/release/ATTESTATION.json b/release/ATTESTATION.json
+index 9df35b4..fb54198 100644
+--- a/release/ATTESTATION.json
++++ b/release/ATTESTATION.json
+@@ -1,19 +1,19 @@
+ {
+   "attestation": {
+     "algorithm": "HMAC-SHA256",
+-    "digest": "2aba9937a9f9369a82dac62ab35b7ad686b6f7a11334b42d6979750f9c71dbf8",
++    "digest": "eda58018361a34eab2cb4d05707bde7f82b652d253c274a6c87bb0a7abe625b0",
+     "key_id": "126b652aa1c3ef41",
+-    "signature": "c49b996e844c9b094e66a6e34e617fe4239e524aa124eea1b21ee3892a74e0ff"
++    "signature": "46b1924d9c81161a36df4a3815996c86b56e278f09712bebdcfb4b4abbaf5d77"
+   },
+   "markdown": "ATTESTATION.md",
+   "payload": {
+-    "cyclonedx": "4fb071790b81d6dfc283fd046c87d4b099d8c73da2c4e27c914482d84aebe18f",
+-    "policy_hashes": "e53b4643dafb09d4e8e1e9946ecef019da3d200ad63a625bd8fd694f1bef9fea",
+-    "provenance": "13c7819ec86740744fdbc23fa25ba27119992050b9c652ea9350f7ab2941197c",
+-    "release": "7d193b231889ff4cb7c1be8c8b6e4dd5d2ea41c2f852e25e5bc2336bab2b812e",
++    "cyclonedx": "46c457e15729b6669e2dd740f861ea54c82b8f689a8cc7e2868a927bea12320a",
++    "policy_hashes": "8adbbfed6a1244e1d87dd8eebde381373f020d3517f65c57b6352fb80f8d864a",
++    "provenance": "a7bd3468573b40ab266af3f755e751236bcb6dc47cb22ea7e3a8e32f9311a6ac",
++    "release": "902b3b7e53ed66be66e1b918785be943e4967e4a8ab9af29a8ddd3a5de234f82",
+     "security_spec": "c7d595490a51b65ec2ca5bd34dd002ec045307e0f998231094bb04964f1ff492",
+-    "spdx": "e8ae73cee1f3b3356a07cd007ab19a01228230464f7118f8a969e6e71ebb63fb",
+-    "test_results": "1c4c089acccc7416cdfcf9bd4250efab65aa0fe6e0bdc7e623fdd4e26337175a",
++    "spdx": "ca637cc0937f6836535f121442c89c0658f72f3bf7fd9c292b00a35ce1848476",
++    "test_results": "5751ca4582278cad7488585bd6c79c5269e3c2d7dd58f464896cecbd39c4fd3f",
+     "worker": "213da6da3d3212dbdaee7c972b8c7ac464f36fa2193c97f9e77576b41782a83f"
+   }
+ }
+\ No newline at end of file
+diff --git a/release/ATTESTATION.md b/release/ATTESTATION.md
+index c7b6af6..99e3f34 100644
+--- a/release/ATTESTATION.md
++++ b/release/ATTESTATION.md
+@@ -1,25 +1,25 @@
+ # Noble Cascade Release Attestation
+ 
+-Version: 0.2.0-be4e56f
+-Commit: be4e56f271568cb32c5b4d8c30e4cda7de1dc5e8
+-Created: 2026-09-25T16:20:13.498335+00:00
++Version: 0.2.0-b313e18
++Commit: b313e181d4b495be1802c4a9df199dae35334112
++Created: 2026-09-25T16:35:09.923575+00:00
+ 
+ ## Hashes
+ 
+-- RELEASE.json: 7d193b231889ff4cb7c1be8c8b6e4dd5d2ea41c2f852e25e5bc2336bab2b812e
+-- SBOM.spdx.json: e8ae73cee1f3b3356a07cd007ab19a01228230464f7118f8a969e6e71ebb63fb
+-- SBOM.cyclonedx.json: 4fb071790b81d6dfc283fd046c87d4b099d8c73da2c4e27c914482d84aebe18f
+-- PROVENANCE.json: 13c7819ec86740744fdbc23fa25ba27119992050b9c652ea9350f7ab2941197c
+-- POLICY_HASHES.json: e53b4643dafb09d4e8e1e9946ecef019da3d200ad63a625bd8fd694f1bef9fea
+-- TEST_RESULTS.json: 1c4c089acccc7416cdfcf9bd4250efab65aa0fe6e0bdc7e623fdd4e26337175a
++- RELEASE.json: 902b3b7e53ed66be66e1b918785be943e4967e4a8ab9af29a8ddd3a5de234f82
++- SBOM.spdx.json: ca637cc0937f6836535f121442c89c0658f72f3bf7fd9c292b00a35ce1848476
++- SBOM.cyclonedx.json: 46c457e15729b6669e2dd740f861ea54c82b8f689a8cc7e2868a927bea12320a
++- PROVENANCE.json: a7bd3468573b40ab266af3f755e751236bcb6dc47cb22ea7e3a8e32f9311a6ac
++- POLICY_HASHES.json: 8adbbfed6a1244e1d87dd8eebde381373f020d3517f65c57b6352fb80f8d864a
++- TEST_RESULTS.json: 5751ca4582278cad7488585bd6c79c5269e3c2d7dd58f464896cecbd39c4fd3f
+ - SECURITY_SPEC_HASH.json: c7d595490a51b65ec2ca5bd34dd002ec045307e0f998231094bb04964f1ff492
+ - WORKER_DIGESTS.json: 213da6da3d3212dbdaee7c972b8c7ac464f36fa2193c97f9e77576b41782a83f
+ 
+ ## Attestation
+ 
+ Algorithm: HMAC-SHA256
+-Digest: 2aba9937a9f9369a82dac62ab35b7ad686b6f7a11334b42d6979750f9c71dbf8
+-Signature: c49b996e844c9b094e66a6e34e617fe4239e524aa124eea1b21ee3892a74e0ff
++Digest: eda58018361a34eab2cb4d05707bde7f82b652d253c274a6c87bb0a7abe625b0
++Signature: 46b1924d9c81161a36df4a3815996c86b56e278f09712bebdcfb4b4abbaf5d77
+ Key ID: 126b652aa1c3ef41
+ 
+ Verification: `noble release --verify` or `noble attest --verify release/ATTESTATION.md`
+@@ -32,7 +32,7 @@ For production, replace with Sigstore.
+ To reproduce:
+ ```bash
+ git clone https://github.com/vishnubedi3/noble-cascade && cd noble-cascade
+-git checkout be4e56f271568cb32c5b4d8c30e4cda7de1dc5e8
+-noble release --create 0.2.0-be4e56f
++git checkout b313e181d4b495be1802c4a9df199dae35334112
++noble release --create 0.2.0-b313e18
+ # compare hashes in release/
+ ```
+diff --git a/release/POLICY_HASHES.json b/release/POLICY_HASHES.json
+index 66bfd55..00bd5fc 100644
+--- a/release/POLICY_HASHES.json
++++ b/release/POLICY_HASHES.json
+@@ -2,10 +2,10 @@
+   "configuration_hash": "72e5f9f8c956cf242a5659807d27642f174c3c2455a184ee8078d129596e763c",
+   "policy_hash": "069153344401179e451cff7f39ea59be6c07f4db20b8e32af89d18d3e2c4d72d",
+   "policy_version": "1.0.0",
+-  "provenance_sha256": "13c7819ec86740744fdbc23fa25ba27119992050b9c652ea9350f7ab2941197c",
+-  "release_json_sha256": "7d193b231889ff4cb7c1be8c8b6e4dd5d2ea41c2f852e25e5bc2336bab2b812e",
+-  "sbom_cyclonedx_sha256": "4fb071790b81d6dfc283fd046c87d4b099d8c73da2c4e27c914482d84aebe18f",
+-  "sbom_spdx_sha256": "e8ae73cee1f3b3356a07cd007ab19a01228230464f7118f8a969e6e71ebb63fb",
++  "provenance_sha256": "a7bd3468573b40ab266af3f755e751236bcb6dc47cb22ea7e3a8e32f9311a6ac",
++  "release_json_sha256": "902b3b7e53ed66be66e1b918785be943e4967e4a8ab9af29a8ddd3a5de234f82",
++  "sbom_cyclonedx_sha256": "46c457e15729b6669e2dd740f861ea54c82b8f689a8cc7e2868a927bea12320a",
++  "sbom_spdx_sha256": "ca637cc0937f6836535f121442c89c0658f72f3bf7fd9c292b00a35ce1848476",
+   "security_spec_hash": "88991e9c160194d804ce5752c9a7739587374324b18289a5096de60fc13da566",
+   "worker_image_digest": "cfdeaeb1877498f89fe054f44206eeafa6bd5a500ec9ee3c455fe3034f768f78"
+ }
+\ No newline at end of file
+diff --git a/release/PROVENANCE.json b/release/PROVENANCE.json
+index ddd0669..8835be6 100644
+--- a/release/PROVENANCE.json
++++ b/release/PROVENANCE.json
+@@ -1,6 +1,6 @@
+ {
+-  "commit": "be4e56f271568cb32c5b4d8c30e4cda7de1dc5e8",
+-  "generatedAt": "2026-09-25T16:20:13.597783+00:00",
++  "commit": "b313e181d4b495be1802c4a9df199dae35334112",
++  "generatedAt": "2026-09-25T16:35:10.028242+00:00",
+   "inputs": {
+     "agent-skills/governance/scope-enforcement/scope-policy.yaml": "069153344401179e451cff7f39ea59be6c07f4db20b8e32af89d18d3e2c4d72d",
+     "config/runtime.yaml": "72e5f9f8c956cf242a5659807d27642f174c3c2455a184ee8078d129596e763c",
+@@ -23,17 +23,17 @@
+     "invocation": {
+       "configSource": {
+         "digest": {
+-          "sha1": "be4e56f271568cb32c5b4d8c30e4cda7de1dc5e8"
++          "sha1": "b313e181d4b495be1802c4a9df199dae35334112"
+         },
+         "entryPoint": "noble release",
+-        "uri": "git+https://github.com/vishnubedi3/noble-cascade@be4e56f271568cb32c5b4d8c30e4cda7de1dc5e8"
++        "uri": "git+https://github.com/vishnubedi3/noble-cascade@b313e181d4b495be1802c4a9df199dae35334112"
+       },
+       "parameters": {}
+     },
+     "materials": [
+       {
+         "digest": {
+-          "sha1": "be4e56f271568cb32c5b4d8c30e4cda7de1dc5e8"
++          "sha1": "b313e181d4b495be1802c4a9df199dae35334112"
+         },
+         "uri": "git+https://github.com/vishnubedi3/noble-cascade"
+       },
+@@ -81,8 +81,8 @@
+       }
+     ],
+     "metadata": {
+-      "buildFinishedOn": "2026-09-25T16:20:13.597783+00:00",
+-      "buildStartedOn": "2026-09-25T16:20:13.597783+00:00",
++      "buildFinishedOn": "2026-09-25T16:35:10.028242+00:00",
++      "buildStartedOn": "2026-09-25T16:35:10.028242+00:00",
+       "completeness": {
+         "environment": true,
+         "materials": true,
+diff --git a/release/RELEASE.json b/release/RELEASE.json
+index 3939ced..6233b9c 100644
+--- a/release/RELEASE.json
++++ b/release/RELEASE.json
+@@ -4,7 +4,7 @@
+     "python": "Python 3.11.2"
+   },
+   "configuration_hash": "72e5f9f8c956cf242a5659807d27642f174c3c2455a184ee8078d129596e763c",
+-  "createdAt": "2026-09-25T16:20:13.498335+00:00",
++  "createdAt": "2026-09-25T16:35:09.923575+00:00",
+   "dependency_locks": {
+     "requirements-dev.lock": {
+       "hash": "53a7eaaa05d8a4ec9a52bc4a0798de5e57e4466927a0ac432c674bc89fc58639",
+@@ -17,8 +17,8 @@
+       "present": true
+     }
+   },
+-  "git_commit": "be4e56f271568cb32c5b4d8c30e4cda7de1dc5e8",
+-  "git_tag": "0.2.0-be4e56f",
++  "git_commit": "b313e181d4b495be1802c4a9df199dae35334112",
++  "git_tag": "0.2.0-b313e18",
+   "name": "noble-cascade",
+   "policy_hash": "069153344401179e451cff7f39ea59be6c07f4db20b8e32af89d18d3e2c4d72d",
+   "policy_version": "1.0.0",
+@@ -29,7 +29,7 @@
+     "raw": "",
+     "tests": []
+   },
+-  "version": "0.2.0-be4e56f",
++  "version": "0.2.0-b313e18",
+   "worker_image_digest": "cfdeaeb1877498f89fe054f44206eeafa6bd5a500ec9ee3c455fe3034f768f78",
+   "working_tree_clean": true
+ }
+\ No newline at end of file
+diff --git a/release/SBOM.cyclonedx.json b/release/SBOM.cyclonedx.json
+index 6bb200e..76426ac 100644
+--- a/release/SBOM.cyclonedx.json
++++ b/release/SBOM.cyclonedx.json
+@@ -1155,7 +1155,7 @@
+       "type": "application",
+       "version": "0.2.0"
+     },
+-    "timestamp": "2026-09-25T16:20:13.585548+00:00",
++    "timestamp": "2026-09-25T16:35:10.015903+00:00",
+     "tools": [
+       {
+         "name": "noble",
+@@ -1164,7 +1164,7 @@
+       }
+     ]
+   },
+-  "serialNumber": "urn:uuid:b7093dec-f446-0000-0000-000000000000",
++  "serialNumber": "urn:uuid:8a2952f0-f446-0000-0000-000000000000",
+   "specVersion": "1.5",
+   "version": 1
+ }
+\ No newline at end of file
+diff --git a/release/SBOM.spdx.json b/release/SBOM.spdx.json
+index 7d89d83..aab410d 100644
+--- a/release/SBOM.spdx.json
++++ b/release/SBOM.spdx.json
+@@ -1,7 +1,7 @@
+ {
+   "SPDXID": "SPDXRef-DOCUMENT",
+   "creationInfo": {
+-    "created": "2026-09-25T16:20:13.552224+00:00",
++    "created": "2026-09-25T16:35:09.984876+00:00",
+     "creators": [
+       "Tool: noble-sbom-0.2.0",
+       "Organization: Noble Cascade"
+@@ -9,7 +9,7 @@
+     "licenseListVersion": "3.22"
+   },
+   "dataLicense": "CC0-1.0",
+-  "documentNamespace": "https://noble-cascade.local/sbom/fdd34d9ad408",
++  "documentNamespace": "https://noble-cascade.local/sbom/ff300d0eca1a",
+   "name": "noble-cascade-sbom",
+   "packages": [
+     {
+@@ -626,7 +626,7 @@
+     }
+   ],
+   "provenance": {
+-    "buildTime": "2026-09-25T16:20:13.552224+00:00",
++    "buildTime": "2026-09-25T16:35:09.984876+00:00",
+     "generatedBy": "noble sbom",
+     "generatorVersion": "0.2.0"
+   },
+diff --git a/release/TEST_RESULTS.json b/release/TEST_RESULTS.json
+index 40967db..fcbd0e5 100644
+--- a/release/TEST_RESULTS.json
++++ b/release/TEST_RESULTS.json
+@@ -2,5 +2,5 @@
+   "exit_code": 1,
+   "passed": false,
+   "summary": [],
+-  "timestamp": "2026-09-25T16:20:13.490362+00:00"
++  "timestamp": "2026-09-25T16:35:09.913448+00:00"
+ }
+\ No newline at end of file
+-- 
+2.39.5
+

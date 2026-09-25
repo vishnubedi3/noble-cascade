@@ -41,7 +41,7 @@
       "output": "FINDING / NO_FINDING"
     }
   },
-  "generatedAt": "2026-09-25T15:47:48.259349+00:00",
+  "generatedAt": "2026-09-25T16:12:13.882341+00:00",
   "hash": "0fa9d579af14d4e206e3e017fc1a335620b0db12b806dd8f95f9e2bf053f2eea",
   "invariants": [
     "No tool executes outside authorized scope (UNKNOWN -> DENY)",
@@ -78,11 +78,11 @@
       "CANCELLED"
     ],
     "terminal": [
-      "FAILED",
-      "TIMED_OUT",
-      "COMPLETED",
       "BLOCKED",
-      "CANCELLED"
+      "CANCELLED",
+      "COMPLETED",
+      "FAILED",
+      "TIMED_OUT"
     ],
     "transitions": {
       "APPROVED": [

@@ -13,7 +13,10 @@ import sys
 
 
 def audit_dependencies() -> int:
-    print("UNAVAILABLE: no authorized OSV/CVE audit tool is registered. See 'noble doctor'.", file=sys.stderr)
+    print(
+        "UNAVAILABLE: no authorized OSV/CVE audit tool is registered. See 'noble doctor'.",
+        file=sys.stderr,
+    )
     return 3
 
 

@@ -90,9 +90,26 @@ def write_spec(path: str | Path = "docs/security-spec.json") -> Path:
 
 
 def verify_sync() -> tuple[bool, list[str]]:
-    """Check that spec is synchronized with implementation."""
+    """Check that spec is synchronized with implementation.
+
+    Master Prompt IV: the committed docs/security-spec.json must equal the
+    generated spec. Generated security specifications must never silently
+    diverge from implementation — regenerate via `noble spec` in a reviewed PR.
+    """
     issues: list[str] = []
     spec = generate_spec()
+    try:
+        committed_path = Path(__file__).resolve().parent.parent / "docs/security-spec.json"
+        committed = json.loads(committed_path.read_text(encoding="utf-8"))
+        if json.dumps(committed, sort_keys=True) != json.dumps(spec, sort_keys=True):
+            issues.append(
+                "docs/security-spec.json is stale vs generate_spec(); "
+                "regenerate with `noble spec` (reviewed change)"
+            )
+    except FileNotFoundError:
+        issues.append("docs/security-spec.json missing; regenerate with `noble spec`")
+    except json.JSONDecodeError as exc:
+        issues.append(f"docs/security-spec.json is not valid JSON: {exc}")
     # Verify state machine states match ExecutionState enum
     fsm_states = set(spec["state_machine"]["states"])
     enum_states = {s.value for s in ExecutionState}

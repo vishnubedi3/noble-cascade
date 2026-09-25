@@ -11,9 +11,14 @@ import sys
 
 
 def build_poc(vulnerability_type: str) -> None:
-    raise RuntimeError("unrestricted PoC generation is not implemented; use 'noble validate' on the synthetic fixture")
+    raise RuntimeError(
+        "unrestricted PoC generation is not implemented; use 'noble validate' on the synthetic fixture"
+    )
 
 
 if __name__ == "__main__":
-    print("UNAVAILABLE: no general PoC runner is registered. See 'noble validate --help'.", file=sys.stderr)
+    print(
+        "UNAVAILABLE: no general PoC runner is registered. See 'noble validate --help'.",
+        file=sys.stderr,
+    )
     raise SystemExit(3)

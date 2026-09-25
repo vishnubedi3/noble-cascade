@@ -28,7 +28,7 @@ Automated coverage: `tests/invariants/`, `tests/security/`, and `tests/regressio
 | Credential in URL/source/log | URLs with credentials/query rejected; field-aware redaction; no raw stdout in logs; state permissions 0700/0600 | Sanitized audit/evidence, no secret supplied to worker |
 | Audit tampering/log injection | Owner-only SQLite; escaped JSON, bounded fields, SHA-256 event chain; `noble audit --verify` | Chain mismatch reported; this is **not** protection from a malicious same-UID process rewriting the DB and hashes |
 | Rate/concurrency abuse | Atomic per-principal+tool+target 60 s limit + global count + active leases; child wall/CPU/memory/fd/output limits | RateLimited/ToolTimeout with audit; stale leases expire after timeout grace |
-| Supply-chain/version drift | Version constraints plus hash-pinned runtime and dev lockfiles; no auto-fetch of scanner rules or code | Hash-locked installation and manual test/audit catch drift; `noble doctor` names unavailable upstream projects. The [CI template](ci-workflow-template.yml) is inactive until a maintainer enables it. |
+| Supply-chain/version drift | Version constraints plus hash-pinned runtime and dev lockfiles; no auto-fetch of scanner rules or code | Hash-locked installation and manual test/audit catch drift; `noble doctor` names unavailable upstream projects. CI enforcement is active (`.github/workflows/`); owner-level branch protection remains a manual step (see `docs/maintainer-security-checklist.md`). |
 | Network exfiltration, DNS rebinding, redirect | **No network-capable registered tool**; network policy always denies and process boundary forbids network-marked tools | NetworkDenied/SandboxFailure; never follow redirects or resolve DNS |
 
 ## Assumptions and known limitations

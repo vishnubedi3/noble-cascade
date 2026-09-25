@@ -119,7 +119,9 @@ def validate_transition(frm: ExecutionState, to: ExecutionState) -> None:
 def describe_fsm() -> dict:
     return {
         "states": [s.value for s in ExecutionState],
-        "terminal": [s.value for s in TERMINAL_STATES],
+        "terminal": sorted(
+            s.value for s in TERMINAL_STATES
+        ),  # deterministic: set order varies by hash seed
         "transitions": {
             k.value: sorted(v.value for v in vals) for k, vals in ALLOWED_TRANSITIONS.items()
         },

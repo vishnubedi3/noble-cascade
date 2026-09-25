@@ -81,6 +81,6 @@ Detected via `pip-audit` (advisory database) and manual review. The two runtime 
 
 ## Pinning
 
-All direct and transitive runtime dependencies are pinned with hashes in `requirements.lock`. The CI template (`docs/ci-workflow-template.yml`) installs with `--require-hashes`.
+All direct and transitive runtime dependencies are pinned with hashes in `requirements.lock`. CI (`.github/workflows/main.yml`, `.github/workflows/ci-hardened.yml`) installs with `--require-hashes`.
 
 Never upgrade without verifying hashes and running `noble doctor --integrity` and `pytest -q`.
