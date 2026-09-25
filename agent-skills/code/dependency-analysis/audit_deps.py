@@ -1,24 +1,21 @@
 #!/usr/bin/env python3
-"""
-Dependency Vulnerability Audit Wrapper (Security Skills / OSV-Scanner pattern)
-Audits project dependencies against CVE databases with reachability triage.
+"""Dependency vulnerability audit is UNAVAILABLE in the controlled runtime.
+
+The old wrapper ran ``pip list`` then swallowed a missing osv-scanner error and
+returned 0. Neither ``pip list`` nor a manifest parse is a CVE audit. No
+automated dependency finding is claimed until a versioned advisory source and
+isolated, authorized scanner are registered.
 """
 
-import subprocess
+from __future__ import annotations
+
 import sys
-import os
 
-def audit_dependencies():
-    print("[*] Auditing dependencies for known CVEs (osv-scanner / npm audit)...")
-    try:
-        if os.path.exists("package.json"):
-            subprocess.run(["npm", "audit", "--json"], check=False)
-        if os.path.exists("requirements.txt") or os.path.exists("pyproject.toml"):
-            subprocess.run(["pip", "list"], check=False)
-        # Run osv-scanner if available
-        subprocess.run(["osv-scanner", "--version"], capture_output=True, text=True)
-    except Exception as e:
-        print(f"[!] Dependency audit note: {e}")
+
+def audit_dependencies() -> int:
+    print("UNAVAILABLE: no authorized OSV/CVE audit tool is registered. See 'noble doctor'.", file=sys.stderr)
+    return 3
+
 
 if __name__ == "__main__":
-    audit_dependencies()
+    raise SystemExit(audit_dependencies())

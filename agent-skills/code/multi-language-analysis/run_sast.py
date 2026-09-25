@@ -1,26 +1,32 @@
 #!/usr/bin/env python3
-"""
-Multi-Language SAST Wrapper (SecOpsAgentKit / Semgrep / Bandit pattern)
-Executes static security analyzers on the repository workspace.
+"""Legacy command adapter: only the registered offline AST scanner is runnable.
+
+The original Semgrep/Bandit fallback silently succeeded without either tool.
+This adapter never claims to run Semgrep or Bandit. A grant is mandatory.
 """
 
+from __future__ import annotations
+
+import argparse
 import subprocess
 import sys
-import os
+from pathlib import Path
 
-def run_sast():
-    print("[*] Running SAST analysis (Semgrep / Bandit)...")
-    try:
-        # Check if semgrep is installed
-        res = subprocess.run(["semgrep", "--version"], capture_output=True, text=True)
-        if res.returncode == 0:
-            print("[+] Semgrep detected. Running security rules...")
-            subprocess.run(["semgrep", "--config", "auto", "--quiet"], check=False)
-        else:
-            print("[!] Semgrep not found. Falling back to Bandit for Python analysis...")
-            subprocess.run(["bandit", "-r", ".", "-ll"], check=False)
-    except Exception as e:
-        print(f"[!] SAST execution note: {e}")
+ROOT = Path(__file__).resolve().parents[3]
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("target", help="explicit local directory or file")
+    parser.add_argument("--grant", required=True, help="exact-target scan authorization grant")
+    args = parser.parse_args(argv)
+    result = subprocess.run(
+        [sys.executable, "-m", "noble", "scan", args.target, "--grant", args.grant],
+        cwd=ROOT,
+        check=False,
+    )
+    return result.returncode
+
 
 if __name__ == "__main__":
-    run_sast()
+    raise SystemExit(main())

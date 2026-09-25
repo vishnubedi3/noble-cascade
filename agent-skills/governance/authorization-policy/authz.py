@@ -1,30 +1,22 @@
 #!/usr/bin/env python3
+"""Deprecated role-only demo. No role string alone authorizes a security action.
+
+Use ``noble authorize`` to create a principal/action/target/purpose/time-bound
+grant and ``NobleEngine.run`` to execute. This module intentionally does not
+provide a permissive ``AuthorizationManager`` shim.
 """
-Authorization Policy Wrapper (Microsoft Agent Governance Toolkit pattern)
-Manages role-based access and capability token verification across agent actions.
-"""
+
+from __future__ import annotations
+
+import sys
+
 
 class AuthorizationManager:
-    def __init__(self):
-        self.roles = {
-            "operator": ["read", "scan", "analyze", "report"],
-            "security-auditor": ["read", "scan", "analyze", "report", "controlled-test"],
-            "admin": ["*"]
-        }
-
     def authorize(self, role: str, capability: str) -> bool:
-        if role not in self.roles:
-            print(f"[!] Role '{role}' unknown. Access denied.")
-            return False
-        perms = self.roles[role]
-        if "*" in perms or capability in perms:
-            print(f"[+] Role '{role}' authorized for capability '{capability}'.")
-            return True
-        print(f"[!] Role '{role}' lacks capability '{capability}'. Access denied.")
+        print("DENIED: role/capability alone does not prove target-bound authorization", file=sys.stderr)
         return False
 
+
 if __name__ == "__main__":
-    am = AuthorizationManager()
-    assert am.authorize("operator", "scan") == True
-    assert am.authorize("operator", "controlled-test") == False
-    print("[+] Authorization policy wrapper test passed.")
+    print("UNAVAILABLE: role-only authorization has been disabled. See 'noble authorize --help'.", file=sys.stderr)
+    raise SystemExit(3)

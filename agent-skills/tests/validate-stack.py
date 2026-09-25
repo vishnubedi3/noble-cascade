@@ -1,70 +1,86 @@
 #!/usr/bin/env python3
-"""
-Stack Validation Test Harness
-Tests skill discovery, loading, scope enforcement, deny-by-default behavior, approval gates, and reporting.
+"""Compatibility smoke suite for legacy skill references and the new runtime.
+
+The full test matrix lives in ``python3 -m pytest``. This script no longer
+confuses a wrapper file with a working upstream integration, and never treats
+``--approve`` as human approval.
 """
 
-import sys
-import os
-import subprocess
-import yaml
+from __future__ import annotations
+
 import json
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
 
-def test_manifest():
-    print("[*] Testing skill manifest loading...")
-    manifest_path = "agent-skills/manifest.yaml"
-    assert os.path.exists(manifest_path), "manifest.yaml missing"
-    with open(manifest_path, "r") as f:
-        data = yaml.safe_load(f)
-    assert len(data.get("skills", [])) >= 30, "Expected at least 30 registered skills"
-    print(f"[+] Manifest test passed: {len(data['skills'])} skills registered.")
+import yaml
 
-def test_scope_enforcement():
-    print("[*] Testing scope enforcement & deny-by-default...")
-    res = subprocess.run([sys.executable, "agent-skills/governance/scope-enforcement/enforce_scope.py", "vishnubedi3/noble-cascade", "static-analysis"], capture_output=True, text=True)
-    assert res.returncode == 0, f"Allowed scope failed: {res.stderr}"
-    
-    res_denied = subprocess.run([sys.executable, "agent-skills/governance/scope-enforcement/enforce_scope.py", "unauthorized-target.gov", "remote-code-execution"], capture_output=True, text=True)
-    assert res_denied.returncode != 0, "Forbidden target should have been blocked"
-    print("[+] Scope enforcement and deny-by-default tests passed.")
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+from noble.config import RuntimeConfig  # noqa: E402
+from noble.registry import ToolRegistry  # noqa: E402
 
-def test_human_approval():
-    print("[*] Testing human approval risk tiers...")
-    res_low = subprocess.run([sys.executable, "agent-skills/governance/human-approval/approval_gate.py", "static-analysis"], capture_output=True, text=True)
-    assert res_low.returncode == 0, "Low risk action should pass automatically"
 
-    res_high = subprocess.run([sys.executable, "agent-skills/governance/human-approval/approval_gate.py", "poc-execution"], capture_output=True, text=True)
-    assert res_high.returncode != 0, "High risk action should halt without approval override"
+def _run(*args: str) -> subprocess.CompletedProcess[str]:
+    return subprocess.run([*args], cwd=ROOT, capture_output=True, text=True, timeout=15, check=False)
 
-    res_override = subprocess.run([sys.executable, "agent-skills/governance/human-approval/approval_gate.py", "poc-execution", "--approve"], capture_output=True, text=True)
-    assert res_override.returncode == 0, "High risk action with --approve should succeed"
-    print("[+] Human approval gate tests passed.")
 
-def test_prompt_injection():
-    print("[*] Testing prompt injection defense...")
-    res = subprocess.run([sys.executable, "agent-skills/resilience/prompt-injection-defense/sanitize.py"], capture_output=True, text=True)
-    assert res.returncode == 0
-    print("[+] Prompt injection defense test passed.")
+def test_manifest() -> None:
+    data = yaml.safe_load((ROOT / "agent-skills/manifest.yaml").read_text(encoding="utf-8"))
+    skills = data["skills"]
+    assert len(skills) == 34, "expected 34 historical skill references"
+    assert all((ROOT / item["integration_wrapper"]).exists() for item in skills)
+    assert len(ToolRegistry(RuntimeConfig.load()).list()) == 2, "only 2 local tools are actually registered"
+    assert all(item.get("status") != "INSTALLED" for item in skills), "stale status claim"
+    print("[+] 34 historical references; 2 registered offline tools; no false INSTALLED claims")
 
-def test_reporting():
-    print("[*] Testing vulnerability reporting schema validation...")
-    res = subprocess.run(["node", "agent-skills/reporting/vulnerability-reporting/validate-findings.cjs"], capture_output=True, text=True)
-    assert res.returncode == 0, f"Findings validation failed: {res.stderr}"
-    print("[+] Vulnerability reporting schema test passed.")
+
+def test_scope() -> None:
+    program = "agent-skills/governance/scope-enforcement/enforce_scope.py"
+    assert _run(sys.executable, program, "vishnubedi3/noble-cascade", "static-analysis").returncode == 0
+    for target in ("unauthorized-target.gov", "evil.com/localhost", "notvishnubedi3/noble-cascade", "attacker.example/?repo=vishnubedi3/noble-cascade"):
+        assert _run(sys.executable, program, target, "static-analysis").returncode != 0, target
+    print("[+] Exact repository allow; forbidden and three substring-bypass regressions blocked")
+
+
+def test_approval() -> None:
+    program = "agent-skills/governance/human-approval/approval_gate.py"
+    assert _run(sys.executable, program, "static-analysis").returncode == 0
+    assert _run(sys.executable, program, "poc-execution").returncode != 0
+    assert _run(sys.executable, program, "poc-execution", "--approve").returncode != 0
+    assert _run(sys.executable, program, "unknown-action").returncode != 0
+    print("[+] LOW tier informational; HIGH/unknown actions and forged --approve denied")
+
+
+def test_injection() -> None:
+    sample = _run(sys.executable, "agent-skills/resilience/prompt-injection-defense/sanitize.py")
+    assert sample.returncode == 0 and "[QUARANTINED_INSTRUCTION]" in sample.stdout
+    print("[+] Untrusted instructions quarantined as data")
+
+
+def test_reporting() -> None:
+    program = "agent-skills/reporting/vulnerability-reporting/validate-findings.cjs"
+    assert _run("node", program).returncode == 0
+    with tempfile.TemporaryDirectory() as temp:
+        missing = Path(temp) / "not-found.json"
+        assert _run("node", program, str(missing)).returncode != 0
+        invalid = Path(temp) / "invalid.json"
+        invalid.write_text(json.dumps([{"id": "example"}]))
+        assert _run("node", program, str(invalid)).returncode != 0
+        assert not missing.exists(), "validator must not create a fake finding"
+    print("[+] Real Draft-07 schema check; missing/invalid data denied without template creation")
+
 
 if __name__ == "__main__":
-    print("=== Starting Authorized Agent Stack Validation ===")
+    print("=== Noble Cascade legacy-reference smoke suite ===")
     try:
         test_manifest()
-        test_scope_enforcement()
-        test_human_approval()
-        test_prompt_injection()
+        test_scope()
+        test_approval()
+        test_injection()
         test_reporting()
-        print("=== ALL VALIDATION TESTS PASSED SUCCESSFULLY ===")
-        sys.exit(0)
-    except AssertionError as e:
-        print(f"[!] Validation FAILED: {e}")
-        sys.exit(1)
-    except Exception as ex:
-        print(f"[!] Unexpected error during validation: {ex}")
-        sys.exit(1)
+    except (AssertionError, OSError, subprocess.TimeoutExpired, ValueError) as exc:
+        print(f"[!] Validation FAILED: {exc}")
+        raise SystemExit(1) from exc
+    print("=== ALL VALIDATION TESTS PASSED SUCCESSFULLY ===")

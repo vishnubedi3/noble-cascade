@@ -1,28 +1,20 @@
 #!/usr/bin/env python3
+"""Legacy regex-only output check disabled.
+
+A string scan cannot prove tool-output provenance, schema, request/target match
+or evidence integrity. The operational validator is
+``noble.evidence.OutputValidator``, invoked only from ``NobleEngine.run``.
 """
-Tool Output Validation Skill (NVIDIA SkillSpector pattern)
-Scans tool execution outputs for malicious patterns, webshell indicators, or data exfiltration.
-"""
+
+from __future__ import annotations
 
 import sys
-import re
 
-MALICIOUS_PATTERNS = [
-    r"eval\(",
-    r"exec\(",
-    r"subprocess\.Popen",
-    r"os\.system",
-    r"base64\.b64decode",
-    r"http://.*exfil"
-]
 
 def validate_output(output_text: str) -> bool:
-    for pattern in MALICIOUS_PATTERNS:
-        if re.search(pattern, output_text):
-            print(f"[!] Warning: Suspicious pattern detected in tool output ('{pattern}').")
-            return False
-    print("[+] Tool output validation passed.")
-    return True
+    raise RuntimeError("standalone output validation is not sufficient; use NobleEngine.run")
+
 
 if __name__ == "__main__":
-    validate_output("print('hello world')")
+    print("UNAVAILABLE: standalone regex validation disabled. Use 'noble validate' for the fixture.", file=sys.stderr)
+    raise SystemExit(3)

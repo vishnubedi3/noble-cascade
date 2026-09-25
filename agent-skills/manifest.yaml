@@ -1,569 +1,754 @@
-# Agent Skills Manifest
-# Ecosystem: Authorized Bug-Hunting Agent Architecture
-# Standard: agentskills.io compatible, governed by OpenGuardrails & Agent Sandbox
-
-manifest_version: "1.0.0"
-updated_at: "2026-08-07"
-enforcement: "block"
-default_action: "deny"
-
+# Historical skill inventory — existence of a wrapper is NOT an upstream installation.
+# Only runtime_tools below are registered for execution; other descriptions are reference material.
+manifest_version: 2.0.0
+updated_at: '2026-09-25'
+enforcement: block
+default_action: deny
 skills:
-  - name: "scope-enforcement"
-    category: "governance"
-    source_repo: "openguardrails/openguardrails"
-    url: "https://github.com/openguardrails/openguardrails"
-    version: "v1.2.0"
-    license: "Apache-2.0"
-    installation_method: "Integrated policy engine and scope-policy.yaml"
-    capabilities_provided:
-      - "Enforces allowed/forbidden targets, scopes, and domains"
-      - "Deny-by-default execution policy"
-    dependencies:
-      - "yaml-parser >= 2.0"
-    permissions: "Local read-only policy inspection"
-    network_requirements: "None (offline policy validation)"
-    human_approval_required: true
-    integration_wrapper: "agent-skills/governance/scope-enforcement/enforce_scope.py"
-    security_considerations: "Strict whitelist matching; unlisted targets are automatically blocked."
-
-  - name: "authorization-policy"
-    category: "governance"
-    source_repo: "microsoft/agent-governance-toolkit"
-    url: "https://github.com/microsoft/agent-governance-toolkit"
-    version: "v1.0.4"
-    license: "MIT"
-    installation_method: "Custom role-based access control rules"
-    capabilities_provided:
-      - "Role-based token access and authorization checks"
-    dependencies: []
-    permissions: "Internal authorization check"
-    network_requirements: "None"
-    human_approval_required: true
-    integration_wrapper: "agent-skills/governance/authorization-policy/authz.py"
-    security_considerations: "Prevents privilege escalation across agent handoffs."
-
-  - name: "safety-policy"
-    category: "governance"
-    source_repo: "TheArchitectit/agent-guardrails-template"
-    url: "https://github.com/TheArchitectit/agent-guardrails-template"
-    version: "v1.0.0"
-    license: "MIT"
-    installation_method: "MCP server guardrail rules and prompt constraints"
-    capabilities_provided:
-      - "Hard block on destructive shell commands (rm -rf, drop table, terraform destroy)"
-      - "Four Laws enforcement"
-    dependencies:
-      - "Go 1.22+"
-    permissions: "Tool-level argument inspection"
-    network_requirements: "None"
-    human_approval_required: true
-    integration_wrapper: "agent-skills/governance/safety-policy/guardrails.go"
-    security_considerations: "Hard blocks dangerous commands before reaching shell."
-
-  - name: "human-approval"
-    category: "governance"
-    source_repo: "TheArchitectit/agent-guardrails-template"
-    url: "https://github.com/TheArchitectit/agent-guardrails-template"
-    version: "v1.0.0"
-    license: "MIT"
-    installation_method: "Risk-tier gating workflow"
-    capabilities_provided:
-      - "Classifies actions into Low, Medium, High risk tiers"
-      - "Requires explicit operator sign-off for high-impact actions"
-    dependencies: []
-    permissions: "Interactive console / webhook notification"
-    network_requirements: "Optional webhook dispatch"
-    human_approval_required: true
-    integration_wrapper: "agent-skills/governance/human-approval/approval_gate.py"
-    security_considerations: "Agent cannot self-approve high-risk operations."
-
-  - name: "escalation"
-    category: "governance"
-    source_repo: "AgentSecOps/SecOpsAgentKit"
-    url: "https://github.com/AgentSecOps/SecOpsAgentKit"
-    version: "v2.1.0"
-    license: "MIT"
-    installation_method: "Skill integration"
-    capabilities_provided:
-      - "Incident escalation workflows and alert routing"
-    dependencies: []
-    permissions: "Local logging and notification"
-    network_requirements: "Optional secure webhook"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/governance/escalation/escalate.py"
-    security_considerations: "Triggers halt conditions upon critical security anomalies."
-
-  - name: "evidence-analysis"
-    category: "reasoning"
-    source_repo: "cloudflare/security-audit-skill"
-    url: "https://github.com/cloudflare/security-audit-skill"
-    version: "v1.4.0"
-    license: "MIT"
-    installation_method: "Structured prompt runbook (SKILL.md)"
-    capabilities_provided:
-      - "Phase 1 & 2 evidence gathering and architecture mapping"
-    dependencies:
-      - "Node.js >= 18"
-    permissions: "Repository read access"
-    network_requirements: "None"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/reasoning/evidence-analysis/SKILL.md"
-    security_considerations: "Treats codebase and outputs as untrusted data."
-
-  - name: "hypothesis-testing"
-    category: "reasoning"
-    source_repo: "cloudflare/security-audit-skill"
-    url: "https://github.com/cloudflare/security-audit-skill"
-    version: "v1.4.0"
-    license: "MIT"
-    installation_method: "Structured prompt runbook"
-    capabilities_provided:
-      - "Systematic hypothesis generation across injection, auth, and logic bugs"
-    dependencies: []
-    permissions: "Local analysis"
-    network_requirements: "None"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/reasoning/hypothesis-testing/HUNTING.md"
-    security_considerations: "Confined to authorized scope targets."
-
-  - name: "false-positive-analysis"
-    category: "reasoning"
-    source_repo: "cloudflare/security-audit-skill"
-    url: "https://github.com/cloudflare/security-audit-skill"
-    version: "v1.4.0"
-    license: "MIT"
-    installation_method: "Adversarial disprove phase (Phase 3)"
-    capabilities_provided:
-      - "Independent validation to kill false positives"
-    dependencies: []
-    permissions: "Local analysis"
-    network_requirements: "None"
-    human_approval_required: true
-    integration_wrapper: "agent-skills/reasoning/false-positive-analysis/VALIDATION.md"
-    security_considerations: "Requires proof of non-intentionality and exploitability."
-
-  - name: "confidence-assessment"
-    category: "reasoning"
-    source_repo: "NVIDIA/SkillSpector"
-    url: "https://github.com/NVIDIA/SkillSpector"
-    version: "v2.0.0"
-    license: "Apache-2.0"
-    installation_method: "Python static analysis and scoring engine"
-    capabilities_provided:
-      - "0-100 risk scoring and confidence rating"
-    dependencies:
-      - "Python >= 3.12"
-    permissions: "Local file reading"
-    network_requirements: "Optional OSV.dev CVE check"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/reasoning/confidence-assessment/confidence.py"
-    security_considerations: "Offline fallback enabled for CVE lookups."
-
-  - name: "severity-assessment"
-    category: "reasoning"
-    source_repo: "mukul975/Anthropic-Cybersecurity-Skills"
-    url: "https://github.com/mukul975/Anthropic-Cybersecurity-Skills"
-    version: "v2026.07"
-    license: "Apache-2.0"
-    installation_method: "agentskills.io structured skills package"
-    capabilities_provided:
-      - "CVSS 3.1 / 4.0 severity scoring mapped to MITRE ATT&CK & NIST"
-    dependencies: []
-    permissions: "Local data processing"
-    network_requirements: "None"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/reasoning/severity-assessment/SKILL.md"
-    security_considerations: "Standardized rating methodology."
-
-  - name: "repository-analysis"
-    category: "code"
-    source_repo: "cloudflare/security-audit-skill"
-    url: "https://github.com/cloudflare/security-audit-skill"
-    version: "v1.4.0"
-    license: "MIT"
-    installation_method: "Reconnaissance phase runner"
-    capabilities_provided:
-      - "Maps application architecture, trust boundaries, and input surfaces"
-    dependencies: []
-    permissions: "Repository read access"
-    network_requirements: "None"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/code/repository-analysis/RECON.md"
-    security_considerations: "Generates internal architecture model."
-
-  - name: "language-detection"
-    category: "code"
-    source_repo: "AgentSecOps/SecOpsAgentKit"
-    url: "https://github.com/AgentSecOps/SecOpsAgentKit"
-    version: "v2.1.0"
-    license: "MIT"
-    installation_method: "Scanner integration wrapper"
-    capabilities_provided:
-      - "Identifies programming languages, build systems, and frameworks"
-    dependencies: []
-    permissions: "File tree scanning"
-    network_requirements: "None"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/code/language-detection/detect.py"
-    security_considerations: "Static directory inspection."
-
-  - name: "multi-language-analysis"
-    category: "code"
-    source_repo: "AgentSecOps/SecOpsAgentKit"
-    url: "https://github.com/AgentSecOps/SecOpsAgentKit"
-    version: "v2.1.0"
-    license: "MIT"
-    installation_method: "Semgrep and Bandit integration"
-    capabilities_provided:
-      - "Static application security testing across multi-language codebases"
-    dependencies:
-      - "semgrep"
-      - "bandit"
-    permissions: "Read access to workspace files"
-    network_requirements: "None"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/code/multi-language-analysis/run_sast.py"
-    security_considerations: "Executes localized static analysis rules."
-
-  - name: "dependency-analysis"
-    category: "code"
-    source_repo: "jpoindexter/security-skills"
-    url: "https://github.com/jpoindexter/security-skills"
-    version: "v1.0.0"
-    license: "MIT"
-    installation_method: "Dependency vulnerability scanner wrapper"
-    capabilities_provided:
-      - "Audits npm, cargo, pip, and os-level packages against CVE databases with reachability triage"
-    dependencies:
-      - "osv-scanner"
-    permissions: "Read lockfiles and manifests"
-    network_requirements: "Queries OSV vulnerability database"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/code/dependency-analysis/audit_deps.py"
-    security_considerations: "Reaches out to OSV.dev for CVE lookups."
-
-  - name: "secure-code-review"
-    category: "code"
-    source_repo: "mukul975/Anthropic-Cybersecurity-Skills"
-    url: "https://github.com/mukul975/Anthropic-Cybersecurity-Skills"
-    version: "v2026.07"
-    license: "Apache-2.0"
-    installation_method: "agentskills.io structured skills"
-    capabilities_provided:
-      - "Secure coding guidance and manual review heuristics"
-    dependencies: []
-    permissions: "Local reading"
-    network_requirements: "None"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/code/secure-code-review/SKILL.md"
-    security_considerations: "Provides expert guidelines for secure code."
-
-  - name: "web-security"
-    category: "security"
-    source_repo: "mukul975/Anthropic-Cybersecurity-Skills"
-    url: "https://github.com/mukul975/Anthropic-Cybersecurity-Skills"
-    version: "v2026.07"
-    license: "Apache-2.0"
-    installation_method: "agentskills.io structured skills"
-    capabilities_provided:
-      - "OWASP Top 10 web application security review and vulnerability patterns"
-    dependencies: []
-    permissions: "Local rule interpretation"
-    network_requirements: "None"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/security/web-security/SKILL.md"
-    security_considerations: "Theoretical and practical web defense heuristics."
-
-  - name: "api-security"
-    category: "security"
-    source_repo: "mukul975/Anthropic-Cybersecurity-Skills"
-    url: "https://github.com/mukul975/Anthropic-Cybersecurity-Skills"
-    version: "v2026.07"
-    license: "Apache-2.0"
-    installation_method: "agentskills.io structured skills"
-    capabilities_provided:
-      - "REST, GraphQL, and OWASP API Top 10 security analysis"
-    dependencies: []
-    permissions: "Local rule interpretation"
-    network_requirements: "None"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/security/api-security/SKILL.md"
-    security_considerations: "Covers BOLA, broken auth, and rate-limiting flaws."
-
-  - name: "authentication"
-    category: "security"
-    source_repo: "mukul975/Anthropic-Cybersecurity-Skills"
-    url: "https://github.com/mukul975/Anthropic-Cybersecurity-Skills"
-    version: "v2026.07"
-    license: "Apache-2.0"
-    installation_method: "agentskills.io structured skills"
-    capabilities_provided:
-      - "Session management, OAuth/OIDC, JWT, and password hashing review"
-    dependencies: []
-    permissions: "Local rule interpretation"
-    network_requirements: "None"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/security/authentication/SKILL.md"
-    security_considerations: "Identifies auth weaknesses."
-
-  - name: "authorization"
-    category: "security"
-    source_repo: "mukul975/Anthropic-Cybersecurity-Skills"
-    url: "https://github.com/mukul975/Anthropic-Cybersecurity-Skills"
-    version: "v2026.07"
-    license: "Apache-2.0"
-    installation_method: "agentskills.io structured skills"
-    capabilities_provided:
-      - "IDOR, privilege escalation, and access control matrix auditing"
-    dependencies: []
-    permissions: "Local rule interpretation"
-    network_requirements: "None"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/security/authorization/SKILL.md"
-    security_considerations: "Covers vertical and horizontal access control."
-
-  - name: "cryptography-review"
-    category: "security"
-    source_repo: "mukul975/Anthropic-Cybersecurity-Skills"
-    url: "https://github.com/mukul975/Anthropic-Cybersecurity-Skills"
-    version: "v2026.07"
-    license: "Apache-2.0"
-    installation_method: "agentskills.io structured skills"
-    capabilities_provided:
-      - "TLS configuration, hashing algorithms, encryption modes, and key management review"
-    dependencies: []
-    permissions: "Local rule interpretation"
-    network_requirements: "None"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/security/cryptography-review/SKILL.md"
-    security_considerations: "Ensures secure cryptographic primitives."
-
-  - name: "secrets-analysis"
-    category: "security"
-    source_repo: "jpoindexter/security-skills"
-    url: "https://github.com/jpoindexter/security-skills"
-    version: "v1.0.0"
-    license: "MIT"
-    installation_method: "Gitleaks scanner wrapper"
-    capabilities_provided:
-      - "Hardcoded secret detection across git history and workspace"
-    dependencies:
-      - "gitleaks"
-    permissions: "Read git repo history"
-    network_requirements: "None"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/security/secrets-analysis/scan_secrets.py"
-    security_considerations: "Local pattern matching for API keys and secrets."
-
-  - name: "configuration-security"
-    category: "security"
-    source_repo: "AgentSecOps/SecOpsAgentKit"
-    url: "https://github.com/AgentSecOps/SecOpsAgentKit"
-    version: "v2.1.0"
-    license: "MIT"
-    installation_method: "Checkov / Hadolint scanner wrapper"
-    capabilities_provided:
-      - "Infrastructure as Code (Terraform, K8s, Dockerfile) security linting"
-    dependencies:
-      - "checkov"
-    permissions: "Read IaC configuration files"
-    network_requirements: "None"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/security/configuration-security/scan_iac.py"
-    security_considerations: "Scans configuration files for misconfigurations."
-
-  - name: "safe-reconnaissance"
-    category: "operations"
-    source_repo: "cloudflare/security-audit-skill"
-    url: "https://github.com/cloudflare/security-audit-skill"
-    version: "v1.4.0"
-    license: "MIT"
-    installation_method: "Recon phase runner"
-    capabilities_provided:
-      - "Non-destructive mapping of application structure and entry points"
-    dependencies: []
-    permissions: "Read workspace"
-    network_requirements: "None"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/operations/safe-reconnaissance/recon.py"
-    security_considerations: "Passive analysis only."
-
-  - name: "controlled-testing"
-    category: "operations"
-    source_repo: "mukul975/Anthropic-Cybersecurity-Skills"
-    url: "https://github.com/mukul975/Anthropic-Cybersecurity-Skills"
-    version: "v2026.07"
-    license: "Apache-2.0"
-    installation_method: "agentskills.io structured skills"
-    capabilities_provided:
-      - "Controlled penetration testing runbooks and safe PoC generation"
-    dependencies: []
-    permissions: "Restricted sandbox execution"
-    network_requirements: "Mock/local testing only"
-    human_approval_required: true
-    integration_wrapper: "agent-skills/operations/controlled-testing/SKILL.md"
-    security_considerations: "High-risk tier; requires explicit operator approval."
-
-  - name: "sandbox-execution"
-    category: "operations"
-    source_repo: "mattolson/agent-sandbox"
-    url: "https://github.com/mattolson/agent-sandbox"
-    version: "v1.0.0"
-    license: "MIT"
-    installation_method: "Docker Compose environment with iptables and mitmproxy"
-    capabilities_provided:
-      - "Containerized execution with iptables firewall blocking direct outbound traffic and mitmproxy sidecar egress proxy"
-    dependencies:
-      - "Docker"
-      - "Docker Compose"
-    permissions: "Container isolation with read-only mounts"
-    network_requirements: "Strict egress proxy allowlist"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/operations/sandbox-execution/docker-compose.yml"
-    security_considerations: "Isolates agent execution from host infrastructure."
-
-  - name: "rate-limiting"
-    category: "operations"
-    source_repo: "TheArchitectit/agent-guardrails-template"
-    url: "https://github.com/TheArchitectit/agent-guardrails-template"
-    version: "v1.0.0"
-    license: "MIT"
-    installation_method: "MCP server rate-limiting middleware"
-    capabilities_provided:
-      - "Sliding-window rate limiting per security tool call to prevent DoS"
-    dependencies:
-      - "Redis"
-    permissions: "Memory cache interaction"
-    network_requirements: "Local Redis connection"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/operations/rate-limiting/ratelimit.py"
-    security_considerations: "Protects target APIs from excessive request volumes."
-
-  - name: "audit-logging"
-    category: "operations"
-    source_repo: "TheArchitectit/agent-guardrails-template"
-    url: "https://github.com/TheArchitectit/agent-guardrails-template"
-    version: "v1.0.0"
-    license: "MIT"
-    installation_method: "Structured audit logger runner"
-    capabilities_provided:
-      - "Records timestamp, action, target, tool, policy decision, approval status, and result"
-    dependencies: []
-    permissions: "Write to secure local log file"
-    network_requirements: "None"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/operations/audit-logging/logger.py"
-    security_considerations: "Redacts secrets and tokens automatically."
-
-  - name: "prompt-injection-defense"
-    category: "resilience"
-    source_repo: "openguardrails/openguardrails"
-    url: "https://github.com/openguardrails/openguardrails"
-    version: "v1.2.0"
-    license: "Apache-2.0"
-    installation_method: "Input sanitization and instruction hierarchy filter"
-    capabilities_provided:
-      - "Detects and neutralizes prompt injection attempts in code comments and web pages"
-    dependencies: []
-    permissions: "Text processing"
-    network_requirements: "None"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/resilience/prompt-injection-defense/sanitize.py"
-    security_considerations: "Treats all external text strictly as data."
-
-  - name: "untrusted-content-handling"
-    category: "resilience"
-    source_repo: "mukul975/Anthropic-Cybersecurity-Skills"
-    url: "https://github.com/mukul975/Anthropic-Cybersecurity-Skills"
-    version: "v2026.07"
-    license: "Apache-2.0"
-    installation_method: "agentskills.io structured guidance"
-    capabilities_provided:
-      - "Safe parsing of untrusted code, markdown, and API responses"
-    dependencies: []
-    permissions: "Local parsing"
-    network_requirements: "None"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/resilience/untrusted-content-handling/SKILL.md"
-    security_considerations: "Prevents parser-based vulnerabilities."
-
-  - name: "tool-output-validation"
-    category: "resilience"
-    source_repo: "NVIDIA/SkillSpector"
-    url: "https://github.com/NVIDIA/SkillSpector"
-    version: "v2.0.0"
-    license: "Apache-2.0"
-    installation_method: "Output validator wrapper"
-    capabilities_provided:
-      - "Scans tool outputs and skill files for malware, exfiltration patterns, and anomalies"
-    dependencies: []
-    permissions: "Read tool output streams"
-    network_requirements: "None"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/resilience/tool-output-validation/validate_output.py"
-    security_considerations: "Blocks execution if malicious payloads are detected in output."
-
-  - name: "vulnerability-reporting"
-    category: "reporting"
-    source_repo: "cloudflare/security-audit-skill"
-    url: "https://github.com/cloudflare/security-audit-skill"
-    version: "v1.4.0"
-    license: "MIT"
-    installation_method: "Structured JSON schema & findings generator"
-    capabilities_provided:
-      - "Generates standardized findings JSON conforming to report-schema.json"
-    dependencies:
-      - "Node.js"
-    permissions: "Write findings.json"
-    network_requirements: "None"
-    human_approval_required: false
-    integration_wrapper: "agent-skills/reporting/vulnerability-reporting/report_generator.py"
-    security_considerations: "Produces machine-verifiable vulnerability reports."
-
-  - name: "reproduction"
-    category: "reporting"
-    source_repo: "cloudflare/security-audit-skill"
-    url: "https://github.com/cloudflare/security-audit-skill"
-    version: "v1.4.0"
-    license: "MIT"
-    installation_method: "PoC generation module"
-    capabilities_provided:
-      - "Creates minimal reproduction steps and safe local test assertions"
-    dependencies: []
-    permissions: "Local file generation"
-    network_requirements: "None"
-    human_approval_required: true
-    integration_wrapper: "agent-skills/reporting/reproduction/poc_builder.py"
-    security_considerations: "PoCs are restricted to local test assertions."
-
-  - name: "remediation"
-    category: "reporting"
-    source_repo: "cloudflare/security-audit-skill"
-    url: "https://github.com/cloudflare/security-audit-skill"
-    version: "v1.4.0"
-    license: "MIT"
-    installation_method: "Remediation guidance generator"
-    capabilities_provided:
-      - "Produces secure code patches and least-disruptive remediation steps"
-    dependencies: []
-    permissions: "Local patch drafting"
-    network_requirements: "None"
-    human_approval_required: true
-    integration_wrapper: "agent-skills/reporting/remediation/remediate.py"
-    security_considerations: "Requires operator review before applying patches."
-
-  - name: "responsible-disclosure"
-    category: "reporting"
-    source_repo: "mukul975/Anthropic-Cybersecurity-Skills"
-    url: "https://github.com/mukul975/Anthropic-Cybersecurity-Skills"
-    version: "v2026.07"
-    license: "Apache-2.0"
-    installation_method: "agentskills.io structured disclosure template"
-    capabilities_provided:
-      - "Drafts responsible disclosure notices following coordinated vulnerability disclosure (CVD) standards"
-    dependencies: []
-    permissions: "Local document drafting"
-    network_requirements: "None"
-    human_approval_required: true
-    integration_wrapper: "agent-skills/reporting/responsible-disclosure/SKILL.md"
-    security_considerations: "Ensures ethical and legal communication of findings."
+- name: scope-enforcement
+  category: governance
+  source_repo: openguardrails/openguardrails
+  url: https://github.com/openguardrails/openguardrails
+  version: unverified historical reference
+  license: Apache-2.0
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies:
+  - yaml-parser >= 2.0
+  permissions: Local read-only policy inspection
+  network_requirements: None (offline policy validation)
+  integration_wrapper: agent-skills/governance/scope-enforcement/enforce_scope.py
+  status: LOCAL_ADAPTER
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: noble.scope.ScopeEngine
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Enforces allowed/forbidden targets, scopes, and domains
+  - Deny-by-default execution policy
+  historical_security_notes: Strict whitelist matching; unlisted targets are automatically blocked.
+  historical_human_approval_claim: true
+- name: authorization-policy
+  category: governance
+  source_repo: microsoft/agent-governance-toolkit
+  url: https://github.com/microsoft/agent-governance-toolkit
+  version: unverified historical reference
+  license: MIT
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies: []
+  permissions: Internal authorization check
+  network_requirements: None
+  integration_wrapper: agent-skills/governance/authorization-policy/authz.py
+  status: LOCAL_ADAPTER
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: noble.authorization.Authorizer
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Role-based token access and authorization checks
+  historical_security_notes: Prevents privilege escalation across agent handoffs.
+  historical_human_approval_claim: true
+- name: safety-policy
+  category: governance
+  source_repo: TheArchitectit/agent-guardrails-template
+  url: https://github.com/TheArchitectit/agent-guardrails-template
+  version: unverified historical reference
+  license: MIT
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies:
+  - Go 1.22+
+  permissions: Tool-level argument inspection
+  network_requirements: None
+  integration_wrapper: agent-skills/governance/safety-policy/guardrails.go
+  status: PARTIAL_IMPLEMENTATION
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: noble.execution.CommandRunner (not the unrun Go reference)
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Hard block on destructive shell commands (rm -rf, drop table, terraform destroy)
+  - Four Laws enforcement
+  historical_security_notes: Hard blocks dangerous commands before reaching shell.
+  historical_human_approval_claim: true
+- name: human-approval
+  category: governance
+  source_repo: TheArchitectit/agent-guardrails-template
+  url: https://github.com/TheArchitectit/agent-guardrails-template
+  version: unverified historical reference
+  license: MIT
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies: []
+  permissions: Interactive console / webhook notification
+  network_requirements: Optional webhook dispatch
+  integration_wrapper: agent-skills/governance/human-approval/approval_gate.py
+  status: LOCAL_ADAPTER
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: noble.approvals.ApprovalManager
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Classifies actions into Low, Medium, High risk tiers
+  - Requires explicit operator sign-off for high-impact actions
+  historical_security_notes: Agent cannot self-approve high-risk operations.
+  historical_human_approval_claim: true
+- name: escalation
+  category: governance
+  source_repo: AgentSecOps/SecOpsAgentKit
+  url: https://github.com/AgentSecOps/SecOpsAgentKit
+  version: unverified historical reference
+  license: MIT
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies: []
+  permissions: Local logging and notification
+  network_requirements: Optional secure webhook
+  integration_wrapper: agent-skills/governance/escalation/escalate.py
+  status: REFERENCE_ONLY
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: null
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Incident escalation workflows and alert routing
+  historical_security_notes: Triggers halt conditions upon critical security anomalies.
+  historical_human_approval_claim: false
+- name: evidence-analysis
+  category: reasoning
+  source_repo: cloudflare/security-audit-skill
+  url: https://github.com/cloudflare/security-audit-skill
+  version: unverified historical reference
+  license: MIT
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies:
+  - Node.js >= 18
+  permissions: Repository read access
+  network_requirements: None
+  integration_wrapper: agent-skills/reasoning/evidence-analysis/SKILL.md
+  status: LOCAL_ADAPTER
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: noble.evidence.OutputValidator
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Phase 1 & 2 evidence gathering and architecture mapping
+  historical_security_notes: Treats codebase and outputs as untrusted data.
+  historical_human_approval_claim: false
+- name: hypothesis-testing
+  category: reasoning
+  source_repo: cloudflare/security-audit-skill
+  url: https://github.com/cloudflare/security-audit-skill
+  version: unverified historical reference
+  license: MIT
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies: []
+  permissions: Local analysis
+  network_requirements: None
+  integration_wrapper: agent-skills/reasoning/hypothesis-testing/HUNTING.md
+  status: REFERENCE_ONLY
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: null
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Systematic hypothesis generation across injection, auth, and logic bugs
+  historical_security_notes: Confined to authorized scope targets.
+  historical_human_approval_claim: false
+- name: false-positive-analysis
+  category: reasoning
+  source_repo: cloudflare/security-audit-skill
+  url: https://github.com/cloudflare/security-audit-skill
+  version: unverified historical reference
+  license: MIT
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies: []
+  permissions: Local analysis
+  network_requirements: None
+  integration_wrapper: agent-skills/reasoning/false-positive-analysis/VALIDATION.md
+  status: LOCAL_ADAPTER
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: noble.reasoning.evaluate_observation
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Independent validation to kill false positives
+  historical_security_notes: Requires proof of non-intentionality and exploitability.
+  historical_human_approval_claim: true
+- name: confidence-assessment
+  category: reasoning
+  source_repo: NVIDIA/SkillSpector
+  url: https://github.com/NVIDIA/SkillSpector
+  version: unverified historical reference
+  license: Apache-2.0
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies:
+  - Python >= 3.12
+  permissions: Local file reading
+  network_requirements: Optional OSV.dev CVE check
+  integration_wrapper: agent-skills/reasoning/confidence-assessment/confidence.py
+  status: LOCAL_ADAPTER
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: noble.reasoning.evaluate_observation
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - 0-100 risk scoring and confidence rating
+  historical_security_notes: Offline fallback enabled for CVE lookups.
+  historical_human_approval_claim: false
+- name: severity-assessment
+  category: reasoning
+  source_repo: mukul975/Anthropic-Cybersecurity-Skills
+  url: https://github.com/mukul975/Anthropic-Cybersecurity-Skills
+  version: unverified historical reference
+  license: Apache-2.0
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies: []
+  permissions: Local data processing
+  network_requirements: None
+  integration_wrapper: agent-skills/reasoning/severity-assessment/SKILL.md
+  status: LOCAL_ADAPTER
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: noble.reasoning.evaluate_observation
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - CVSS 3.1 / 4.0 severity scoring mapped to MITRE ATT&CK & NIST
+  historical_security_notes: Standardized rating methodology.
+  historical_human_approval_claim: false
+- name: repository-analysis
+  category: code
+  source_repo: cloudflare/security-audit-skill
+  url: https://github.com/cloudflare/security-audit-skill
+  version: unverified historical reference
+  license: MIT
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies: []
+  permissions: Repository read access
+  network_requirements: None
+  integration_wrapper: agent-skills/code/repository-analysis/RECON.md
+  status: PARTIAL_IMPLEMENTATION
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: noble.builtins.scanner (Python SQL candidates only)
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Maps application architecture, trust boundaries, and input surfaces
+  historical_security_notes: Generates internal architecture model.
+  historical_human_approval_claim: false
+- name: language-detection
+  category: code
+  source_repo: AgentSecOps/SecOpsAgentKit
+  url: https://github.com/AgentSecOps/SecOpsAgentKit
+  version: unverified historical reference
+  license: MIT
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies: []
+  permissions: File tree scanning
+  network_requirements: None
+  integration_wrapper: agent-skills/code/language-detection/detect.py
+  status: REFERENCE_ONLY
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: null
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Identifies programming languages, build systems, and frameworks
+  historical_security_notes: Static directory inspection.
+  historical_human_approval_claim: false
+- name: multi-language-analysis
+  category: code
+  source_repo: AgentSecOps/SecOpsAgentKit
+  url: https://github.com/AgentSecOps/SecOpsAgentKit
+  version: unverified historical reference
+  license: MIT
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies:
+  - semgrep
+  - bandit
+  permissions: Read access to workspace files
+  network_requirements: None
+  integration_wrapper: agent-skills/code/multi-language-analysis/run_sast.py
+  status: UNAVAILABLE
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: null
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Static application security testing across multi-language codebases
+  historical_security_notes: Executes localized static analysis rules.
+  historical_human_approval_claim: false
+- name: dependency-analysis
+  category: code
+  source_repo: jpoindexter/security-skills
+  url: https://github.com/jpoindexter/security-skills
+  version: unverified historical reference
+  license: MIT
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies:
+  - osv-scanner
+  permissions: Read lockfiles and manifests
+  network_requirements: Queries OSV vulnerability database
+  integration_wrapper: agent-skills/code/dependency-analysis/audit_deps.py
+  status: UNAVAILABLE
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: null
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Audits npm, cargo, pip, and os-level packages against CVE databases with reachability triage
+  historical_security_notes: Reaches out to OSV.dev for CVE lookups.
+  historical_human_approval_claim: false
+- name: secure-code-review
+  category: code
+  source_repo: mukul975/Anthropic-Cybersecurity-Skills
+  url: https://github.com/mukul975/Anthropic-Cybersecurity-Skills
+  version: unverified historical reference
+  license: Apache-2.0
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies: []
+  permissions: Local reading
+  network_requirements: None
+  integration_wrapper: agent-skills/code/secure-code-review/SKILL.md
+  status: REFERENCE_ONLY
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: null
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Secure coding guidance and manual review heuristics
+  historical_security_notes: Provides expert guidelines for secure code.
+  historical_human_approval_claim: false
+- name: web-security
+  category: security
+  source_repo: mukul975/Anthropic-Cybersecurity-Skills
+  url: https://github.com/mukul975/Anthropic-Cybersecurity-Skills
+  version: unverified historical reference
+  license: Apache-2.0
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies: []
+  permissions: Local rule interpretation
+  network_requirements: None
+  integration_wrapper: agent-skills/security/web-security/SKILL.md
+  status: REFERENCE_ONLY
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: null
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - OWASP Top 10 web application security review and vulnerability patterns
+  historical_security_notes: Theoretical and practical web defense heuristics.
+  historical_human_approval_claim: false
+- name: api-security
+  category: security
+  source_repo: mukul975/Anthropic-Cybersecurity-Skills
+  url: https://github.com/mukul975/Anthropic-Cybersecurity-Skills
+  version: unverified historical reference
+  license: Apache-2.0
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies: []
+  permissions: Local rule interpretation
+  network_requirements: None
+  integration_wrapper: agent-skills/security/api-security/SKILL.md
+  status: REFERENCE_ONLY
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: null
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - REST, GraphQL, and OWASP API Top 10 security analysis
+  historical_security_notes: Covers BOLA, broken auth, and rate-limiting flaws.
+  historical_human_approval_claim: false
+- name: authentication
+  category: security
+  source_repo: mukul975/Anthropic-Cybersecurity-Skills
+  url: https://github.com/mukul975/Anthropic-Cybersecurity-Skills
+  version: unverified historical reference
+  license: Apache-2.0
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies: []
+  permissions: Local rule interpretation
+  network_requirements: None
+  integration_wrapper: agent-skills/security/authentication/SKILL.md
+  status: REFERENCE_ONLY
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: null
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Session management, OAuth/OIDC, JWT, and password hashing review
+  historical_security_notes: Identifies auth weaknesses.
+  historical_human_approval_claim: false
+- name: authorization
+  category: security
+  source_repo: mukul975/Anthropic-Cybersecurity-Skills
+  url: https://github.com/mukul975/Anthropic-Cybersecurity-Skills
+  version: unverified historical reference
+  license: Apache-2.0
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies: []
+  permissions: Local rule interpretation
+  network_requirements: None
+  integration_wrapper: agent-skills/security/authorization/SKILL.md
+  status: REFERENCE_ONLY
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: null
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - IDOR, privilege escalation, and access control matrix auditing
+  historical_security_notes: Covers vertical and horizontal access control.
+  historical_human_approval_claim: false
+- name: cryptography-review
+  category: security
+  source_repo: mukul975/Anthropic-Cybersecurity-Skills
+  url: https://github.com/mukul975/Anthropic-Cybersecurity-Skills
+  version: unverified historical reference
+  license: Apache-2.0
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies: []
+  permissions: Local rule interpretation
+  network_requirements: None
+  integration_wrapper: agent-skills/security/cryptography-review/SKILL.md
+  status: REFERENCE_ONLY
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: null
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - TLS configuration, hashing algorithms, encryption modes, and key management review
+  historical_security_notes: Ensures secure cryptographic primitives.
+  historical_human_approval_claim: false
+- name: secrets-analysis
+  category: security
+  source_repo: jpoindexter/security-skills
+  url: https://github.com/jpoindexter/security-skills
+  version: unverified historical reference
+  license: MIT
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies:
+  - gitleaks
+  permissions: Read git repo history
+  network_requirements: None
+  integration_wrapper: agent-skills/security/secrets-analysis/scan_secrets.py
+  status: UNAVAILABLE
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: null
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Hardcoded secret detection across git history and workspace
+  historical_security_notes: Local pattern matching for API keys and secrets.
+  historical_human_approval_claim: false
+- name: configuration-security
+  category: security
+  source_repo: AgentSecOps/SecOpsAgentKit
+  url: https://github.com/AgentSecOps/SecOpsAgentKit
+  version: unverified historical reference
+  license: MIT
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies:
+  - checkov
+  permissions: Read IaC configuration files
+  network_requirements: None
+  integration_wrapper: agent-skills/security/configuration-security/scan_iac.py
+  status: UNAVAILABLE
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: null
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Infrastructure as Code (Terraform, K8s, Dockerfile) security linting
+  historical_security_notes: Scans configuration files for misconfigurations.
+  historical_human_approval_claim: false
+- name: safe-reconnaissance
+  category: operations
+  source_repo: cloudflare/security-audit-skill
+  url: https://github.com/cloudflare/security-audit-skill
+  version: unverified historical reference
+  license: MIT
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies: []
+  permissions: Read workspace
+  network_requirements: None
+  integration_wrapper: agent-skills/operations/safe-reconnaissance/recon.py
+  status: REFERENCE_ONLY
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: null
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Non-destructive mapping of application structure and entry points
+  historical_security_notes: Passive analysis only.
+  historical_human_approval_claim: false
+- name: controlled-testing
+  category: operations
+  source_repo: mukul975/Anthropic-Cybersecurity-Skills
+  url: https://github.com/mukul975/Anthropic-Cybersecurity-Skills
+  version: unverified historical reference
+  license: Apache-2.0
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies: []
+  permissions: Restricted sandbox execution
+  network_requirements: Mock/local testing only
+  integration_wrapper: agent-skills/operations/controlled-testing/SKILL.md
+  status: REFERENCE_ONLY
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: null
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Controlled penetration testing runbooks and safe PoC generation
+  historical_security_notes: High-risk tier; requires explicit operator approval.
+  historical_human_approval_claim: true
+- name: sandbox-execution
+  category: operations
+  source_repo: mattolson/agent-sandbox
+  url: https://github.com/mattolson/agent-sandbox
+  version: unverified historical reference
+  license: MIT
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies:
+  - Docker
+  - Docker Compose
+  permissions: Container isolation with read-only mounts
+  network_requirements: Strict egress proxy allowlist
+  integration_wrapper: agent-skills/operations/sandbox-execution/docker-compose.yml
+  status: UNAVAILABLE
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: null
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Containerized execution with iptables firewall blocking direct outbound traffic and mitmproxy sidecar egress
+    proxy
+  historical_security_notes: Isolates agent execution from host infrastructure.
+  historical_human_approval_claim: false
+- name: rate-limiting
+  category: operations
+  source_repo: TheArchitectit/agent-guardrails-template
+  url: https://github.com/TheArchitectit/agent-guardrails-template
+  version: unverified historical reference
+  license: MIT
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies:
+  - Redis
+  permissions: Memory cache interaction
+  network_requirements: Local Redis connection
+  integration_wrapper: agent-skills/operations/rate-limiting/ratelimit.py
+  status: LOCAL_ADAPTER
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: noble.store.Store.acquire_lease
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Sliding-window rate limiting per security tool call to prevent DoS
+  historical_security_notes: Protects target APIs from excessive request volumes.
+  historical_human_approval_claim: false
+- name: audit-logging
+  category: operations
+  source_repo: TheArchitectit/agent-guardrails-template
+  url: https://github.com/TheArchitectit/agent-guardrails-template
+  version: unverified historical reference
+  license: MIT
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies: []
+  permissions: Write to secure local log file
+  network_requirements: None
+  integration_wrapper: agent-skills/operations/audit-logging/logger.py
+  status: LOCAL_ADAPTER
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: noble.audit.AuditSink
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Records timestamp, action, target, tool, policy decision, approval status, and result
+  historical_security_notes: Redacts secrets and tokens automatically.
+  historical_human_approval_claim: false
+- name: prompt-injection-defense
+  category: resilience
+  source_repo: openguardrails/openguardrails
+  url: https://github.com/openguardrails/openguardrails
+  version: unverified historical reference
+  license: Apache-2.0
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies: []
+  permissions: Text processing
+  network_requirements: None
+  integration_wrapper: agent-skills/resilience/prompt-injection-defense/sanitize.py
+  status: LOCAL_ADAPTER
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: noble.trust.quarantine
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Detects and neutralizes prompt injection attempts in code comments and web pages
+  historical_security_notes: Treats all external text strictly as data.
+  historical_human_approval_claim: false
+- name: untrusted-content-handling
+  category: resilience
+  source_repo: mukul975/Anthropic-Cybersecurity-Skills
+  url: https://github.com/mukul975/Anthropic-Cybersecurity-Skills
+  version: unverified historical reference
+  license: Apache-2.0
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies: []
+  permissions: Local parsing
+  network_requirements: None
+  integration_wrapper: agent-skills/resilience/untrusted-content-handling/SKILL.md
+  status: LOCAL_ADAPTER
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: noble.trust.quarantine
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Safe parsing of untrusted code, markdown, and API responses
+  historical_security_notes: Prevents parser-based vulnerabilities.
+  historical_human_approval_claim: false
+- name: tool-output-validation
+  category: resilience
+  source_repo: NVIDIA/SkillSpector
+  url: https://github.com/NVIDIA/SkillSpector
+  version: unverified historical reference
+  license: Apache-2.0
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies: []
+  permissions: Read tool output streams
+  network_requirements: None
+  integration_wrapper: agent-skills/resilience/tool-output-validation/validate_output.py
+  status: LOCAL_ADAPTER
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: noble.evidence.OutputValidator
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Scans tool outputs and skill files for malware, exfiltration patterns, and anomalies
+  historical_security_notes: Blocks execution if malicious payloads are detected in output.
+  historical_human_approval_claim: false
+- name: vulnerability-reporting
+  category: reporting
+  source_repo: cloudflare/security-audit-skill
+  url: https://github.com/cloudflare/security-audit-skill
+  version: unverified historical reference
+  license: MIT
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies:
+  - Node.js
+  permissions: Write findings.json
+  network_requirements: None
+  integration_wrapper: agent-skills/reporting/vulnerability-reporting/report_generator.py
+  status: LOCAL_ADAPTER
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: noble.reporting.Reporter
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Generates standardized findings JSON conforming to report-schema.json
+  historical_security_notes: Produces machine-verifiable vulnerability reports.
+  historical_human_approval_claim: false
+- name: reproduction
+  category: reporting
+  source_repo: cloudflare/security-audit-skill
+  url: https://github.com/cloudflare/security-audit-skill
+  version: unverified historical reference
+  license: MIT
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies: []
+  permissions: Local file generation
+  network_requirements: None
+  integration_wrapper: agent-skills/reporting/reproduction/poc_builder.py
+  status: PARTIAL_IMPLEMENTATION
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: noble.builtins.fixture_sql (known synthetic fixture only)
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Creates minimal reproduction steps and safe local test assertions
+  historical_security_notes: PoCs are restricted to local test assertions.
+  historical_human_approval_claim: true
+- name: remediation
+  category: reporting
+  source_repo: cloudflare/security-audit-skill
+  url: https://github.com/cloudflare/security-audit-skill
+  version: unverified historical reference
+  license: MIT
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies: []
+  permissions: Local patch drafting
+  network_requirements: None
+  integration_wrapper: agent-skills/reporting/remediation/remediate.py
+  status: LOCAL_ADAPTER
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: noble.reasoning.evaluate_observation
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Produces secure code patches and least-disruptive remediation steps
+  historical_security_notes: Requires operator review before applying patches.
+  historical_human_approval_claim: true
+- name: responsible-disclosure
+  category: reporting
+  source_repo: mukul975/Anthropic-Cybersecurity-Skills
+  url: https://github.com/mukul975/Anthropic-Cybersecurity-Skills
+  version: unverified historical reference
+  license: Apache-2.0
+  installation_method: Historical reference path only; runtime_component points to independent local code if present
+  dependencies: []
+  permissions: Local document drafting
+  network_requirements: None
+  integration_wrapper: agent-skills/reporting/responsible-disclosure/SKILL.md
+  status: REFERENCE_ONLY
+  upstream_installed: false
+  runtime_registered: false
+  runtime_component: null
+  source_version_verified: false
+  integration_wrapper_is_reference: true
+  historical_capabilities_claimed:
+  - Drafts responsible disclosure notices following coordinated vulnerability disclosure (CVD) standards
+  historical_security_notes: Ensures ethical and legal communication of findings.
+  historical_human_approval_claim: true
+legacy_entries_are_runtime_tools: false
+runtime_tools:
+- name: static-code-scan
+  action: static-analysis
+  status: FULL_IMPLEMENTATION
+  implementation: noble.builtins.scanner
+  authorization_required: true
+  network: false
+  coverage: Python .execute(interpolated expression) candidates only; no broad SAST
+- name: fixture-sql-verify
+  action: local-unit-test-verification
+  status: FULL_IMPLEMENTATION
+  implementation: noble.builtins.fixture_sql
+  authorization_required: true
+  network: false
+  coverage: Unmodified synthetic SQL fixture only, in-memory SQLite

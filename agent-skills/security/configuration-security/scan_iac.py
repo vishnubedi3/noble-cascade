@@ -1,20 +1,19 @@
 #!/usr/bin/env python3
-"""
-Configuration Security & IaC Scanner (SecOpsAgentKit / Checkov pattern)
-Scans infrastructure as code and configuration files for security misconfigurations.
+"""IaC misconfiguration scanning is UNAVAILABLE in the controlled runtime.
+
+The original Checkov version probe swallowed a missing dependency and returned
+0 without scanning. Network-less, isolated integration is required first.
 """
 
-import subprocess
+from __future__ import annotations
+
 import sys
-import os
 
-def scan_iac():
-    print("[*] Scanning Infrastructure as Code (Checkov)...")
-    try:
-        subprocess.run(["checkov", "--version"], capture_output=True, text=True)
-        subprocess.run(["checkov", "-d", ".", "--quiet"], check=False)
-    except Exception as e:
-        print(f"[!] IaC scan note: {e}")
+
+def scan_iac() -> int:
+    print("UNAVAILABLE: no authorized Checkov/IaC scanner is registered. See 'noble doctor'.", file=sys.stderr)
+    return 3
+
 
 if __name__ == "__main__":
-    scan_iac()
+    raise SystemExit(scan_iac())

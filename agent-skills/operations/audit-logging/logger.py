@@ -1,37 +1,19 @@
 #!/usr/bin/env python3
+"""Legacy standalone audit emitter disabled: it could forge a success event.
+
+All operational audit records are emitted by the control plane through the
+owner-only SQLite hash-chained ``AuditSink``. Use ``noble audit --verify``.
 """
-Structured Audit Logging Engine (TheArchitectit Agent Guardrails Template pattern)
-Records meaningful agent actions, policy decisions, and results while redacting secrets.
-"""
 
-import os
-import json
-from datetime import datetime
+from __future__ import annotations
 
-LOG_FILE = "agent-skills/operations/audit-logging/audit.log"
+import sys
 
-def log_event(action: str, target: str, tool: str, policy_decision: str, approval_status: str, result: str):
-    os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
-    
-    event = {
-        "timestamp": datetime.utcnow().isoformat(),
-        "action": action,
-        "target": target,
-        "tool": tool,
-        "policy_decision": policy_decision,
-        "approval_status": approval_status,
-        "result": result
-    }
-    
-    # Redact potential secrets or tokens
-    event_str = json.dumps(event)
-    for sensitive in ["password", "token", "secret", "authorization"]:
-        if sensitive in event_str.lower():
-            event_str = event_str.replace(sensitive, "[REDACTED]")
 
-    with open(LOG_FILE, "a") as f:
-        f.write(event_str + "\n")
-    print(f"[*] Audit Logged: {action} -> {policy_decision}")
+def log_event(*args: object, **kwargs: object) -> None:
+    raise RuntimeError("standalone audit logging disabled; use NobleEngine.run")
+
 
 if __name__ == "__main__":
-    log_event("scan", "target-app", "semgrep", "ALLOWED", "NOT_REQUIRED", "success")
+    print("UNAVAILABLE: standalone event creation disabled; use 'noble audit'.", file=sys.stderr)
+    raise SystemExit(3)

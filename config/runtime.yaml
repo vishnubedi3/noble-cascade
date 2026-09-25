@@ -1,0 +1,15 @@
+# Conservative offline runtime. Network-capable or user-supplied tool code is NOT supported.
+version: 1
+state_directory: .noble
+network_enabled: false
+limits:
+  max_output_bytes: 131072
+  max_input_bytes: 16384
+  max_file_bytes: 262144
+  max_files: 300
+  max_observations: 30
+  timeout_seconds: 12
+  cpu_seconds: 6
+  memory_mb: 384
+  global_concurrency: 2
+  rate_per_minute: 30

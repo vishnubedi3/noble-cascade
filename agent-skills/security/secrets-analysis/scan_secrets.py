@@ -1,24 +1,20 @@
 #!/usr/bin/env python3
-"""
-Secrets Analysis Wrapper (Security Skills / Gitleaks pattern)
-Scans git history and workspace for hardcoded API keys, tokens, and private keys.
+"""History/workspace secret scanning is UNAVAILABLE in the controlled runtime.
+
+The original Gitleaks version check raised before its unimplemented regex
+fallback; rc=0 did not mean the repository was scanned. Do not claim a clean
+secret scan until an isolated scanner is installed and integrated.
 """
 
-import subprocess
+from __future__ import annotations
+
 import sys
-import os
 
-def scan_secrets():
-    print("[*] Scanning repository for hardcoded secrets (Gitleaks)...")
-    try:
-        res = subprocess.run(["gitleaks", "version"], capture_output=True, text=True)
-        if res.returncode == 0:
-            subprocess.run(["gitleaks", "detect", "--source", ".", "--verbose"], check=False)
-        else:
-            print("[!] Gitleaks not installed. Performing regex-based basic secret check...")
-            # Fallback basic scan logic if needed
-    except Exception as e:
-        print(f"[!] Secrets scan note: {e}")
+
+def scan_secrets() -> int:
+    print("UNAVAILABLE: no authorized history/workspace secret scanner is registered. See 'noble doctor'.", file=sys.stderr)
+    return 3
+
 
 if __name__ == "__main__":
-    scan_secrets()
+    raise SystemExit(scan_secrets())
