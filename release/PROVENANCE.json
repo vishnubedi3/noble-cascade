@@ -1,12 +1,12 @@
 {
-  "commit": "8fd3c880f26daae46f8d8eaf86a70dbabf256f4a",
-  "generatedAt": "2026-09-25T16:17:18.312503+00:00",
+  "commit": "be4e56f271568cb32c5b4d8c30e4cda7de1dc5e8",
+  "generatedAt": "2026-09-25T16:20:13.597783+00:00",
   "inputs": {
     "agent-skills/governance/scope-enforcement/scope-policy.yaml": "069153344401179e451cff7f39ea59be6c07f4db20b8e32af89d18d3e2c4d72d",
     "config/runtime.yaml": "72e5f9f8c956cf242a5659807d27642f174c3c2455a184ee8078d129596e763c",
     "docs/security-spec.json": "f5662bab9cda37e0dcd059916f86b4cc522c9feabc15ab0637b9124dc564607d",
     "noble/builtins/worker.py": "cfdeaeb1877498f89fe054f44206eeafa6bd5a500ec9ee3c455fe3034f768f78",
-    "pyproject.toml": "f41fb4f5b14857078b6144724668390a6c0ee933dbb737d889f9e3896d4972ef",
+    "pyproject.toml": "802dba7e0a68d5bb8ec9e58be9fb4416ef9c3a5a001eac519105a584cb090473",
     "requirements-dev.lock": "53a7eaaa05d8a4ec9a52bc4a0798de5e57e4466927a0ac432c674bc89fc58639",
     "requirements.lock": "d0fd4e1d9a99218255fa1903d4a4f2021ce48b2cb455ddd9168f1ba7c80c53a0"
   },
@@ -23,23 +23,23 @@
     "invocation": {
       "configSource": {
         "digest": {
-          "sha1": "8fd3c880f26daae46f8d8eaf86a70dbabf256f4a"
+          "sha1": "be4e56f271568cb32c5b4d8c30e4cda7de1dc5e8"
         },
         "entryPoint": "noble release",
-        "uri": "git+https://github.com/vishnubedi3/noble-cascade@8fd3c880f26daae46f8d8eaf86a70dbabf256f4a"
+        "uri": "git+https://github.com/vishnubedi3/noble-cascade@be4e56f271568cb32c5b4d8c30e4cda7de1dc5e8"
       },
       "parameters": {}
     },
     "materials": [
       {
         "digest": {
-          "sha1": "8fd3c880f26daae46f8d8eaf86a70dbabf256f4a"
+          "sha1": "be4e56f271568cb32c5b4d8c30e4cda7de1dc5e8"
         },
         "uri": "git+https://github.com/vishnubedi3/noble-cascade"
       },
       {
         "digest": {
-          "sha256": "f41fb4f5b14857078b6144724668390a6c0ee933dbb737d889f9e3896d4972ef"
+          "sha256": "802dba7e0a68d5bb8ec9e58be9fb4416ef9c3a5a001eac519105a584cb090473"
         },
         "uri": "file://pyproject.toml"
       },
@@ -81,14 +81,14 @@
       }
     ],
     "metadata": {
-      "buildFinishedOn": "2026-09-25T16:17:18.312503+00:00",
-      "buildStartedOn": "2026-09-25T16:17:18.312503+00:00",
+      "buildFinishedOn": "2026-09-25T16:20:13.597783+00:00",
+      "buildStartedOn": "2026-09-25T16:20:13.597783+00:00",
       "completeness": {
         "environment": true,
         "materials": true,
         "parameters": true
       },
-      "dirty": true,
+      "dirty": false,
       "reproducible": true
     }
   },
@@ -96,7 +96,7 @@
   "subject": [
     {
       "digest": {
-        "sha256": "451ca20e090950d32bb2ac90e93edf15e90c9144f44cc7a05966357f9d5fb49a"
+        "sha256": "00f02e5366a83c04cb28b6834f9d09811516c3d082851b0c9bb1c98f85ab3a18"
       },
       "name": "release"
     }

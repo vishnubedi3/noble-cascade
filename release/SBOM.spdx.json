@@ -1,7 +1,7 @@
 {
   "SPDXID": "SPDXRef-DOCUMENT",
   "creationInfo": {
-    "created": "2026-09-25T16:17:18.269538+00:00",
+    "created": "2026-09-25T16:20:13.552224+00:00",
     "creators": [
       "Tool: noble-sbom-0.2.0",
       "Organization: Noble Cascade"
@@ -9,7 +9,7 @@
     "licenseListVersion": "3.22"
   },
   "dataLicense": "CC0-1.0",
-  "documentNamespace": "https://noble-cascade.local/sbom/9ece0cc68d28",
+  "documentNamespace": "https://noble-cascade.local/sbom/fdd34d9ad408",
   "name": "noble-cascade-sbom",
   "packages": [
     {
@@ -626,7 +626,7 @@
     }
   ],
   "provenance": {
-    "buildTime": "2026-09-25T16:17:18.269538+00:00",
+    "buildTime": "2026-09-25T16:20:13.552224+00:00",
     "generatedBy": "noble sbom",
     "generatorVersion": "0.2.0"
   },
