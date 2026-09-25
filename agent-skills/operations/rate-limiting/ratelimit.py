@@ -1,34 +1,16 @@
 #!/usr/bin/env python3
+"""Legacy in-memory demonstration disabled; it was bypassed across processes.
+
+The operational limiter is ``Store.acquire_lease``: SQLite transaction-based
+per-principal/tool/target call rate and global concurrent reservations,
+consulted by every NobleEngine tool invocation.
 """
-Rate Limiting Middleware (TheArchitectit Agent Guardrails Template pattern)
-Enforces sliding-window rate limits per tool call to prevent accidental DoS against targets.
-"""
 
-import time
-from collections import defaultdict
+from __future__ import annotations
 
-class RateLimiter:
-    def __init__(self, max_calls=60, window_seconds=60):
-        self.max_calls = max_calls
-        self.window_seconds = window_seconds
-        self.calls = defaultdict(list)
+import sys
 
-    def check_rate_limit(self, tool_name: str) -> bool:
-        now = time.time()
-        window_start = now - self.window_seconds
-        
-        # Filter calls within window
-        self.calls[tool_name] = [t for t in self.calls[tool_name] if t > window_start]
-        
-        if len(self.calls[tool_name]) >= self.max_calls:
-            print(f"[!] Rate limit exceeded for tool '{tool_name}' ({len(self.calls[tool_name])} calls in {self.window_seconds}s). Throttled.")
-            return False
-            
-        self.calls[tool_name].append(now)
-        return True
 
 if __name__ == "__main__":
-    rl = RateLimiter(max_calls=5, window_seconds=10)
-    for i in range(6):
-        allowed = rl.check_rate_limit("fuzzer")
-        print(f"Call {i+1}: allowed={allowed}")
+    print("UNAVAILABLE: use 'noble scan/validate' for integrated rate limits.", file=sys.stderr)
+    raise SystemExit(3)

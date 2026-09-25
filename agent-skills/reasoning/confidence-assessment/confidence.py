@@ -1,31 +1,19 @@
 #!/usr/bin/env python3
+"""Legacy unconditional 100/100 confidence stub disabled.
+
+The real reasoning path in ``noble.reasoning`` ties confidence to validated
+source evidence and, for synthetic confirmation, an independent reproduction.
 """
-Confidence Assessment Engine (NVIDIA SkillSpector pattern)
-Computes 0-100 confidence and risk scores for findings based on evidence strength.
-"""
+
+from __future__ import annotations
 
 import sys
-import json
 
-def assess_confidence(evidence_strength: int, reproducibility: bool, disproof_resilience: bool) -> dict:
-    score = 50
-    if evidence_strength >= 8:
-        score += 25
-    if reproducibility:
-        score += 15
-    if disproof_resilience:
-        score += 10
 
-    score = min(100, max(0, score))
-    
-    level = "LOW"
-    if score >= 80:
-        level = "HIGH"
-    elif score >= 60:
-        level = "MEDIUM"
+def assess_confidence(*args: object, **kwargs: object) -> None:
+    raise RuntimeError("standalone confidence score is not evidence-backed; use NobleEngine.run")
 
-    return {"confidence_score": score, "confidence_level": level}
 
 if __name__ == "__main__":
-    result = assess_confidence(9, True, True)
-    print(json.dumps(result, indent=2))
+    print("UNAVAILABLE: confidence requires validated evidence in NobleEngine.", file=sys.stderr)
+    raise SystemExit(3)

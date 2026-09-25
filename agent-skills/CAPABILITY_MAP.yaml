@@ -1,152 +1,246 @@
-# Capability Map
-# Ecosystem: Authorized Bug-Hunting Agent Architecture
-
+# Capability references are not runtime registrations; consult manifest.yaml:runtime_tools.
 governance:
   scope-enforcement:
-    implementation: "OpenGuardrails Protocol"
-    location: "agent-skills/governance/scope-enforcement/"
-    primary: true
+    implementation: OpenGuardrails Protocol
+    location: agent-skills/governance/scope-enforcement/
+    primary: false
+    status: LOCAL_ADAPTER
+    upstream_installed: false
+    runtime_component: noble.scope.ScopeEngine
   authorization-policy:
-    implementation: "Microsoft Agent Governance Toolkit"
-    location: "agent-skills/governance/authorization-policy/"
-    primary: true
+    implementation: Microsoft Agent Governance Toolkit
+    location: agent-skills/governance/authorization-policy/
+    primary: false
+    status: LOCAL_ADAPTER
+    upstream_installed: false
+    runtime_component: noble.authorization.Authorizer
   safety-policy:
-    implementation: "Agent Guardrails Template"
-    location: "agent-skills/governance/safety-policy/"
-    primary: true
+    implementation: Agent Guardrails Template
+    location: agent-skills/governance/safety-policy/
+    primary: false
+    status: PARTIAL_IMPLEMENTATION
+    upstream_installed: false
+    runtime_component: noble.execution.CommandRunner (not the unrun Go reference)
   human-approval:
-    implementation: "Agent Guardrails Template"
-    location: "agent-skills/governance/human-approval/"
-    primary: true
+    implementation: Agent Guardrails Template
+    location: agent-skills/governance/human-approval/
+    primary: false
+    status: LOCAL_ADAPTER
+    upstream_installed: false
+    runtime_component: noble.approvals.ApprovalManager
   escalation:
-    implementation: "SecOpsAgentKit"
-    location: "agent-skills/governance/escalation/"
-    primary: true
-
+    implementation: SecOpsAgentKit
+    location: agent-skills/governance/escalation/
+    primary: false
+    status: REFERENCE_ONLY
+    upstream_installed: false
+    runtime_component: null
 reasoning:
   evidence-analysis:
-    implementation: "Cloudflare Security Audit Skill"
-    location: "agent-skills/reasoning/evidence-analysis/"
-    primary: true
+    implementation: Cloudflare Security Audit Skill
+    location: agent-skills/reasoning/evidence-analysis/
+    primary: false
+    status: LOCAL_ADAPTER
+    upstream_installed: false
+    runtime_component: noble.evidence.OutputValidator
   hypothesis-testing:
-    implementation: "Cloudflare Security Audit Skill"
-    location: "agent-skills/reasoning/hypothesis-testing/"
-    primary: true
+    implementation: Cloudflare Security Audit Skill
+    location: agent-skills/reasoning/hypothesis-testing/
+    primary: false
+    status: REFERENCE_ONLY
+    upstream_installed: false
+    runtime_component: null
   false-positive-analysis:
-    implementation: "Cloudflare Security Audit Skill"
-    location: "agent-skills/reasoning/false-positive-analysis/"
-    primary: true
+    implementation: Cloudflare Security Audit Skill
+    location: agent-skills/reasoning/false-positive-analysis/
+    primary: false
+    status: LOCAL_ADAPTER
+    upstream_installed: false
+    runtime_component: noble.reasoning.evaluate_observation
   confidence-assessment:
-    implementation: "NVIDIA SkillSpector"
-    location: "agent-skills/reasoning/confidence-assessment/"
-    primary: true
+    implementation: NVIDIA SkillSpector
+    location: agent-skills/reasoning/confidence-assessment/
+    primary: false
+    status: LOCAL_ADAPTER
+    upstream_installed: false
+    runtime_component: noble.reasoning.evaluate_observation
   severity-assessment:
-    implementation: "Anthropic Cybersecurity Skills"
-    location: "agent-skills/reasoning/severity-assessment/"
-    primary: true
-
+    implementation: Anthropic Cybersecurity Skills
+    location: agent-skills/reasoning/severity-assessment/
+    primary: false
+    status: LOCAL_ADAPTER
+    upstream_installed: false
+    runtime_component: noble.reasoning.evaluate_observation
 code:
   repository-analysis:
-    implementation: "Cloudflare Security Audit Skill"
-    location: "agent-skills/code/repository-analysis/"
-    primary: true
+    implementation: Cloudflare Security Audit Skill
+    location: agent-skills/code/repository-analysis/
+    primary: false
+    status: PARTIAL_IMPLEMENTATION
+    upstream_installed: false
+    runtime_component: noble.builtins.scanner (Python SQL candidates only)
   language-detection:
-    implementation: "SecOpsAgentKit"
-    location: "agent-skills/code/language-detection/"
-    primary: true
+    implementation: SecOpsAgentKit
+    location: agent-skills/code/language-detection/
+    primary: false
+    status: REFERENCE_ONLY
+    upstream_installed: false
+    runtime_component: null
   multi-language-analysis:
-    implementation: "SecOpsAgentKit (Semgrep/Bandit)"
-    location: "agent-skills/code/multi-language-analysis/"
-    primary: true
+    implementation: SecOpsAgentKit (Semgrep/Bandit)
+    location: agent-skills/code/multi-language-analysis/
+    primary: false
+    status: UNAVAILABLE
+    upstream_installed: false
+    runtime_component: null
   dependency-analysis:
-    implementation: "Security Skills (OSV-Scanner)"
-    location: "agent-skills/code/dependency-analysis/"
-    primary: true
+    implementation: Security Skills (OSV-Scanner)
+    location: agent-skills/code/dependency-analysis/
+    primary: false
+    status: UNAVAILABLE
+    upstream_installed: false
+    runtime_component: null
   secure-code-review:
-    implementation: "Anthropic Cybersecurity Skills"
-    location: "agent-skills/code/secure-code-review/"
-    primary: true
-
+    implementation: Anthropic Cybersecurity Skills
+    location: agent-skills/code/secure-code-review/
+    primary: false
+    status: REFERENCE_ONLY
+    upstream_installed: false
+    runtime_component: null
 security:
   web-security:
-    implementation: "Anthropic Cybersecurity Skills"
-    location: "agent-skills/security/web-security/"
-    primary: true
+    implementation: Anthropic Cybersecurity Skills
+    location: agent-skills/security/web-security/
+    primary: false
+    status: REFERENCE_ONLY
+    upstream_installed: false
+    runtime_component: null
   api-security:
-    implementation: "Anthropic Cybersecurity Skills"
-    location: "agent-skills/security/api-security/"
-    primary: true
+    implementation: Anthropic Cybersecurity Skills
+    location: agent-skills/security/api-security/
+    primary: false
+    status: REFERENCE_ONLY
+    upstream_installed: false
+    runtime_component: null
   authentication:
-    implementation: "Anthropic Cybersecurity Skills"
-    location: "agent-skills/security/authentication/"
-    primary: true
+    implementation: Anthropic Cybersecurity Skills
+    location: agent-skills/security/authentication/
+    primary: false
+    status: REFERENCE_ONLY
+    upstream_installed: false
+    runtime_component: null
   authorization:
-    implementation: "Anthropic Cybersecurity Skills"
-    location: "agent-skills/security/authorization/"
-    primary: true
+    implementation: Anthropic Cybersecurity Skills
+    location: agent-skills/security/authorization/
+    primary: false
+    status: REFERENCE_ONLY
+    upstream_installed: false
+    runtime_component: null
   cryptography-review:
-    implementation: "Anthropic Cybersecurity Skills"
-    location: "agent-skills/security/cryptography-review/"
-    primary: true
+    implementation: Anthropic Cybersecurity Skills
+    location: agent-skills/security/cryptography-review/
+    primary: false
+    status: REFERENCE_ONLY
+    upstream_installed: false
+    runtime_component: null
   secrets-analysis:
-    implementation: "Security Skills (Gitleaks)"
-    location: "agent-skills/security/secrets-analysis/"
-    primary: true
+    implementation: Security Skills (Gitleaks)
+    location: agent-skills/security/secrets-analysis/
+    primary: false
+    status: UNAVAILABLE
+    upstream_installed: false
+    runtime_component: null
   configuration-security:
-    implementation: "SecOpsAgentKit (Checkov)"
-    location: "agent-skills/security/configuration-security/"
-    primary: true
-
+    implementation: SecOpsAgentKit (Checkov)
+    location: agent-skills/security/configuration-security/
+    primary: false
+    status: UNAVAILABLE
+    upstream_installed: false
+    runtime_component: null
 operations:
   safe-reconnaissance:
-    implementation: "Cloudflare Security Audit Skill"
-    location: "agent-skills/operations/safe-reconnaissance/"
-    primary: true
+    implementation: Cloudflare Security Audit Skill
+    location: agent-skills/operations/safe-reconnaissance/
+    primary: false
+    status: REFERENCE_ONLY
+    upstream_installed: false
+    runtime_component: null
   controlled-testing:
-    implementation: "Anthropic Cybersecurity Skills"
-    location: "agent-skills/operations/controlled-testing/"
-    primary: true
+    implementation: Anthropic Cybersecurity Skills
+    location: agent-skills/operations/controlled-testing/
+    primary: false
+    status: REFERENCE_ONLY
+    upstream_installed: false
+    runtime_component: null
   sandbox-execution:
-    implementation: "Agent Sandbox"
-    location: "agent-skills/operations/sandbox-execution/"
-    primary: true
+    implementation: Agent Sandbox
+    location: agent-skills/operations/sandbox-execution/
+    primary: false
+    status: UNAVAILABLE
+    upstream_installed: false
+    runtime_component: null
   rate-limiting:
-    implementation: "Agent Guardrails Template"
-    location: "agent-skills/operations/rate-limiting/"
-    primary: true
+    implementation: Agent Guardrails Template
+    location: agent-skills/operations/rate-limiting/
+    primary: false
+    status: LOCAL_ADAPTER
+    upstream_installed: false
+    runtime_component: noble.store.Store.acquire_lease
   audit-logging:
-    implementation: "Agent Guardrails Template"
-    location: "agent-skills/operations/audit-logging/"
-    primary: true
-
+    implementation: Agent Guardrails Template
+    location: agent-skills/operations/audit-logging/
+    primary: false
+    status: LOCAL_ADAPTER
+    upstream_installed: false
+    runtime_component: noble.audit.AuditSink
 resilience:
   prompt-injection-defense:
-    implementation: "OpenGuardrails Protocol"
-    location: "agent-skills/resilience/prompt-injection-defense/"
-    primary: true
+    implementation: OpenGuardrails Protocol
+    location: agent-skills/resilience/prompt-injection-defense/
+    primary: false
+    status: LOCAL_ADAPTER
+    upstream_installed: false
+    runtime_component: noble.trust.quarantine
   untrusted-content-handling:
-    implementation: "Anthropic Cybersecurity Skills"
-    location: "agent-skills/resilience/untrusted-content-handling/"
-    primary: true
+    implementation: Anthropic Cybersecurity Skills
+    location: agent-skills/resilience/untrusted-content-handling/
+    primary: false
+    status: LOCAL_ADAPTER
+    upstream_installed: false
+    runtime_component: noble.trust.quarantine
   tool-output-validation:
-    implementation: "NVIDIA SkillSpector"
-    location: "agent-skills/resilience/tool-output-validation/"
-    primary: true
-
+    implementation: NVIDIA SkillSpector
+    location: agent-skills/resilience/tool-output-validation/
+    primary: false
+    status: LOCAL_ADAPTER
+    upstream_installed: false
+    runtime_component: noble.evidence.OutputValidator
 reporting:
   vulnerability-reporting:
-    implementation: "Cloudflare Security Audit Skill"
-    location: "agent-skills/reporting/vulnerability-reporting/"
-    primary: true
+    implementation: Cloudflare Security Audit Skill
+    location: agent-skills/reporting/vulnerability-reporting/
+    primary: false
+    status: LOCAL_ADAPTER
+    upstream_installed: false
+    runtime_component: noble.reporting.Reporter
   reproduction:
-    implementation: "Cloudflare Security Audit Skill"
-    location: "agent-skills/reporting/reproduction/"
-    primary: true
+    implementation: Cloudflare Security Audit Skill
+    location: agent-skills/reporting/reproduction/
+    primary: false
+    status: PARTIAL_IMPLEMENTATION
+    upstream_installed: false
+    runtime_component: noble.builtins.fixture_sql (known synthetic fixture only)
   remediation:
-    implementation: "Cloudflare Security Audit Skill"
-    location: "agent-skills/reporting/remediation/"
-    primary: true
+    implementation: Cloudflare Security Audit Skill
+    location: agent-skills/reporting/remediation/
+    primary: false
+    status: LOCAL_ADAPTER
+    upstream_installed: false
+    runtime_component: noble.reasoning.evaluate_observation
   responsible-disclosure:
-    implementation: "Anthropic Cybersecurity Skills"
-    location: "agent-skills/reporting/responsible-disclosure/"
-    primary: true
+    implementation: Anthropic Cybersecurity Skills
+    location: agent-skills/reporting/responsible-disclosure/
+    primary: false
+    status: REFERENCE_ONLY
+    upstream_installed: false
+    runtime_component: null

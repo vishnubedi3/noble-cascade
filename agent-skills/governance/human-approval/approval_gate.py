@@ -1,44 +1,46 @@
 #!/usr/bin/env python3
+"""Risk-classification compatibility wrapper (NOT an approval bypass).
+
+There is no universal ``--approve`` flag: high-risk requests need a
+request-bound approval from a *different* authorized principal, checked by
+``noble.approvals.ApprovalManager`` inside the control plane. This script does
+not execute tools or issue an approval.
 """
-Human Approval Gate (Agent Guardrails Template pattern)
-Classifies operations into LOW, MEDIUM, HIGH risk tiers and enforces human sign-off for HIGH risk.
-"""
+
+from __future__ import annotations
 
 import sys
+from pathlib import Path
 
-RISK_TIERS = {
-    "LOW": ["static-analysis", "dependency-audit", "secret-scanning", "reconnaissance"],
-    "MEDIUM": ["code-patching", "non-destructive-testing"],
-    "HIGH": ["active-fuzzing", "poc-execution", "production-modification", "exploit-verification"]
-}
+ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(ROOT))
+
+from noble.models import SecurityRequest  # noqa: E402
+from noble.risk import RiskEngine  # noqa: E402
+from noble.targets import normalize_target  # noqa: E402
+
 
 def evaluate_risk(action: str) -> str:
-    for tier, actions in RISK_TIERS.items():
-        if action in actions:
-            return tier
-    return "HIGH" # Default deny-by-default to HIGH risk for unknown actions
+    target = normalize_target(str(ROOT), workspace_root=str(ROOT))
+    request = SecurityRequest(action=action, target=target.canonical, requester="local-operator")
+    return RiskEngine().assess(request, target).tier.value
+
 
 def require_approval(action: str, override_approval: bool = False) -> bool:
     tier = evaluate_risk(action)
     print(f"[*] Action '{action}' evaluated as risk tier: {tier}")
-    
-    if tier == "LOW":
-        print("[+] LOW risk tier: automatic approval granted.")
-        return True
-    elif tier == "MEDIUM":
-        print("[*] MEDIUM risk tier: logging action and proceeding with audit trail.")
-        return True
-    else:
-        print(f"[!] HIGH risk tier detected for action '{action}'.")
-        if override_approval:
-            print("[+] Human approval override provided. Proceeding.")
-            return True
-        else:
-            print("[!] HIGH risk action halted. Explicit human approval required. Agent cannot self-approve.")
-            return False
+    if override_approval:
+        print("[!] --approve is not a valid human approval; request-bound approval is required.")
+        return False
+    if tier in ("HIGH", "CRITICAL"):
+        print("[!] Approval required; no high-risk tool is registered in the local runtime.")
+        return False
+    print("[*] Risk classification only; execution still requires scope and an explicit grant.")
+    return True
+
 
 if __name__ == "__main__":
-    action = sys.argv[1] if len(sys.argv) > 1 else "static-analysis"
-    override = "--approve" in sys.argv
-    success = require_approval(action, override)
-    sys.exit(0 if success else 1)
+    if len(sys.argv) < 2:
+        print("Usage: approval_gate.py ACTION [--approve (always refused)]", file=sys.stderr)
+        raise SystemExit(2)
+    raise SystemExit(0 if require_approval(sys.argv[1], "--approve" in sys.argv[2:]) else 1)

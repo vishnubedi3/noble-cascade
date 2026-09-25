@@ -1,28 +1,20 @@
 #!/usr/bin/env python3
-"""
-Safe Reconnaissance Runner (Cloudflare Security Audit Skill pattern)
-Performs non-destructive mapping of application structure and entry points.
+"""Legacy file-count recon is disabled; it was never an authorized scan.
+
+The registered ``noble scan`` command performs bounded local AST analysis
+only after scope and an exact authorization grant. No network reconnaissance
+capability is registered.
 """
 
-import os
-import json
+from __future__ import annotations
 
-def run_recon():
-    print("[*] Performing safe reconnaissance of workspace...")
-    file_list = []
-    for root, dirs, files in os.walk("."):
-        if ".git" in root or "agent-skills" in root or "node_modules" in root:
-            continue
-        for f in files:
-            file_list.append(os.path.join(root, f))
-    
-    report = {
-        "total_files": len(file_list),
-        "status": "completed",
-        "mode": "passive-recon"
-    }
-    print(json.dumps(report, indent=2))
-    return report
+import sys
+
+
+def run_recon() -> None:
+    raise RuntimeError("standalone reconnaissance is not registered; use 'noble scan'")
+
 
 if __name__ == "__main__":
-    run_recon()
+    print("UNAVAILABLE: no reconnaissance tool is registered. See 'noble tools'.", file=sys.stderr)
+    raise SystemExit(3)

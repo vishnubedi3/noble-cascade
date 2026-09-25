@@ -1,34 +1,21 @@
-version: '3.8'
-
+# Reference-only, offline containment example — NOT an operational execution
+# backend. The Python runtime never launches this compose service. Do not use
+# this file as evidence that Docker isolation was tested or network-filtered.
 services:
   agent-sandbox:
     image: debian:bookworm-slim
-    container_name: agent_sandbox_runtime
+    network_mode: none
+    read_only: true
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 64
+    mem_limit: 384m
+    cpus: 1
     volumes:
-      - .:/workspace:ro
-      - agent_state:/run/agentbox
-    networks:
-      - sandbox-net
-    cap_drop:
-      - ALL
-    cap_add:
-      - NET_ADMIN
+      - ../../../:/workspace:ro
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m
     environment:
-      - AGENT_ENV=sandboxed
+      - HOME=/tmp
     command: ["sleep", "infinity"]
-
-  proxy:
-    image: mitmproxy/mitmproxy:latest
-    container_name: agent_sandbox_proxy
-    ports:
-      - "8080:8080"
-    networks:
-      - sandbox-net
-    command: ["mitmdump", "--set", "block_global=false"]
-
-volumes:
-  agent_state:
-
-networks:
-  sandbox-net:
-    driver: bridge

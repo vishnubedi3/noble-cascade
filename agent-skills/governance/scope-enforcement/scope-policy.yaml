@@ -17,6 +17,10 @@ scope:
   allowed_repositories:
     - "vishnubedi3/*"
     - "local-workspace/*"
+  # Paths resolve relative to the Noble Cascade repository root; symlinks
+  # outside the root are denied. Only offline, read-only tools use this rule.
+  allowed_directories:
+    - "."
   allowed_testing_methods:
     - "static-analysis"
     - "dependency-audit"
