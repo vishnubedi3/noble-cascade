@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Noble Cascade — Security Operations Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{font-family:system-ui, sans-serif; margin:0; padding:0; background:#0a0a0a; color:#e0e0e0}
+header{background:#111; padding:16px 24px; border-bottom:1px solid #333}
+h1{margin:0; font-size:20px}
+nav a{color:#8ab4f8; margin-right:16px; text-decoration:none}
+main{padding:24px; max-width:1100px; margin:auto}
+.card{background:#1a1a1a; border:1px solid #333; border-radius:8px; padding:16px; margin-bottom:16px}
+.status-HEALTHY{color:#4caf50} .status-DEGRADED{color:#ff9800} .status-FAILED{color:#f44336}
+table{width:100%; border-collapse:collapse}
+th,td{padding:8px; text-align:left; border-bottom:1px solid #333}
+</style>
+</head>
+<body>
+<header>
+<h1>Noble Cascade — Security Operations Dashboard</h1>
+<nav>
+<a href="#health">Health</a> <a href="#findings">Findings</a> <a href="#audit">Audit</a> <a href="#metrics">Metrics</a>
+</nav>
+</header>
+<main>
+<section id="health" class="card">
+<h2>Runtime Health</h2>
+<div id="health-status">Loading…</div>
+<table id="health-table"><thead><tr><th>Component</th><th>Status</th><th>Message</th></tr></thead><tbody></tbody></table>
+</section>
+
+<section id="findings" class="card">
+<h2>Findings</h2>
+<div id="findings-count">Loading…</div>
+<table id="findings-table"><thead><tr><th>ID</th><th>State</th><th>Title</th><th>Confidence</th></tr></thead><tbody></tbody></table>
+</section>
+
+<section id="audit" class="card">
+<h2>Audit Chain</h2>
+<div id="audit-status">Loading…</div>
+</section>
+
+<section id="metrics" class="card">
+<h2>Security Metrics</h2>
+<div id="metrics">Loading…</div>
+</section>
+
+<section class="card">
+<h2>Governance Proof</h2>
+<p>Every execution is replayable, every policy decision is explainable, every worker is identifiable, every finding has provenance.</p>
+<p><a href="/api/health" style="color:#8ab4f8">API health</a> — CLI is authoritative; dashboard is read-only and never bypasses policy.</p>
+</section>
+</main>
+<script>
+async function load(){
+  try{
+    const health = await fetch('/api/health').then(r=>r.json());
+    document.getElementById('health-status').textContent = 'Overall: ' + health.overall;
+    const tbody = document.querySelector('#health-table tbody');
+    health.checks.forEach(c=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td>${c.component}</td><td class="status-${c.status}">${c.status}</td><td>${c.message}</td>`;
+      tbody.appendChild(tr);
+    });
+  }catch(e){ document.getElementById('health-status').textContent='Health unavailable (CLI-only mode)'; }
+  try{
+    const findings = await fetch('/api/findings').then(r=>r.json());
+    document.getElementById('findings-count').textContent = findings.length + ' findings';
+    const tb=document.querySelector('#findings-table tbody');
+    findings.forEach(f=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td>${f.finding_id}</td><td>${f.state}</td><td>${f.title}</td><td>${f.confidence.score}</td>`;
+      tb.appendChild(tr);
+    });
+  }catch(e){ document.getElementById('findings-count').textContent='Findings unavailable'; }
+}
+load();
+</script>
+</body>
+</html>

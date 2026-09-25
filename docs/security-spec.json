@@ -1,0 +1,775 @@
+{
+  "contracts": {
+    "approval": {
+      "description": "Self-approval never allows high-risk",
+      "input": "requester, approver",
+      "invariant": "requester == approver -> DENY",
+      "output": "APPROVED / DENIED"
+    },
+    "authorization": {
+      "description": "Only exact principal/target/purpose/time grants allow",
+      "input": "request + grant",
+      "invariant": "mismatch -> DENY",
+      "output": "AUTHORIZED / DENIED"
+    },
+    "evidence": {
+      "description": "Hash mismatch prevents trust",
+      "input": "content_hash",
+      "invariant": "mismatch -> UNTRUSTED",
+      "output": "TRUSTED / UNTRUSTED"
+    },
+    "sandbox": {
+      "description": "Unavailable sandbox prevents execution",
+      "input": "sandbox_available",
+      "invariant": "not available -> not executed",
+      "output": "EXECUTED / BLOCKED"
+    },
+    "scope": {
+      "description": "Unknown never becomes allow",
+      "input": "target",
+      "invariant": "UNKNOWN -> DENY",
+      "output": [
+        "ALLOW",
+        "DENY",
+        "UNKNOWN"
+      ]
+    },
+    "tool_output": {
+      "description": "Invalid output never becomes finding",
+      "input": "tool_output_valid",
+      "invariant": "invalid -> no finding",
+      "output": "FINDING / NO_FINDING"
+    }
+  },
+  "execution_chain": [
+    "Request",
+    "Policy",
+    "Authorization",
+    "Approval",
+    "Worker",
+    "Tool",
+    "Evidence",
+    "Finding",
+    "Report",
+    "Audit"
+  ],
+  "identifiers": [
+    "request_id",
+    "execution_id",
+    "worker_id",
+    "tool_run_id",
+    "evidence_id",
+    "finding_id",
+    "report_id",
+    "audit_event_id"
+  ],
+  "invariants": [
+    "No tool executes outside authorized scope (UNKNOWN -> DENY)",
+    "High-risk actions cannot execute without required approval",
+    "Agent cannot approve its own action",
+    "Unknown policy decisions fail closed",
+    "Target content cannot override system policy",
+    "Tool output cannot directly become trusted evidence without validation",
+    "Credentials are not exposed unnecessarily",
+    "Every security-sensitive execution is auditable",
+    "Sandbox failure prevents execution rather than silently weakening isolation",
+    "Web/API cannot bypass CLI controls"
+  ],
+  "name": "Noble Cascade Security Specification",
+  "policies": {
+    "approval": "PENDING->APPROVED/REJECTED/EXPIRED/REVOKED, compare-and-swap, no self-approval",
+    "authorization": "exact principal/target/action/purpose/time/permissions",
+    "network": "hard deny \u2014 no network-capable tool registered",
+    "sandbox": "process-local rlimits, bounded I/O, no filesystem/network namespace",
+    "scope": "deny-by-default, anchored matches, forbidden precedence, CIDR full containment"
+  },
+  "schemas": {
+    "finding": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "properties": {
+        "affected_component": {
+          "type": "string"
+        },
+        "category": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "confidence": {
+          "properties": {
+            "score": {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "score",
+            "level",
+            "evidence_count"
+          ],
+          "type": "object"
+        },
+        "created_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "description": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "finding_id": {
+          "pattern": "^finding-[0-9a-f]{16}([0-9a-f]{16})?$",
+          "type": "string"
+        },
+        "impact": {
+          "type": "string"
+        },
+        "provenance": {
+          "required": [
+            "tool",
+            "request_id",
+            "operator",
+            "grant_id"
+          ],
+          "type": "object"
+        },
+        "references": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "remediation": {
+          "type": "string"
+        },
+        "reproduction": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "severity": {
+          "properties": {
+            "tier": {
+              "enum": [
+                "LOW",
+                "MEDIUM",
+                "HIGH",
+                "CRITICAL"
+              ]
+            }
+          },
+          "required": [
+            "tier",
+            "impact",
+            "exploitability",
+            "exposure",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "state": {
+          "enum": [
+            "candidate",
+            "validated",
+            "confirmed",
+            "rejected",
+            "inconclusive",
+            "remediated",
+            "accepted-risk"
+          ]
+        },
+        "status": {
+          "enum": [
+            "OBSERVED",
+            "SUSPECTED",
+            "SUPPORTED",
+            "VALIDATED",
+            "CONFIRMED",
+            "INCONCLUSIVE",
+            "REJECTED"
+          ]
+        },
+        "target": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "finding_id",
+        "title",
+        "category",
+        "target",
+        "description",
+        "evidence_ids",
+        "confidence",
+        "severity",
+        "impact",
+        "affected_component",
+        "reproduction",
+        "remediation",
+        "references",
+        "state",
+        "status",
+        "provenance",
+        "created_at"
+      ],
+      "type": "object"
+    },
+    "observation": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "const": "sql-injection"
+        },
+        "cwe": {
+          "const": "CWE-89"
+        },
+        "description": {
+          "maxLength": 500,
+          "minLength": 1,
+          "type": "string"
+        },
+        "file": {
+          "maxLength": 300,
+          "minLength": 1,
+          "type": "string"
+        },
+        "impact": {
+          "maxLength": 500,
+          "minLength": 1,
+          "type": "string"
+        },
+        "line": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "remediation": {
+          "maxLength": 500,
+          "minLength": 1,
+          "type": "string"
+        },
+        "reproduction": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "parameterized_rows": {
+                  "maximum": 10,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "synthetic": {
+                  "const": true
+                },
+                "unsafe_rows": {
+                  "maximum": 10,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "unsafe_rows",
+                "parameterized_rows",
+                "synthetic"
+              ],
+              "type": "object"
+            }
+          ]
+        },
+        "snippet": {
+          "maxLength": 300,
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 180,
+          "minLength": 1,
+          "type": "string"
+        },
+        "verified": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "title",
+        "category",
+        "cwe",
+        "file",
+        "line",
+        "snippet",
+        "description",
+        "impact",
+        "remediation",
+        "verified",
+        "reproduction"
+      ],
+      "type": "object"
+    },
+    "runtime_config": {
+      "additionalProperties": false,
+      "properties": {
+        "limits": {
+          "additionalProperties": false,
+          "properties": {
+            "cpu_seconds": {
+              "maximum": 60,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "global_concurrency": {
+              "maximum": 8,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "max_file_bytes": {
+              "maximum": 1048576,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "max_files": {
+              "maximum": 1000,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "max_input_bytes": {
+              "maximum": 65536,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "max_observations": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "max_output_bytes": {
+              "maximum": 1048576,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "memory_mb": {
+              "maximum": 1024,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "rate_per_minute": {
+              "maximum": 120,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "timeout_seconds": {
+              "maximum": 60,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "max_output_bytes",
+            "max_input_bytes",
+            "max_file_bytes",
+            "max_files",
+            "max_observations",
+            "timeout_seconds",
+            "cpu_seconds",
+            "memory_mb",
+            "global_concurrency",
+            "rate_per_minute"
+          ],
+          "type": "object"
+        },
+        "network_enabled": {
+          "const": false
+        },
+        "state_directory": {
+          "const": ".noble"
+        },
+        "version": {
+          "const": 1
+        }
+      },
+      "required": [
+        "version",
+        "state_directory",
+        "network_enabled",
+        "limits"
+      ],
+      "type": "object"
+    },
+    "scope_policy": {
+      "additionalProperties": true,
+      "properties": {
+        "default_action": {
+          "const": "deny"
+        },
+        "policy_name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "scope": {
+          "additionalProperties": false,
+          "properties": {
+            "allowed_directories": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "allowed_domains": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "allowed_ip_ranges": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "allowed_repositories": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "allowed_testing_methods": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "approval_required_actions": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "forbidden_actions": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "forbidden_targets": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "rate_limits": {
+              "type": "object"
+            },
+            "valid_from": {
+              "type": "string"
+            },
+            "valid_until": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "version": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "policy_name",
+        "version",
+        "default_action",
+        "scope"
+      ],
+      "type": "object"
+    },
+    "tool_input": {
+      "additionalProperties": false,
+      "properties": {
+        "max_files": {
+          "maximum": 1000,
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "tool_output": {
+      "additionalProperties": false,
+      "properties": {
+        "complete": {
+          "type": "boolean"
+        },
+        "observations": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "category": {
+                "const": "sql-injection"
+              },
+              "cwe": {
+                "const": "CWE-89"
+              },
+              "description": {
+                "maxLength": 500,
+                "minLength": 1,
+                "type": "string"
+              },
+              "file": {
+                "maxLength": 300,
+                "minLength": 1,
+                "type": "string"
+              },
+              "impact": {
+                "maxLength": 500,
+                "minLength": 1,
+                "type": "string"
+              },
+              "line": {
+                "minimum": 1,
+                "type": "integer"
+              },
+              "remediation": {
+                "maxLength": 500,
+                "minLength": 1,
+                "type": "string"
+              },
+              "reproduction": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "parameterized_rows": {
+                        "maximum": 10,
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "synthetic": {
+                        "const": true
+                      },
+                      "unsafe_rows": {
+                        "maximum": 10,
+                        "minimum": 0,
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "unsafe_rows",
+                      "parameterized_rows",
+                      "synthetic"
+                    ],
+                    "type": "object"
+                  }
+                ]
+              },
+              "snippet": {
+                "maxLength": 300,
+                "type": "string"
+              },
+              "title": {
+                "maxLength": 180,
+                "minLength": 1,
+                "type": "string"
+              },
+              "verified": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "title",
+              "category",
+              "cwe",
+              "file",
+              "line",
+              "snippet",
+              "description",
+              "impact",
+              "remediation",
+              "verified",
+              "reproduction"
+            ],
+            "type": "object"
+          },
+          "maxItems": 100,
+          "type": "array"
+        },
+        "provenance": {
+          "additionalProperties": false,
+          "properties": {
+            "files_inspected": {
+              "maximum": 1000,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "fixture_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "scanner": {
+              "maxLength": 80,
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "request_id": {
+          "pattern": "^req-[0-9a-f]{32}$",
+          "type": "string"
+        },
+        "target": {
+          "maxLength": 2048,
+          "minLength": 1,
+          "type": "string"
+        },
+        "tool": {
+          "enum": [
+            "static-code-scan",
+            "fixture-sql-verify"
+          ]
+        },
+        "version": {
+          "const": "1.0.0"
+        },
+        "warnings": {
+          "items": {
+            "maxLength": 100,
+            "type": "string"
+          },
+          "maxItems": 10,
+          "type": "array"
+        }
+      },
+      "required": [
+        "request_id",
+        "target",
+        "tool",
+        "version",
+        "observations",
+        "complete",
+        "warnings",
+        "provenance"
+      ],
+      "type": "object"
+    }
+  },
+  "state_machine": {
+    "states": [
+      "CREATED",
+      "VALIDATING",
+      "SCOPE_CHECK",
+      "AUTHORIZATION_CHECK",
+      "RISK_ASSESSMENT",
+      "WAITING_FOR_APPROVAL",
+      "APPROVED",
+      "PLANNED",
+      "DISPATCHED",
+      "RUNNING",
+      "EXECUTING",
+      "COLLECTING_EVIDENCE",
+      "VALIDATING_RESULT",
+      "REPORTING",
+      "COMPLETED",
+      "BLOCKED",
+      "FAILED",
+      "TIMED_OUT",
+      "CANCELLED"
+    ],
+    "terminal": [
+      "FAILED",
+      "COMPLETED",
+      "TIMED_OUT",
+      "BLOCKED",
+      "CANCELLED"
+    ],
+    "transitions": {
+      "APPROVED": [
+        "BLOCKED",
+        "EXECUTING",
+        "FAILED",
+        "PLANNED"
+      ],
+      "AUTHORIZATION_CHECK": [
+        "BLOCKED",
+        "FAILED",
+        "RISK_ASSESSMENT"
+      ],
+      "BLOCKED": [],
+      "CANCELLED": [],
+      "COLLECTING_EVIDENCE": [
+        "FAILED",
+        "VALIDATING_RESULT"
+      ],
+      "COMPLETED": [],
+      "CREATED": [
+        "VALIDATING"
+      ],
+      "DISPATCHED": [
+        "BLOCKED",
+        "FAILED",
+        "RUNNING"
+      ],
+      "EXECUTING": [
+        "BLOCKED",
+        "COLLECTING_EVIDENCE",
+        "FAILED",
+        "TIMED_OUT"
+      ],
+      "FAILED": [],
+      "PLANNED": [
+        "BLOCKED",
+        "DISPATCHED",
+        "FAILED"
+      ],
+      "REPORTING": [
+        "COMPLETED",
+        "FAILED"
+      ],
+      "RISK_ASSESSMENT": [
+        "BLOCKED",
+        "FAILED",
+        "WAITING_FOR_APPROVAL"
+      ],
+      "RUNNING": [
+        "COLLECTING_EVIDENCE",
+        "FAILED",
+        "TIMED_OUT"
+      ],
+      "SCOPE_CHECK": [
+        "AUTHORIZATION_CHECK",
+        "BLOCKED",
+        "FAILED"
+      ],
+      "TIMED_OUT": [],
+      "VALIDATING": [
+        "BLOCKED",
+        "FAILED",
+        "SCOPE_CHECK"
+      ],
+      "VALIDATING_RESULT": [
+        "COMPLETED",
+        "FAILED",
+        "REPORTING"
+      ],
+      "WAITING_FOR_APPROVAL": [
+        "APPROVED",
+        "BLOCKED",
+        "FAILED"
+      ]
+    }
+  },
+  "version": "0.2.0"
+}

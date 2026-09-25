@@ -118,6 +118,21 @@ class Store:
                 );
                 CREATE INDEX IF NOT EXISTS rate_calls_lookup
                     ON rate_calls(principal, tool, target, called_at);
+                CREATE TABLE IF NOT EXISTS ledger (
+                    execution_id TEXT PRIMARY KEY,
+                    data TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS worker_registry (
+                    worker_id TEXT PRIMARY KEY,
+                    data TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS observability (
+                    event_id TEXT PRIMARY KEY,
+                    request_id TEXT NOT NULL,
+                    data TEXT NOT NULL
+                );
+                CREATE INDEX IF NOT EXISTS observability_req
+                    ON observability(request_id);
                 """
             )
             version = db.execute("SELECT value FROM meta WHERE key='schema_version'").fetchone()
@@ -376,3 +391,62 @@ class Store:
     def release_lease(self, lease_id: str) -> None:
         with self._connection() as db:
             db.execute("DELETE FROM active_leases WHERE lease_id=?", (lease_id,))
+
+    # --- Ledger, worker registry, observability (hardening extensions) ---
+
+    def put_ledger(self, execution_id: str, data: dict[str, Any]) -> None:
+        with self._connection() as db:
+            db.execute(
+                "INSERT OR REPLACE INTO ledger(execution_id,data) VALUES (?,?)",
+                (execution_id, _json(data)),
+            )
+
+    def get_ledger(self, execution_id: str) -> dict[str, Any] | None:
+        with self._connection() as db:
+            row = db.execute(
+                "SELECT data FROM ledger WHERE execution_id=?", (execution_id,)
+            ).fetchone()
+        return json.loads(row["data"]) if row else None
+
+    def list_ledgers(self, limit: int = 50) -> list[dict[str, Any]]:
+        with self._connection() as db:
+            rows = db.execute("SELECT data FROM ledger ORDER BY rowid DESC LIMIT ?", (limit,))
+            return [json.loads(r["data"]) for r in rows]
+
+    def put_worker(self, data: dict[str, Any]) -> None:
+        with self._connection() as db:
+            db.execute(
+                "INSERT OR REPLACE INTO worker_registry(worker_id,data) VALUES (?,?)",
+                (data["worker_id"], _json(data)),
+            )
+
+    def get_worker(self, worker_id: str) -> dict[str, Any] | None:
+        with self._connection() as db:
+            row = db.execute(
+                "SELECT data FROM worker_registry WHERE worker_id=?", (worker_id,)
+            ).fetchone()
+        return json.loads(row["data"]) if row else None
+
+    def list_workers(self) -> list[dict[str, Any]]:
+        with self._connection() as db:
+            rows = db.execute("SELECT data FROM worker_registry")
+            return [json.loads(r["data"]) for r in rows]
+
+    def put_observability(self, data: dict[str, Any]) -> None:
+        with self._connection() as db:
+            db.execute(
+                "INSERT OR REPLACE INTO observability(event_id,request_id,data) VALUES (?,?,?)",
+                (data["event_id"], data["request_id"], _json(data)),
+            )
+
+    def list_observability(self, request_id: str) -> list[dict[str, Any]]:
+        with self._connection() as db:
+            rows = db.execute("SELECT data FROM observability WHERE request_id=?", (request_id,))
+            return [json.loads(r["data"]) for r in rows]
+
+    def list_observability_all(self, limit: int = 50) -> list[dict[str, Any]]:
+        with self._connection() as db:
+            rows = db.execute(
+                "SELECT data FROM observability ORDER BY rowid DESC LIMIT ?", (limit,)
+            )
+            return [json.loads(r["data"]) for r in rows]

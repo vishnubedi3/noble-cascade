@@ -72,9 +72,13 @@ class ExecutionState(str, Enum):
     RISK_ASSESSMENT = "RISK_ASSESSMENT"
     WAITING_FOR_APPROVAL = "WAITING_FOR_APPROVAL"
     APPROVED = "APPROVED"
+    PLANNED = "PLANNED"
+    DISPATCHED = "DISPATCHED"
+    RUNNING = "RUNNING"
     EXECUTING = "EXECUTING"
     COLLECTING_EVIDENCE = "COLLECTING_EVIDENCE"
     VALIDATING_RESULT = "VALIDATING_RESULT"
+    REPORTING = "REPORTING"
     COMPLETED = "COMPLETED"
     BLOCKED = "BLOCKED"
     FAILED = "FAILED"
@@ -620,6 +624,17 @@ class ExecutionResult:
     approval: Approval | None = None
     started_at: datetime = field(default_factory=utcnow)
     finished_at: datetime | None = None
+    # --- Hardening extensions: cryptographically verifiable execution provenance ---
+    worker_id: str | None = None
+    tool_run_id: str | None = None
+    report_id: str | None = None
+    policy_version: str | None = None
+    policy_hash: str | None = None
+    configuration_hash: str | None = None
+    worker_image_digest: str | None = None
+    finding_hashes: dict[str, str] | None = None
+    evidence_hashes: dict[str, str] | None = None
+    report_hash: str | None = None
 
     @property
     def succeeded(self) -> bool:
@@ -629,7 +644,7 @@ class ExecutionResult:
         )
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        base = {
             "request_id": self.request_id,
             "state": self.state.value,
             "outcome": self.outcome.value,
@@ -648,3 +663,25 @@ class ExecutionResult:
             "started_at": self.started_at.isoformat(),
             "finished_at": self.finished_at.isoformat() if self.finished_at else None,
         }
+        # Include provenance hashes if present (backward compatible — only when set)
+        if self.worker_id is not None:
+            base["worker_id"] = self.worker_id
+        if self.tool_run_id is not None:
+            base["tool_run_id"] = self.tool_run_id
+        if self.report_id is not None:
+            base["report_id"] = self.report_id
+        if self.policy_version is not None:
+            base["policy_version"] = self.policy_version
+        if self.policy_hash is not None:
+            base["policy_hash"] = self.policy_hash
+        if self.configuration_hash is not None:
+            base["configuration_hash"] = self.configuration_hash
+        if self.worker_image_digest is not None:
+            base["worker_image_digest"] = self.worker_image_digest
+        if self.finding_hashes is not None:
+            base["finding_hashes"] = self.finding_hashes
+        if self.evidence_hashes is not None:
+            base["evidence_hashes"] = self.evidence_hashes
+        if self.report_hash is not None:
+            base["report_hash"] = self.report_hash
+        return base
