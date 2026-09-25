@@ -1155,7 +1155,7 @@
       "type": "application",
       "version": "0.2.0"
     },
-    "timestamp": "2026-09-25T16:13:54.393435+00:00",
+    "timestamp": "2026-09-25T16:17:18.300661+00:00",
     "tools": [
       {
         "name": "noble",
@@ -1164,7 +1164,7 @@
       }
     ]
   },
-  "serialNumber": "urn:uuid:3b93dc00-f446-0000-0000-000000000000",
+  "serialNumber": "urn:uuid:f7cffa78-f446-0000-0000-000000000000",
   "specVersion": "1.5",
   "version": 1
 }

@@ -1,6 +1,6 @@
 {
-  "commit": "de408712a75726585a857b5be3db011afbb12ee7",
-  "generatedAt": "2026-09-25T16:13:54.406244+00:00",
+  "commit": "8fd3c880f26daae46f8d8eaf86a70dbabf256f4a",
+  "generatedAt": "2026-09-25T16:17:18.312503+00:00",
   "inputs": {
     "agent-skills/governance/scope-enforcement/scope-policy.yaml": "069153344401179e451cff7f39ea59be6c07f4db20b8e32af89d18d3e2c4d72d",
     "config/runtime.yaml": "72e5f9f8c956cf242a5659807d27642f174c3c2455a184ee8078d129596e763c",
@@ -23,17 +23,17 @@
     "invocation": {
       "configSource": {
         "digest": {
-          "sha1": "de408712a75726585a857b5be3db011afbb12ee7"
+          "sha1": "8fd3c880f26daae46f8d8eaf86a70dbabf256f4a"
         },
         "entryPoint": "noble release",
-        "uri": "git+https://github.com/vishnubedi3/noble-cascade@de408712a75726585a857b5be3db011afbb12ee7"
+        "uri": "git+https://github.com/vishnubedi3/noble-cascade@8fd3c880f26daae46f8d8eaf86a70dbabf256f4a"
       },
       "parameters": {}
     },
     "materials": [
       {
         "digest": {
-          "sha1": "de408712a75726585a857b5be3db011afbb12ee7"
+          "sha1": "8fd3c880f26daae46f8d8eaf86a70dbabf256f4a"
         },
         "uri": "git+https://github.com/vishnubedi3/noble-cascade"
       },
@@ -81,8 +81,8 @@
       }
     ],
     "metadata": {
-      "buildFinishedOn": "2026-09-25T16:13:54.406244+00:00",
-      "buildStartedOn": "2026-09-25T16:13:54.406244+00:00",
+      "buildFinishedOn": "2026-09-25T16:17:18.312503+00:00",
+      "buildStartedOn": "2026-09-25T16:17:18.312503+00:00",
       "completeness": {
         "environment": true,
         "materials": true,
