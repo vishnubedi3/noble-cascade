@@ -12,7 +12,10 @@ import sys
 
 
 def scan_secrets() -> int:
-    print("UNAVAILABLE: no authorized history/workspace secret scanner is registered. See 'noble doctor'.", file=sys.stderr)
+    print(
+        "UNAVAILABLE: no authorized history/workspace secret scanner is registered. See 'noble doctor'.",
+        file=sys.stderr,
+    )
     return 3
 
 

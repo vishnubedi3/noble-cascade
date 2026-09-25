@@ -20,7 +20,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("target", help="explicit local directory or file")
     parser.add_argument("--grant", required=True, help="exact-target scan authorization grant")
     args = parser.parse_args(argv)
-    result = subprocess.run(
+    result = subprocess.run(  # noqa: S603 - fixed CLI argv, no shell
         [sys.executable, "-m", "noble", "scan", args.target, "--grant", args.grant],
         cwd=ROOT,
         check=False,
