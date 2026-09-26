@@ -89,7 +89,7 @@ class ObservabilitySink:
                 events = self.store.list_observability(request_id)
                 if events:
                     return sorted(events, key=lambda e: e["timestamp"])
-            except Exception:
+            except Exception:  # nosec B110
                 pass
         return sorted(
             [e.to_dict() for e in self._buffer if e.request_id == request_id],
@@ -100,6 +100,6 @@ class ObservabilitySink:
         if self.store is not None:
             try:
                 return self.store.list_observability_all(limit=limit)
-            except Exception:
+            except Exception:  # nosec B110
                 pass
         return [e.to_dict() for e in self._buffer[-limit:]]

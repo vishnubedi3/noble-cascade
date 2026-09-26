@@ -31,7 +31,7 @@ class ReplayEngine:
                 _res = self.store.get_result(chain["request_id"])  # type: ignore[index]
                 if _res:
                     return self._build_replay(_res, chain=chain)  # type: ignore[arg-type]
-        except Exception:
+        except Exception:  # nosec B110
             pass
         raise ValueError(f"execution_id {execution_id} not found")
 

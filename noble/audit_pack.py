@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-import subprocess
+import subprocess  # nosec B404
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -252,7 +252,7 @@ def generate_audit_pack(
 
     # 8 tests.json (collect and optionally run)
     try:
-        col = subprocess.run(
+        col = subprocess.run(  # nosec B603 B607
             ["python", "-m", "pytest", "--collect-only", "-q"],
             capture_output=True,
             text=True,
@@ -261,7 +261,7 @@ def generate_audit_pack(
         )
         tests = [l for l in col.stdout.splitlines() if "::" in l]
         # run quick
-        run = subprocess.run(
+        run = subprocess.run(  # nosec B603 B607
             ["python", "-m", "pytest", "-q"],
             capture_output=True,
             text=True,

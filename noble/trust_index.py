@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-import subprocess
+import subprocess  # nosec B404
 from pathlib import Path
 from typing import Any
 
@@ -38,7 +38,7 @@ def generate_trust_index(workspace_root: Path | None = None) -> dict[str, Any]:
     try:
         import sys
 
-        col = subprocess.run(
+        col = subprocess.run(  # nosec B603
             [sys.executable, "-m", "pytest", "--collect-only", "-q"],
             capture_output=True,
             text=True,

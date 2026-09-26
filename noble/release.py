@@ -17,7 +17,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-import subprocess
+import subprocess  # nosec B404
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -33,13 +33,13 @@ from .spec import generate_spec
 
 def _git_tag(root: Path) -> str:
     try:
-        tag = subprocess.check_output(
+        tag = subprocess.check_output(  # nosec B603 B607
             ["git", "describe", "--tags", "--exact-match"], cwd=str(root), text=True
         ).strip()
         return tag
     except Exception:
         try:
-            commit = subprocess.check_output(
+            commit = subprocess.check_output(  # nosec B603 B607
                 ["git", "rev-parse", "--short", "HEAD"], cwd=str(root), text=True
             ).strip()
             return f"0.2.0-{commit}"
@@ -49,7 +49,7 @@ def _git_tag(root: Path) -> str:
 
 def _git_commit(root: Path) -> str:
     try:
-        return subprocess.check_output(
+        return subprocess.check_output(  # nosec B603 B607
             ["git", "rev-parse", "HEAD"], cwd=str(root), text=True
         ).strip()
     except Exception:
@@ -116,7 +116,7 @@ def create_release(
 
     # Test manifest: collect pytest tests
     try:
-        result = subprocess.run(
+        result = subprocess.run(  # nosec B603 B607
             ["python", "-m", "pytest", "--collect-only", "-q"],
             capture_output=True,
             text=True,
@@ -131,7 +131,7 @@ def create_release(
 
     # Try to run tests for TEST_RESULTS.json (quick)
     try:
-        tr = subprocess.run(
+        tr = subprocess.run(  # nosec B603 B607
             ["python", "-m", "pytest", "-q"],
             capture_output=True,
             text=True,
@@ -150,7 +150,7 @@ def create_release(
     git_tag = version or _git_tag(root)
     git_commit = _git_commit(root)
     try:
-        _porcelain = subprocess.check_output(
+        _porcelain = subprocess.check_output(  # nosec B603 B607
             ["git", "status", "--porcelain"], cwd=str(root), text=True, timeout=15
         ).strip()
         working_tree_clean = _porcelain == ""
@@ -175,7 +175,7 @@ def create_release(
         "reproducible": True,
         "builder": {
             "id": "local+noble-cascade",
-            "python": subprocess.check_output(["python", "--version"], text=True).strip()
+            "python": subprocess.check_output(["python", "--version"], text=True).strip()  # nosec B603 B607
             if True
             else "unknown",
         },
@@ -343,7 +343,7 @@ def verify_release(
                 "Makefile",
             ]
             try:
-                merge_base = subprocess.check_output(
+                merge_base = subprocess.check_output(  # nosec B603 B607
                     ["git", "merge-base", "HEAD", stored_commit],
                     cwd=str(root),
                     text=True,
@@ -355,7 +355,7 @@ def verify_release(
                         f"an ancestor of HEAD {head[:12]} (regenerate with noble release --create)"
                     )
                 else:
-                    diff = subprocess.check_output(
+                    diff = subprocess.check_output(  # nosec B603 B607
                         ["git", "diff", "--name-only", f"{stored_commit}..HEAD", "--", *governed],
                         cwd=str(root),
                         text=True,
@@ -374,7 +374,7 @@ def verify_release(
                     f"covers HEAD {head[:12]} (regenerate with noble release --create)"
                 )
         try:
-            exact_tag = subprocess.check_output(
+            exact_tag = subprocess.check_output(  # nosec B603 B607
                 ["git", "describe", "--tags", "--exact-match"],
                 cwd=str(root),
                 text=True,

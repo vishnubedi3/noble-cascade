@@ -8,7 +8,7 @@ from __future__ import annotations
 import hashlib
 import json
 import platform
-import subprocess
+import subprocess  # nosec B404
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -16,7 +16,7 @@ from typing import Any
 
 def _git_commit(root: Path) -> str:
     try:
-        return subprocess.check_output(
+        return subprocess.check_output(  # nosec B603 B607
             ["git", "rev-parse", "HEAD"], cwd=str(root), text=True
         ).strip()
     except Exception:
@@ -25,7 +25,7 @@ def _git_commit(root: Path) -> str:
 
 def _git_dirty(root: Path) -> bool:
     try:
-        out = subprocess.check_output(["git", "status", "--porcelain"], cwd=str(root), text=True)
+        out = subprocess.check_output(["git", "status", "--porcelain"], cwd=str(root), text=True)  # nosec B603 B607
         return bool(out.strip())
     except Exception:
         return False

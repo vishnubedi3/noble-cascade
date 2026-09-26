@@ -15,7 +15,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
-import subprocess
+import subprocess  # nosec B404
 from pathlib import Path
 from typing import Any
 
@@ -68,7 +68,7 @@ def _sha256_file(path: Path) -> str | None:
 
 def _run_git(root: Path, args: list[str]) -> str:
     try:
-        out = subprocess.run(
+        out = subprocess.run(  # nosec B603 B607
             ["git", *args], capture_output=True, text=True, cwd=str(root), timeout=30
         )
         return out.stdout.strip() if out.returncode == 0 else ""

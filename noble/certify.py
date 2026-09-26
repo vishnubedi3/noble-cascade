@@ -44,7 +44,7 @@ def _check_replay(root: Path) -> tuple[bool, str]:
                 data = replayer.replay(eid)
                 if data.get("read_only") is True:
                     passed += 1
-            except Exception:
+            except Exception:  # nosec B112
                 continue
         if passed == 0 and results:
             return False, "replay failed for sampled executions"

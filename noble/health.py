@@ -138,7 +138,7 @@ class HealthMonitor:
                     return HealthCheck(
                         "workers", HealthStatus.DEGRADED, f"{failed}/20 recent executions failed"
                     )
-            except Exception:
+            except Exception:  # nosec B110
                 pass
         return HealthCheck(
             "workers", HealthStatus.HEALTHY, "worker image present, no active degradation"

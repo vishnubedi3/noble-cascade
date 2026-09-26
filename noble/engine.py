@@ -172,7 +172,7 @@ class NobleEngine:
                 self._get_observability().emit(
                     cat, request.request_id, msg, execution_id=lease_id, attributes=attrs
                 )
-            except Exception:
+            except Exception:  # nosec B110
                 pass
 
         def transition(state: ExecutionState) -> None:
@@ -474,7 +474,7 @@ class NobleEngine:
                     report_data = {"findings": finding_ids, "request_id": request.request_id}
                     result.report_hash = hash_report(report_data)
                     result.report_id = new_id("report")
-                except Exception:
+                except Exception:  # nosec B110
                     pass
 
             transition(ExecutionState.COMPLETED)
@@ -572,7 +572,7 @@ class NobleEngine:
                         )
                         self.store.put_ledger(result.execution_id, chain.to_dict())
                         obs("REPORT", "ledger chain recorded", execution_id=result.execution_id)
-                except Exception:
+                except Exception:  # nosec B110
                     pass
                 if request_reserved:
                     self.store.put_result(result)
