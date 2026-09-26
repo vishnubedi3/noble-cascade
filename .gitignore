@@ -22,7 +22,8 @@ rad.json
 #Test results file
 TestResults.xml
 # Noble Cascade local state and execution artifacts (never commit audit/evidence data)
-.noble/
+.noble/*
+!.noble/drift_baseline.json
 agent-skills/operations/audit-logging/audit.log
 __pycache__/
 .pytest_cache/
