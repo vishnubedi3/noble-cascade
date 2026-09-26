@@ -13,7 +13,7 @@ import os
 import resource
 import selectors
 import signal
-import subprocess
+import subprocess  # nosec B404
 import sys
 import time
 from contextlib import suppress
@@ -118,7 +118,7 @@ class CommandRunner:
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                shell=False,
+                shell=False,  # nosec B603
                 close_fds=True,
                 start_new_session=True,
                 preexec_fn=self._limit_child,

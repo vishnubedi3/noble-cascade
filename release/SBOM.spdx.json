@@ -1,7 +1,7 @@
 {
   "SPDXID": "SPDXRef-DOCUMENT",
   "creationInfo": {
-    "created": "2026-09-25T16:35:09.984876+00:00",
+    "created": "2026-09-26T04:10:24.724958+00:00",
     "creators": [
       "Tool: noble-sbom-0.2.0",
       "Organization: Noble Cascade"
@@ -9,7 +9,7 @@
     "licenseListVersion": "3.22"
   },
   "dataLicense": "CC0-1.0",
-  "documentNamespace": "https://noble-cascade.local/sbom/ff300d0eca1a",
+  "documentNamespace": "https://noble-cascade.local/sbom/db345a965667",
   "name": "noble-cascade-sbom",
   "packages": [
     {
@@ -309,7 +309,7 @@
       "licenseDeclared": "MIT",
       "name": "noble-cascade",
       "supplier": "Organization: Noble Cascade",
-      "verificationCode": "sha256:c2352faef2f998bcb30a7abf0d92712d49d33f86fe80a397fe2620ca82684577",
+      "verificationCode": "sha256:dbe9283821e1f2d72354a54764ce43c1de442f382c1a8db6cd7810883e4882cf",
       "versionInfo": "0.2.0"
     },
     {
@@ -543,14 +543,14 @@
     {
       "SPDXID": "SPDXRef-Package-setuptools",
       "copyrightText": "NOASSERTION",
-      "downloadLocation": "pkg:pypi/setuptools@66.1.1",
+      "downloadLocation": "pkg:pypi/setuptools@84.0.0",
       "filesAnalyzed": false,
       "licenseConcluded": "UNKNOWN",
       "licenseDeclared": "UNKNOWN",
       "name": "setuptools",
-      "supplier": "Organization: Python Packaging Authority",
-      "verificationCode": "sha256:95ac7d5a5e6d89637fa7197d2b00d0ebbdd3c08a92c5ebb214aa62d2ac616188",
-      "versionInfo": "66.1.1"
+      "supplier": "Organization: UNKNOWN",
+      "verificationCode": "sha256:dac29e249fc2551771fca089a0384573cd3edabbe6b605b14a4b5db43ccdeeec",
+      "versionInfo": "84.0.0"
     },
     {
       "SPDXID": "SPDXRef-Package-sortedcontainers",
@@ -626,7 +626,7 @@
     }
   ],
   "provenance": {
-    "buildTime": "2026-09-25T16:35:09.984876+00:00",
+    "buildTime": "2026-09-26T04:10:24.724958+00:00",
     "generatedBy": "noble sbom",
     "generatorVersion": "0.2.0"
   },
@@ -635,7 +635,7 @@
     {
       "hash": "sha256:c6e1f1ef67ab331cbb83bfbd5bbb9b766fbb2228ce848b038141cb7d2cad3158",
       "name": "python3",
-      "path": "/usr/bin/python3",
+      "path": "/home/user/noble-cascade/.venv/bin/python3",
       "version": "3.11.2"
     },
     {
@@ -645,9 +645,9 @@
       "version": "unknown"
     },
     {
-      "hash": "sha256:6d1f19b17ef3ab9b6d3532be2198766bb1709c83da6a6684152b8af1930da6fa",
+      "hash": "sha256:36a335464ed0a80f0afd03fcc9b5e5721cfdb31531c7449d77c28c51cd3a9801",
       "name": "pip",
-      "path": "/usr/bin/pip",
+      "path": "/home/user/noble-cascade/.venv/bin/pip",
       "version": "unknown"
     }
   ],

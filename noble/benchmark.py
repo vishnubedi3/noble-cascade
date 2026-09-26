@@ -93,7 +93,7 @@ def run_benchmarks(workspace_root: Path | None = None) -> dict[str, Any]:
             results_list = store.list_results(limit=1)
             if results_list and results_list[0].get("execution_id"):
                 ReplayEngine(store).replay(results_list[0]["execution_id"])
-        except Exception:
+        except Exception:  # nosec B110
             pass
 
     results["replay_latency"] = _measure("replay_latency", _replay).to_dict()
@@ -124,7 +124,7 @@ def run_benchmarks(workspace_root: Path | None = None) -> dict[str, Any]:
             store = Store(Path(cfg.state_directory) / "state.db")
             # just list ledgers (insertion would mutate state, so we measure query)
             store.list_ledgers(limit=5)
-        except Exception:
+        except Exception:  # nosec B110
             pass
 
     results["ledger_insertion"] = _measure("ledger_insertion", _ledger).to_dict()

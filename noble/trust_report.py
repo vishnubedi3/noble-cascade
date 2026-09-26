@@ -7,7 +7,7 @@ verification status, reproducibility status.
 from __future__ import annotations
 
 import platform
-import subprocess
+import subprocess  # nosec B404
 from pathlib import Path
 from typing import Any
 
@@ -22,7 +22,7 @@ def trust_report(workspace_root: Path | None = None) -> dict[str, Any]:
     # gather verification statuses
     def _run(cmd: list[str]) -> tuple[bool, str]:
         try:
-            r = subprocess.run(cmd, capture_output=True, text=True, cwd=str(root), timeout=30)
+            r = subprocess.run(cmd, capture_output=True, text=True, cwd=str(root), timeout=30)  # nosec B603
             return r.returncode == 0, (r.stdout + r.stderr)[:500]
         except Exception as exc:
             return False, str(exc)
@@ -50,7 +50,7 @@ def trust_report(workspace_root: Path | None = None) -> dict[str, Any]:
     try:
         import sys
 
-        col = subprocess.run(
+        col = subprocess.run(  # nosec B603
             [sys.executable, "-m", "pytest", "--collect-only", "-q"],
             capture_output=True,
             text=True,

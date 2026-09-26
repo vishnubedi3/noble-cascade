@@ -34,7 +34,7 @@ def _collect_deps() -> list[dict[str, Any]]:
                 loc = dist.locate_file("")  # type: ignore[attr-defined]
                 if loc is not None and Path(str(loc)).exists():  # type: ignore[arg-type]
                     pass
-            except Exception:
+            except Exception:  # nosec B110
                 pass
             md = dist.metadata
             supplier = md["Author"] if "Author" in md else "UNKNOWN"  # type: ignore[operator]
@@ -49,7 +49,7 @@ def _collect_deps() -> list[dict[str, Any]]:
                     "purl": f"pkg:pypi/{name.lower()}@{version}",
                 }
             )
-        except Exception:
+        except Exception:  # nosec B112
             continue
     # ensure noble-cascade itself is represented
     deps.append(

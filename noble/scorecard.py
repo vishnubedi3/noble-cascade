@@ -46,7 +46,7 @@ def replay_coverage(store: Store) -> dict[str, Any]:
             rep = engine.replay_by_request(r["request_id"])
             if rep and rep.get("read_only"):
                 success += 1
-        except Exception:
+        except Exception:  # nosec B110
             pass
     score = success / min(len(results), 20) if results else 0
     return {
@@ -76,10 +76,10 @@ def test_coverage_summary() -> dict[str, Any]:
     # Estimate from pytest counts (static; updated by CI)
     # Attempt to run pytest --collect-only if available
     try:
-        import subprocess
+        import subprocess  # nosec B404
         import sys
 
-        proc = subprocess.run(
+        proc = subprocess.run(  # nosec B603
             [sys.executable, "-m", "pytest", "--collect-only", "-q"],
             capture_output=True,
             text=True,

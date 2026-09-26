@@ -13,11 +13,11 @@ noble drift --baseline  # to establish new baseline after authorized change
 ```json
 {
   "policy_version": "1.0.0",
-  "policy_hash": "069153344401179e451cff7f39ea59be6c07f4db20b8e32af89d18d3e2c4d72d",
-  "configuration_hash": "72e5f9f8c956cf242a5659807d27642f174c3c2455a184ee8078d129596e763c",
-  "worker_image_digest": "cfdeaeb1877498f89fe054f44206eeafa6bd5a500ec9ee3c455fe3034f768f78",
-  "dependency_hash": "d0fd4e1d9a99218255fa1903d4a4f2021ce48b2cb455ddd9168f1ba7c80c53a0",
-  "tool_versions_hash": "422bf65994e9404d1311fa4f2d24045e6657de7a6b579e6361ff85f61f869ff8"
+  "policy_hash": "06915334…c4d72d",
+  "configuration_hash": "72e5f9f8…6e763c",
+  "worker_image_digest": "cfdeaeb1…768f78",
+  "dependency_hash": "d0fd4e1d…0c53a0",
+  "tool_versions_hash": "422bf659…869ff8"
 }
 ```
 

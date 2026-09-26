@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-import subprocess
+import subprocess  # nosec B404
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -45,11 +45,14 @@ def verification_script_template() -> str:
 # silently accept. Exit 0 = OFFLINE VERIFICATION PASSED; exit 40+N = check N
 # failed (stable contract); exit 2 = environment/setup failure.
 set -uo pipefail
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+PACK="$(cd "$(dirname "$0")" && pwd)"
+ROOT="$(cd "$PACK/.." && pwd)"
+if [ ! -d "$ROOT/.github" ]; then ROOT="$(pwd)"; fi
 cd "$ROOT"
 if [ -x "$ROOT/.venv/bin/python" ]; then PYTHON="$ROOT/.venv/bin/python"; else PYTHON="python3"; fi
 echo "=== Noble Cascade Offline Verification ==="
 echo "Root: $ROOT"
+echo "Pack: $PACK"
 echo "Python: $PYTHON ($($PYTHON --version 2>&1 || echo MISSING))"
 echo "Credentials required: none | Network required: none"
 echo "GH_TOKEN present: $([ -n "${GH_TOKEN:-}" ] && echo yes-ignored || echo no)"
@@ -80,20 +83,20 @@ check() { # $1=num $2=name $3=command
 }
 
 check 1 "policy proof" \\
-  "$PYTHON -c 'import json; d=json.load(open(\\"audit-pack/policy-proof.json\\")); assert \\"fingerprint\\" in d, d.keys()'"
+  "$PYTHON -c 'import json; d=json.load(open(\\"${PACK}/policy-proof.json\\")); assert \\"fingerprint\\" in d, d.keys()'"
 check 2 "drift proof" \\
-  "$PYTHON -c 'import json; d=json.load(open(\\"audit-pack/drift-proof.json\\")); assert d[\\"drift\\"].get(\\"drift_detected\\")==False, d'"
+  "$PYTHON -c 'import json; d=json.load(open(\\"${PACK}/drift-proof.json\\")); assert d[\\"drift\\"].get(\\"drift_detected\\")==False, d'"
 check 3 "worker proof" \\
-  "$PYTHON -c 'import json; d=json.load(open(\\"audit-pack/worker-proof.json\\")); assert d.get(\\"valid\\"), d'"
+  "$PYTHON -c 'import json; d=json.load(open(\\"${PACK}/worker-proof.json\\")); assert d.get(\\"valid\\"), d'"
 check 4 "replay proof" \\
-  "$PYTHON -c 'import json; d=json.load(open(\\"audit-pack/replay-proof.json\\")); assert d.get(\\"deterministic\\"), d'"
+  "$PYTHON -c 'import json; d=json.load(open(\\"${PACK}/replay-proof.json\\")); assert d.get(\\"deterministic\\"), d'"
 check 5 "invariants" \\
-  "$PYTHON -c 'import json; d=json.load(open(\\"audit-pack/invariants.json\\")); assert len(d.get(\\"invariants\\",[]))>=10, d'"
+  "$PYTHON -c 'import json; d=json.load(open(\\"${PACK}/invariants.json\\")); assert len(d.get(\\"invariants\\",[]))>=10, d'"
 check 6 "audit chain" "$PYTHON -m noble audit --verify"
 check 7 "spec sync" "$PYTHON -m noble spec --verify"
 check 8 "certify" \\
   "$PYTHON -m noble certify --json | $PYTHON -c 'import json,sys; d=json.load(sys.stdin); assert d.get(\\"status\\")==\\"CERTIFIED\\", d'"
-check 9 "sbom exists" "test -f release/SBOM.spdx.json || test -f audit-pack/guarantees.json"
+check 9 "sbom exists" "test -f release/SBOM.spdx.json || test -f ${PACK}/guarantees.json"
 
 echo ""
 if [ "$first_fail" -eq 0 ]; then echo "OFFLINE VERIFICATION PASSED (9/9)"; exit 0
@@ -252,7 +255,7 @@ def generate_audit_pack(
 
     # 8 tests.json (collect and optionally run)
     try:
-        col = subprocess.run(
+        col = subprocess.run(  # nosec B603 B607
             ["python", "-m", "pytest", "--collect-only", "-q"],
             capture_output=True,
             text=True,
@@ -261,7 +264,7 @@ def generate_audit_pack(
         )
         tests = [l for l in col.stdout.splitlines() if "::" in l]
         # run quick
-        run = subprocess.run(
+        run = subprocess.run(  # nosec B603 B607
             ["python", "-m", "pytest", "-q"],
             capture_output=True,
             text=True,

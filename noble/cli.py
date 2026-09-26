@@ -789,19 +789,19 @@ def main(argv: list[str] | None = None) -> int:
             # Time-travel: if --commit, verify that commit's policy matches execution's policy
             if args.commit:
                 import hashlib
-                import subprocess
+                import subprocess  # nosec B404
                 from pathlib import Path as _P
 
                 try:
                     commit_hash = args.commit
                     # resolve commit
-                    full = subprocess.check_output(
+                    full = subprocess.check_output(  # nosec B603 B607
                         ["git", "rev-parse", commit_hash],
                         cwd=str(_P(engine.config.workspace_root)),
                         text=True,
                     ).strip()
                     # try to get policy file at that commit
-                    policy_at_commit = subprocess.check_output(
+                    policy_at_commit = subprocess.check_output(  # nosec B603 B607
                         [
                             "git",
                             "show",

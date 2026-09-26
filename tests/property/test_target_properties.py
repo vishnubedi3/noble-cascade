@@ -25,7 +25,7 @@ def test_target_normalization_never_crashes():
         "https://localhost%2e%2e/secret",
         "repo%252Fbad",
         "localhost\u202e.evil.com",
-        "https://user:pass@localhost/",
+        "https://user:pass@localhost/",  # pragma: allowlist secret
         "https://localhost#frag",
         "https://localhost?query=1",
         "\ufeffhttps://localhost/",

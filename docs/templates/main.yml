@@ -1,3 +1,6 @@
+# Template: upload this file to .github/workflows/main.yml (GitHub UI)
+# ('Control-plane validation' fast-path workflow. Registered manually because
+# API pushes of .github/workflows/* require the 'workflows' permission.)
 # Noble Cascade — Fast validation workflow (local-verification equivalent).
 #
 # This is the fast path: lint, format, type-check, unit tests, secret scan,
@@ -63,9 +66,28 @@ jobs:
           python - <<'PY'
           import json
           data = json.load(open('/tmp/noble-secrets.json', encoding='utf-8'))
-          candidates = sum(len(rows) for rows in data.get('results', {}).values())
-          print(f'Secret candidates: {candidates}')
+          # Reviewed false-positive registry (committed, reviewable in PRs):
+          # governance digests in .github/repo-baseline.json are not secrets.
+          # Any candidate NOT in .secrets.baseline still fails the scan.
+          reviewed = json.load(open('.secrets.baseline', encoding='utf-8')).get('results', {})
+          reviewed_ids = {
+              (fname, s.get('hashed_secret'))
+              for fname, rows in reviewed.items()
+              for s in rows
+          }
+          candidates = [
+              (fname, s)
+              for fname, rows in data.get('results', {}).items()
+              for s in rows
+              if (fname, s.get('hashed_secret')) not in reviewed_ids
+          ]
+          print(
+              f"Secret candidates: {len(candidates)} "
+              f"(reviewed false positives: {sum(len(r) for r in reviewed.values())})"
+          )
           if candidates:
+              for fname, s in candidates:
+                  print(f"  {fname}:{s.get('line_number')} type={s.get('type')}")
               raise SystemExit(1)
           PY
       - name: Dependency advisory check (fails closed if service unavailable)

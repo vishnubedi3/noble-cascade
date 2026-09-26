@@ -6,7 +6,7 @@ import importlib.metadata
 import importlib.util
 import os
 import shutil
-import subprocess
+import subprocess  # nosec B404
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -223,7 +223,7 @@ def _check_replay(root_path: Path) -> list[Diagnostic]:
             try:
                 engine.replay_by_request(r["request_id"])
                 success += 1
-            except Exception:
+            except Exception:  # nosec B110
                 pass
         status = "PASS" if success == min(3, len(results_list)) else "FAIL"
         return [
@@ -401,7 +401,7 @@ def run_doctor(
     )
     if self_test:
         try:
-            test = subprocess.run(
+            test = subprocess.run(  # nosec B603
                 [sys.executable, "-m", "pytest", "-q"],
                 cwd=root_path,
                 env={

@@ -6,14 +6,14 @@ Policy is version-controlled behavior.
 
 from __future__ import annotations
 
-import subprocess
+import subprocess  # nosec B404
 from pathlib import Path
 from typing import Any
 
 
 def _git_show(commit: str, rel_path: str, root: Path) -> str | None:
     try:
-        return subprocess.check_output(
+        return subprocess.check_output(  # nosec B603 B607
             ["git", "show", f"{commit}:{rel_path}"], cwd=str(root), text=True
         )
     except Exception:
@@ -44,14 +44,14 @@ def policy_diff(
     # determine commits
     if not from_commit:
         try:
-            from_commit = subprocess.check_output(
+            from_commit = subprocess.check_output(  # nosec B603 B607
                 ["git", "rev-parse", "HEAD~1"], cwd=str(root), text=True
             ).strip()
         except Exception:
             from_commit = "HEAD"
     if not to_commit:
         try:
-            to_commit = subprocess.check_output(
+            to_commit = subprocess.check_output(  # nosec B603 B607
                 ["git", "rev-parse", "HEAD"], cwd=str(root), text=True
             ).strip()
         except Exception:
@@ -94,7 +94,7 @@ def policy_diff(
     why = ""
     try:
         why = (
-            subprocess.check_output(
+            subprocess.check_output(  # nosec B603 B607
                 ["git", "log", "--format=%B", "-n", "1", to_commit], cwd=str(root), text=True
             )
             .strip()

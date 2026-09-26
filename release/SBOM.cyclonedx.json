@@ -533,7 +533,7 @@
       "hashes": [
         {
           "alg": "SHA-256",
-          "content": "c2352faef2f998bcb30a7abf0d92712d49d33f86fe80a397fe2620ca82684577"
+          "content": "dbe9283821e1f2d72354a54764ce43c1de442f382c1a8db6cd7810883e4882cf"
         }
       ],
       "licenses": [
@@ -973,7 +973,7 @@
       "hashes": [
         {
           "alg": "SHA-256",
-          "content": "95ac7d5a5e6d89637fa7197d2b00d0ebbdd3c08a92c5ebb214aa62d2ac616188"
+          "content": "dac29e249fc2551771fca089a0384573cd3edabbe6b605b14a4b5db43ccdeeec"
         }
       ],
       "licenses": [
@@ -984,12 +984,12 @@
         }
       ],
       "name": "setuptools",
-      "purl": "pkg:pypi/setuptools@66.1.1",
+      "purl": "pkg:pypi/setuptools@84.0.0",
       "supplier": {
-        "name": "Python Packaging Authority"
+        "name": "UNKNOWN"
       },
       "type": "library",
-      "version": "66.1.1"
+      "version": "84.0.0"
     },
     {
       "hashes": [
@@ -1155,7 +1155,7 @@
       "type": "application",
       "version": "0.2.0"
     },
-    "timestamp": "2026-09-25T16:35:10.015903+00:00",
+    "timestamp": "2026-09-26T04:10:24.757259+00:00",
     "tools": [
       {
         "name": "noble",
@@ -1164,7 +1164,7 @@
       }
     ]
   },
-  "serialNumber": "urn:uuid:8a2952f0-f446-0000-0000-000000000000",
+  "serialNumber": "urn:uuid:8c72900a-f446-0000-0000-000000000000",
   "specVersion": "1.5",
   "version": 1
 }
